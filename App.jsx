@@ -29,8 +29,8 @@ const T = {
     how2Desc: "Our model extracts key frames and analyzes facial artifacts, eye reflections, lip sync, skin texture and more.",
     how3Title: "Get your verdict",
     how3Desc: "Receive an instant authenticity verdict with confidence score, signal breakdown, and plain-English explanation.",
-    accuracy: "96% accuracy rate",
-    accuracySub: "Across tested deepfake datasets",
+    accuracy: "Detects most deepfakes & AI manipulation",
+    accuracySub: "High-quality Veo/Sora remains an evolving challenge",
     scansLabel: "videos analyzed",
     tabFile: "Upload File",
     tabUrl: "Paste URL",
@@ -81,6 +81,9 @@ const T = {
     foundingPlan: "Founding Member — $7/mo",
     foundingFeatures: "Everything in Pro · Price locked forever",
     comingSoon: "Coming Soon",
+    whatsappTip: "Received a suspicious video on WhatsApp?",
+    whatsappSub: "Save it to your phone first, then upload it here. On iPhone: press & hold the video → Save. On Android: tap the download icon → find it in your gallery.",
+    whatsappDismiss: "Got it",
   },
   es: {
     tagline: "Escáner de Video con IA",
@@ -95,8 +98,8 @@ const T = {
     how2Desc: "Nuestro modelo extrae fotogramas clave y analiza artefactos faciales, reflejos oculares, sincronización labial y más.",
     how3Title: "Obtén tu veredicto",
     how3Desc: "Recibe un veredicto de autenticidad instantáneo con puntuación de confianza y explicación en lenguaje simple.",
-    accuracy: "96% de precisión",
-    accuracySub: "En conjuntos de datos deepfake probados",
+    accuracy: "Detecta la mayoría de deepfakes",
+    accuracySub: "Video Veo/Sora de alta calidad es un desafío en evolución",
     scansLabel: "videos analizados",
     tabFile: "Subir Archivo",
     tabUrl: "Pegar URL",
@@ -147,6 +150,9 @@ const T = {
     foundingPlan: "Miembro Fundador — $7/mes",
     foundingFeatures: "Todo en Pro · Precio bloqueado para siempre",
     comingSoon: "Próximamente",
+    whatsappTip: "¿Recibiste un video sospechoso en WhatsApp?",
+    whatsappSub: "Guárdalo en tu teléfono primero, luego súbelo aquí. En iPhone: mantén presionado → Guardar. En Android: toca el ícono de descarga → encuéntralo en tu galería.",
+    whatsappDismiss: "Entendido",
   },
   pt: {
     tagline: "Scanner de Vídeo com IA",
@@ -161,8 +167,8 @@ const T = {
     how2Desc: "Nosso modelo extrai quadros-chave e analisa artefatos faciais, reflexos oculares, sincronia labial e mais.",
     how3Title: "Obtenha seu veredicto",
     how3Desc: "Receba um veredicto de autenticidade instantâneo com pontuação de confiança e explicação em linguagem simples.",
-    accuracy: "96% de precisão",
-    accuracySub: "Em conjuntos de dados deepfake testados",
+    accuracy: "Detecta a maioria dos deepfakes",
+    accuracySub: "Vídeo Veo/Sora de alta qualidade é um desafio em evolução",
     scansLabel: "vídeos analisados",
     tabFile: "Enviar Arquivo",
     tabUrl: "Colar URL",
@@ -213,6 +219,9 @@ const T = {
     foundingPlan: "Membro Fundador — $7/mês",
     foundingFeatures: "Tudo no Pro · Preço travado para sempre",
     comingSoon: "Em Breve",
+    whatsappTip: "Recebeu um vídeo suspeito no WhatsApp?",
+    whatsappSub: "Salve-o no seu telefone primeiro, depois envie aqui. No iPhone: pressione e segure → Salvar. No Android: toque no ícone de download → encontre na galeria.",
+    whatsappDismiss: "Entendi",
   },
   fr: {
     tagline: "Scanner Vidéo par IA",
@@ -227,8 +236,8 @@ const T = {
     how2Desc: "Notre modèle extrait des images clés et analyse les artefacts faciaux, reflets oculaires, synchronisation labiale et plus.",
     how3Title: "Obtenez votre verdict",
     how3Desc: "Recevez un verdict d'authenticité instantané avec score de confiance et explication en langage simple.",
-    accuracy: "96% de précision",
-    accuracySub: "Sur les ensembles de données deepfake testés",
+    accuracy: "Détecte la plupart des deepfakes",
+    accuracySub: "La vidéo Veo/Sora haute qualité reste un défi en évolution",
     scansLabel: "vidéos analysées",
     tabFile: "Télécharger Fichier",
     tabUrl: "Coller URL",
@@ -279,6 +288,9 @@ const T = {
     foundingPlan: "Membre Fondateur — 7$/mois",
     foundingFeatures: "Tout en Pro · Prix bloqué pour toujours",
     comingSoon: "Bientôt Disponible",
+    whatsappTip: "Vous avez reçu une vidéo suspecte sur WhatsApp?",
+    whatsappSub: "Enregistrez-la d'abord sur votre téléphone, puis téléchargez-la ici. Sur iPhone: appuyez longuement → Enregistrer. Sur Android: appuyez sur l'icône de téléchargement → trouvez-la dans votre galerie.",
+    whatsappDismiss: "Compris",
   },
 };
 
@@ -349,10 +361,23 @@ async function analyzeFrames(frames, filename, lang = "en") {
     type: "image",
     source: { type: "base64", media_type: "image/jpeg", data: b64 },
   }));
-  const prompt = `You are an expert deepfake and AI-generated video detection system. Analyze these ${frames.length} frames from "${filename}". Respond entirely in ${langMap[lang] || "English"}.
+  const prompt = `You are an expert deepfake and AI-generated video detection system with specialized knowledge of modern AI video generation models including Google Veo, OpenAI Sora, Runway Gen-3, Stable Video Diffusion, and similar tools. Analyze these ${frames.length} frames from "${filename}". Respond entirely in ${langMap[lang] || "English"}.
 
-Examine for:
+CRITICAL: Modern AI video generators (Veo, Sora, Runway) produce extremely photorealistic output specifically designed to defeat detection. Do NOT assume authentic just because the video looks high quality or realistic. High production quality is itself a signal worth examining carefully.
+
+Examine each frame aggressively for ALL of these signals:
 ${SIGNALS.map((s, i) => `${i + 1}. ${s}`).join("\n")}
+
+ADDITIONAL signals specific to high-quality AI video generation:
+9. Skin that is too perfect — lacks natural micro-variations, pores, blemishes, natural asymmetry
+10. Motion that is unnaturally smooth — real cameras have micro-jitter, AI video is often too stable
+11. Background elements that are slightly too perfect or symmetrical
+12. Lighting that is perfectly consistent across all frames — real environments have subtle variation
+13. Hair and fabric physics that follow slightly unnatural patterns
+14. Depth of field or bokeh that looks computationally generated
+15. Any "Veo", "Sora", "Runway", "AI" watermarks or generation artifacts in corners or edges
+
+When in doubt between AUTHENTIC and SUSPICIOUS, choose SUSPICIOUS. When in doubt between SUSPICIOUS and FAKE, choose FAKE. It is better to flag legitimate video as suspicious than to miss actual AI-generated content.
 
 Respond ONLY with valid JSON (no markdown):
 {
@@ -546,6 +571,7 @@ export default function IsItReel() {
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [shareCardUrl, setShareCardUrl] = useState(null);
   const [isPro] = useState(false); // wire to Stripe - checks URL params on load
+  const [whatsappDismissed, setWhatsappDismissed] = useState(false);
   const [tier, setTier] = useState('free'); // free | light | founding | pro
   const SCAN_LIMITS = { free: 3, light: 8, founding: Infinity, pro: Infinity };
   const fileRef = useRef();
@@ -844,7 +870,7 @@ export default function IsItReel() {
           <div style={{ textAlign:"center",marginBottom:44,animation:"fadeUp .5s ease" }}>
             {/* Accuracy badge */}
             <div style={{ display:"inline-flex",alignItems:"center",gap:8,background:"rgba(0,255,148,.07)",border:"1px solid rgba(0,255,148,.2)",borderRadius:20,padding:"5px 14px",marginBottom:18 }}>
-              <span style={{ fontSize:10,color:"#00FF94",fontWeight:700,letterSpacing:".1em" }}>✓ {t.accuracy}</span>
+              <span style={{ fontSize:10,color:"#00FF94",fontWeight:700,letterSpacing:".1em" }}>🔍 {t.accuracy}</span>
               <span style={{ fontSize:9,color:"#444" }}>·</span>
               <span style={{ fontSize:10,color:"#555" }}>{t.accuracySub}</span>
             </div>
@@ -881,6 +907,17 @@ export default function IsItReel() {
             {/* File tab */}
             {inputMode === "file" && (
               <>
+                {/* WhatsApp tip card */}
+                {!whatsappDismissed && (
+                  <div style={{ display:"flex",alignItems:"flex-start",gap:11,background:"rgba(37,211,102,.06)",border:"1px solid rgba(37,211,102,.2)",borderRadius:12,padding:"13px 15px",marginBottom:14,animation:"fadeUp .4s ease" }}>
+                    <span style={{ fontSize:18,flexShrink:0,marginTop:1 }}>💬</span>
+                    <div style={{ flex:1 }}>
+                      <div style={{ fontSize:12,fontWeight:600,color:"#25D366",marginBottom:3 }}>{t.whatsappTip}</div>
+                      <div style={{ fontSize:11,color:"#555",lineHeight:1.55 }}>{t.whatsappSub}</div>
+                    </div>
+                    <button onClick={() => setWhatsappDismissed(true)} style={{ background:"none",border:"none",color:"#3A3A3A",fontSize:18,padding:0,flexShrink:0,cursor:"pointer",lineHeight:1 }}>×</button>
+                  </div>
+                )}
                 {!file ? (
                   <div onDrop={onDrop} onDragOver={e => { e.preventDefault(); setDragging(true); }} onDragLeave={() => setDragging(false)} onClick={() => fileRef.current?.click()}
                     style={{ border:`1.5px dashed ${dragging?"rgba(255,59,92,.6)":"rgba(255,255,255,.08)"}`,borderRadius:18,padding:"50px 28px",textAlign:"center",cursor:"pointer",background:dragging?"rgba(255,59,92,.04)":"rgba(255,255,255,.012)",marginBottom:14,transition:"all .2s" }}>
@@ -959,8 +996,8 @@ export default function IsItReel() {
               {/* Accuracy trust signal */}
               <div style={{ display:"flex",alignItems:"center",justifyContent:"center",gap:24,marginTop:32,padding:"20px",background:"rgba(0,255,148,.04)",border:"1px solid rgba(0,255,148,.1)",borderRadius:12 }}>
                 <div style={{ textAlign:"center" }}>
-                  <div style={{ fontSize:28,fontWeight:900,fontFamily:"'Syne',sans-serif",color:"#00FF94" }}>96%</div>
-                  <div style={{ fontSize:10,color:"#444",marginTop:2 }}>{t.accuracySub}</div>
+                  <div style={{ fontSize:16,fontWeight:900,fontFamily:"'Syne',sans-serif",color:"#00FF94",lineHeight:1.2 }}>{t.accuracy}</div>
+                  <div style={{ fontSize:10,color:"#444",marginTop:4,lineHeight:1.4 }}>{t.accuracySub}</div>
                 </div>
                 <div style={{ width:1,height:40,background:"rgba(255,255,255,.06)" }} />
                 <div style={{ textAlign:"center" }}>
