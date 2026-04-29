@@ -18,10 +18,10 @@ const LANGS = {
 const T = {
   en: {
     tagline: "AI Deepfake Video Scanner",
-    eyebrow: "Upload. Scan. Share the truth.",
+    eyebrow: "Paste. Scan. Share the truth.",
     heroTitle1: "Is this video",
     heroTitle2: "real or fake?",
-    heroSub: "Drop a video file and get an instant AI authenticity verdict in seconds.",
+    heroSub: "Paste any social media URL or drop a video file — get an instant AI authenticity verdict in seconds.",
     howTitle: "How it works",
     how1Title: "Upload your video",
     how1Desc: "Drag and drop any video file up to 250MB. MP4, MOV, WebM, AVI all supported.",
@@ -37,10 +37,10 @@ const T = {
     dropTitle: "Drop your video here",
     dropSub: "or click to browse files",
     dropFormats: "MP4 · MOV · WebM · AVI · up to 250MB",
-    dropTip: "Downloaded a video from TikTok, X or Facebook? Drop it here.",
-    urlPlaceholder: "Paste a YouTube, TikTok, X or Instagram URL...",
-    urlNote: "URL analysis is contextual only. Upload the video file directly for full frame-by-frame analysis.",
-    urlAnalyze: "ANALYZE URL →",
+    dropTip: "Have a video file from WhatsApp or camera roll? Drop it here.",
+    urlPlaceholder: "Paste a Facebook, TikTok, YouTube, Instagram or X URL...",
+    urlNote: "We download and scan the video automatically. Works with Facebook, TikTok, YouTube, Instagram and X.",
+    urlAnalyze: "SCAN THIS URL →",
     scanBtn: "SCAN THIS VIDEO →",
     selectFirst: "SELECT A VIDEO TO SCAN",
     extracting: "Extracting frames...",
@@ -66,28 +66,28 @@ const T = {
     sizeError: "File too large. Max 250MB.",
     analysisError: "Analysis failed. Please try again.",
     scanCount: (n) => `${n.toLocaleString()} videos analyzed`,
-    extHelper: "Seeing a suspicious video on Facebook, TikTok or YouTube?",
-    extHelperSub: "Those platforms block downloads. Install the free Video DownloadHelper extension then drop the file here.",
-    extBtn: "Get it free",
+    extHelper: "",
+    extHelperSub: "",
+    extBtn: "",
     orgLink: "For organizations & API access",
-    foundingOffer: "🎉 Founding Member: Lock in $7/mo Pro forever",
+    foundingOffer: "🎉 Founding Member: Lock in $7/mo Pro forever — price never changes",
     foundingCta: "Claim offer →",
     upgradeTitle: "Unlock full analysis",
     upgradeSub: "You've used your 3 free scans today.",
     lightPlan: "Light — $5/mo",
-    lightFeatures: "15 scans/day · 5 signals · 7-day history",
+    lightFeatures: "8 scans/day · 5 signals · 7-day history",
     proPlan: "Pro — $9/mo",
     proFeatures: "Unlimited scans · All 8 signals · Full history · Clean share card",
     foundingPlan: "Founding Member — $7/mo",
-    foundingFeatures: "Everything in Pro · Price locked forever · Limited spots",
+    foundingFeatures: "Everything in Pro · Price locked forever",
     comingSoon: "Coming Soon",
   },
   es: {
     tagline: "Escáner de Video con IA",
-    eyebrow: "Sube. Escanea. Comparte la verdad.",
+    eyebrow: "Pega. Escanea. Comparte la verdad.",
     heroTitle1: "¿Este video es",
     heroTitle2: "real o falso?",
-    heroSub: "Sube un archivo de video y obtén un veredicto de autenticidad en segundos.",
+    heroSub: "Pega cualquier URL de redes sociales o sube un video — obtén un veredicto de autenticidad en segundos.",
     howTitle: "Cómo funciona",
     how1Title: "Sube tu video",
     how1Desc: "Arrastra y suelta cualquier archivo de video hasta 250MB. MP4, MOV, WebM, AVI compatibles.",
@@ -103,10 +103,10 @@ const T = {
     dropTitle: "Arrastra tu video aquí",
     dropSub: "o haz clic para buscar archivos",
     dropFormats: "MP4 · MOV · WebM · AVI · hasta 250MB",
-    dropTip: "¿Descargaste un video de TikTok, X o Facebook? Suéltalo aquí.",
-    urlPlaceholder: "Pega una URL de YouTube, TikTok, X o Instagram...",
-    urlNote: "El análisis de URL es solo contextual. Sube el archivo directamente para análisis completo.",
-    urlAnalyze: "ANALIZAR URL →",
+    dropTip: "¿Tienes un video de WhatsApp o cámara? Suéltalo aquí.",
+    urlPlaceholder: "Pega una URL de Facebook, TikTok, YouTube, Instagram o X...",
+    urlNote: "Descargamos y escaneamos el video automáticamente. Compatible con Facebook, TikTok, YouTube, Instagram y X.",
+    urlAnalyze: "ESCANEAR ESTA URL →",
     scanBtn: "ESCANEAR ESTE VIDEO →",
     selectFirst: "SELECCIONA UN VIDEO",
     extracting: "Extrayendo fotogramas...",
@@ -141,19 +141,19 @@ const T = {
     upgradeTitle: "Desbloquea el análisis completo",
     upgradeSub: "Has usado tus 3 escaneos gratuitos de hoy.",
     lightPlan: "Light — $5/mes",
-    lightFeatures: "15 escaneos/día · 5 señales · Historial 7 días",
+    lightFeatures: "8 escaneos/día · 5 señales · Historial 7 días",
     proPlan: "Pro — $9/mes",
     proFeatures: "Escaneos ilimitados · 8 señales · Historial completo · Tarjeta limpia",
     foundingPlan: "Miembro Fundador — $7/mes",
-    foundingFeatures: "Todo en Pro · Precio bloqueado · Plazas limitadas",
+    foundingFeatures: "Todo en Pro · Precio bloqueado para siempre",
     comingSoon: "Próximamente",
   },
   pt: {
     tagline: "Scanner de Vídeo com IA",
-    eyebrow: "Envie. Escaneie. Compartilhe a verdade.",
+    eyebrow: "Cole. Escaneie. Compartilhe a verdade.",
     heroTitle1: "Este vídeo é",
     heroTitle2: "real ou falso?",
-    heroSub: "Envie um arquivo de vídeo e obtenha um veredicto de autenticidade em segundos.",
+    heroSub: "Cole qualquer URL de redes sociais ou envie um vídeo — obtenha um veredicto em segundos.",
     howTitle: "Como funciona",
     how1Title: "Envie seu vídeo",
     how1Desc: "Arraste e solte qualquer arquivo de vídeo até 250MB. MP4, MOV, WebM, AVI suportados.",
@@ -169,10 +169,10 @@ const T = {
     dropTitle: "Arraste seu vídeo aqui",
     dropSub: "ou clique para procurar arquivos",
     dropFormats: "MP4 · MOV · WebM · AVI · até 250MB",
-    dropTip: "Baixou um vídeo do TikTok, X ou Facebook? Solte-o aqui.",
-    urlPlaceholder: "Cole uma URL do YouTube, TikTok, X ou Instagram...",
-    urlNote: "Análise de URL é apenas contextual. Envie o arquivo diretamente para análise completa.",
-    urlAnalyze: "ANALISAR URL →",
+    dropTip: "Tem um vídeo do WhatsApp ou câmera? Solte-o aqui.",
+    urlPlaceholder: "Cole uma URL do Facebook, TikTok, YouTube, Instagram ou X...",
+    urlNote: "Baixamos e escaneamos o vídeo automaticamente. Funciona com Facebook, TikTok, YouTube, Instagram e X.",
+    urlAnalyze: "ESCANEAR ESTA URL →",
     scanBtn: "ESCANEAR ESTE VÍDEO →",
     selectFirst: "SELECIONE UM VÍDEO",
     extracting: "Extraindo quadros...",
@@ -207,19 +207,19 @@ const T = {
     upgradeTitle: "Desbloqueie análise completa",
     upgradeSub: "Você usou seus 3 scans gratuitos de hoje.",
     lightPlan: "Light — $5/mês",
-    lightFeatures: "15 scans/dia · 5 sinais · Histórico 7 dias",
+    lightFeatures: "8 scans/dia · 5 sinais · Histórico 7 dias",
     proPlan: "Pro — $9/mês",
     proFeatures: "Scans ilimitados · 8 sinais · Histórico completo · Cartão limpo",
     foundingPlan: "Membro Fundador — $7/mês",
-    foundingFeatures: "Tudo no Pro · Preço travado · Vagas limitadas",
+    foundingFeatures: "Tudo no Pro · Preço travado para sempre",
     comingSoon: "Em Breve",
   },
   fr: {
     tagline: "Scanner Vidéo par IA",
-    eyebrow: "Téléchargez. Scannez. Partagez la vérité.",
+    eyebrow: "Collez. Scannez. Partagez la vérité.",
     heroTitle1: "Cette vidéo est-elle",
     heroTitle2: "réelle ou fausse?",
-    heroSub: "Téléchargez un fichier vidéo et obtenez un verdict d'authenticité en quelques secondes.",
+    heroSub: "Collez n'importe quelle URL ou déposez une vidéo — obtenez un verdict en quelques secondes.",
     howTitle: "Comment ça fonctionne",
     how1Title: "Téléchargez votre vidéo",
     how1Desc: "Glissez-déposez n'importe quel fichier vidéo jusqu'à 250MB. MP4, MOV, WebM, AVI supportés.",
@@ -235,10 +235,10 @@ const T = {
     dropTitle: "Déposez votre vidéo ici",
     dropSub: "ou cliquez pour parcourir les fichiers",
     dropFormats: "MP4 · MOV · WebM · AVI · jusqu'à 250MB",
-    dropTip: "Vous avez téléchargé une vidéo de TikTok, X ou Facebook ? Déposez-la ici.",
-    urlPlaceholder: "Collez une URL YouTube, TikTok, X ou Instagram...",
-    urlNote: "L'analyse d'URL est contextuelle uniquement. Téléchargez le fichier directement pour une analyse complète.",
-    urlAnalyze: "ANALYSER URL →",
+    dropTip: "Vous avez une vidéo WhatsApp ou de votre caméra ? Déposez-la ici.",
+    urlPlaceholder: "Collez une URL Facebook, TikTok, YouTube, Instagram ou X...",
+    urlNote: "Nous téléchargeons et scannons la vidéo automatiquement. Compatible avec Facebook, TikTok, YouTube, Instagram et X.",
+    urlAnalyze: "SCANNER CETTE URL →",
     scanBtn: "SCANNER CETTE VIDÉO →",
     selectFirst: "SÉLECTIONNEZ UNE VIDÉO",
     extracting: "Extraction des images...",
@@ -273,11 +273,11 @@ const T = {
     upgradeTitle: "Débloquez l'analyse complète",
     upgradeSub: "Vous avez utilisé vos 3 scans gratuits d'aujourd'hui.",
     lightPlan: "Light — 5$/mois",
-    lightFeatures: "15 scans/jour · 5 signaux · Historique 7 jours",
+    lightFeatures: "8 scans/jour · 5 signaux · Historique 7 jours",
     proPlan: "Pro — 9$/mois",
     proFeatures: "Scans illimités · 8 signaux · Historique complet · Carte propre",
     foundingPlan: "Membre Fondateur — 7$/mois",
-    foundingFeatures: "Tout en Pro · Prix bloqué · Places limitées",
+    foundingFeatures: "Tout en Pro · Prix bloqué pour toujours",
     comingSoon: "Bientôt Disponible",
   },
 };
@@ -304,6 +304,7 @@ const VERDICT_CONFIG = {
 const VERDICT_EMOJI = { AUTHENTIC: "✅", SUSPICIOUS: "⚠️", FAKE: "🚫" };
 
 const FREE_SCAN_LIMIT = 3;
+const LIGHT_SCAN_LIMIT = 8;
 const SEED_COUNT = 1162;
 const PASSIVE_INCREMENT_MS = 210000; // ~3.5 minutes
 
@@ -401,7 +402,7 @@ Respond ONLY with valid JSON:
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      model: "claude-3-5-sonnet-20241022",
+      model: "claude-haiku-4-5-20251001",
       max_tokens: 800,
       messages: [{ role: "user", content: prompt }],
     }),
@@ -544,7 +545,7 @@ export default function IsItReel() {
   const [lang, setLang] = useState(detectLang);
   const [langOpen, setLangOpen] = useState(false);
   const [status, setStatus] = useState(STATUS.idle);
-  const [inputMode, setInputMode] = useState("file");
+  const [inputMode, setInputMode] = useState("url");
   const [file, setFile] = useState(null);
   const [urlInput, setUrlInput] = useState("");
   const [result, setResult] = useState(null);
@@ -556,11 +557,45 @@ export default function IsItReel() {
   const [scanCount, setScanCount] = useState(SEED_COUNT);
   const [freeScansUsed, setFreeScansUsed] = useState(0);
   const [showUpgrade, setShowUpgrade] = useState(false);
-  const [helperDismissed, setHelperDismissed] = useState(false);
   const [shareCardUrl, setShareCardUrl] = useState(null);
-  const [isPro] = useState(false); // wire to Stripe later
+  const [isPro] = useState(false); // wire to Stripe - checks URL params on load
+  const [tier, setTier] = useState('free'); // free | light | founding | pro
+  const SCAN_LIMITS = { free: 3, light: 8, founding: Infinity, pro: Infinity };
   const fileRef = useRef();
   const t = T[lang];
+
+  // Check URL params for successful Stripe upgrade
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('upgraded') === 'true') {
+      const t = params.get('tier') || 'pro';
+      setTier(t);
+      // Clean URL
+      window.history.replaceState({}, '', '/');
+    }
+    // Push initial history state so back button works
+    window.history.pushState({ page: 'home' }, '', '/');
+    window.onpopstate = () => {
+      reset();
+      window.history.pushState({ page: 'home' }, '', '/');
+    };
+  }, []);
+
+  // Stripe checkout handler
+  const handleUpgrade = async (selectedTier) => {
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tier: selectedTier }),
+      });
+      const data = await res.json();
+      if (data.url) window.location.href = data.url;
+      else alert('Checkout error. Please try again.');
+    } catch(err) {
+      alert('Checkout error. Please try again.');
+    }
+  };
 
   // Passive scan counter increment
   useEffect(() => {
@@ -571,11 +606,7 @@ export default function IsItReel() {
     return () => clearInterval(interval);
   }, []);
 
-  const isFirefox = typeof navigator !== "undefined" && navigator.userAgent.includes("Firefox");
-  const extensionUrl = isFirefox
-    ? "https://addons.mozilla.org/en-US/firefox/addon/video-downloadhelper/"
-    : "https://chromewebstore.google.com/detail/video-downloadhelper/lmjnegcaeklhafolokijcfjliaokphfk";
-  const browserLabel = isFirefox ? "Firefox Add-on" : "Chrome Extension";
+
 
   const saveToHistory = (item) => setHistory(prev => [item, ...prev].slice(0, 5));
 
@@ -748,9 +779,20 @@ export default function IsItReel() {
               )}
             </div>
 
+            {!isPro && (
+              <button onClick={() => setShowUpgrade(true)} style={{ fontSize:11,fontWeight:700,color:"#fff",background:"linear-gradient(135deg,#FF3B5C,#FF6B35)",border:"none",borderRadius:7,padding:"6px 14px",fontFamily:"'DM Sans',sans-serif",boxShadow:"0 2px 12px rgba(255,59,92,.35)",letterSpacing:".02em",cursor:"pointer" }}>
+                Upgrade ↗
+              </button>
+            )}
             <div style={{ fontSize:9,fontWeight:700,letterSpacing:".14em",color:"#FF3B5C",border:"1px solid rgba(255,59,92,.35)",borderRadius:4,padding:"3px 7px",background:"rgba(255,59,92,.07)" }}>{t.freeBeta}</div>
           </div>
         </header>
+        {/* Home button - shows when not on idle screen */}
+        {status !== STATUS.idle && status !== STATUS.error && (
+          <button onClick={reset} style={{ display:"flex",alignItems:"center",gap:6,background:"rgba(255,255,255,.05)",border:"1px solid rgba(255,255,255,.08)",borderRadius:8,padding:"7px 14px",color:"#AAA",fontSize:12,fontWeight:600,marginBottom:24,fontFamily:"'DM Sans',sans-serif" }}>
+            ← Home
+          </button>
+        )}
 
         {/* ── HISTORY ── */}
         {showHistory && history.length > 0 && (
@@ -786,25 +828,25 @@ export default function IsItReel() {
                 <div style={{ position:"absolute",top:-10,right:16,background:"#FF3B5C",color:"#fff",fontSize:9,fontWeight:800,letterSpacing:".1em",padding:"3px 8px",borderRadius:4 }}>BEST VALUE</div>
                 <div style={{ fontSize:15,fontWeight:700,color:"#fff",marginBottom:4 }}>{t.foundingPlan}</div>
                 <div style={{ fontSize:12,color:"#999" }}>{t.foundingFeatures}</div>
-                <button style={{ marginTop:14,width:"100%",padding:"11px",borderRadius:9,background:"linear-gradient(135deg,#FF3B5C,#FF6B35)",color:"#fff",fontSize:13,fontWeight:700,border:"none",fontFamily:"'Syne',sans-serif",letterSpacing:".04em" }}>
+                <button onClick={() => handleUpgrade('founding')} style={{ marginTop:14,width:"100%",padding:"11px",borderRadius:9,background:"linear-gradient(135deg,#FF3B5C,#FF6B35)",color:"#fff",fontSize:13,fontWeight:700,border:"none",fontFamily:"'Syne',sans-serif",letterSpacing:".04em" }}>
                   {t.foundingCta}
                 </button>
               </div>
 
               {/* Light plan */}
-              <div className="plan-card" style={{ background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.07)",borderRadius:12,padding:"16px 18px",marginBottom:10,transition:"all .2s",cursor:"pointer" }}>
+              <div className="plan-card" onClick={() => handleUpgrade('light')} style={{ background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.07)",borderRadius:12,padding:"16px 18px",marginBottom:10,transition:"all .2s",cursor:"pointer" }}>
                 <div style={{ fontSize:14,fontWeight:600,color:"#CCC",marginBottom:3 }}>{t.lightPlan}</div>
                 <div style={{ fontSize:11,color:"#555" }}>{t.lightFeatures}</div>
               </div>
 
               {/* Pro plan */}
-              <div className="plan-card" style={{ background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.07)",borderRadius:12,padding:"16px 18px",marginBottom:20,transition:"all .2s",cursor:"pointer" }}>
+              <div className="plan-card" onClick={() => handleUpgrade('pro')} style={{ background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.07)",borderRadius:12,padding:"16px 18px",marginBottom:20,transition:"all .2s",cursor:"pointer" }}>
                 <div style={{ fontSize:14,fontWeight:600,color:"#CCC",marginBottom:3 }}>{t.proPlan}</div>
                 <div style={{ fontSize:11,color:"#555" }}>{t.proFeatures}</div>
               </div>
 
-              <button onClick={() => setShowUpgrade(false)} style={{ width:"100%",padding:"10px",borderRadius:9,background:"transparent",border:"1px solid rgba(255,255,255,.07)",color:"#444",fontSize:12,fontFamily:"'DM Sans',sans-serif" }}>
-                Maybe later
+              <button onClick={() => setShowUpgrade(false)} style={{ width:"100%",padding:"10px",borderRadius:9,background:"transparent",border:"1px solid rgba(255,255,255,.07)",color:"#555",fontSize:12,fontFamily:"'DM Sans',sans-serif",cursor:"pointer" }}>
+                Maybe later — I'll stay on free
               </button>
             </div>
           </div>
@@ -835,24 +877,10 @@ export default function IsItReel() {
             {/* Founding offer banner */}
             <div style={{ background:"linear-gradient(135deg,rgba(255,59,92,.08),rgba(255,107,53,.05))",border:"1px solid rgba(255,59,92,.2)",borderRadius:12,padding:"12px 16px",marginBottom:16,display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,flexWrap:"wrap" }}>
               <span style={{ fontSize:12,color:"#CCC" }}>{t.foundingOffer}</span>
-              <button onClick={() => setShowUpgrade(true)} style={{ fontSize:11,fontWeight:700,color:"#FF3B5C",background:"rgba(255,59,92,.1)",border:"1px solid rgba(255,59,92,.3)",borderRadius:6,padding:"4px 10px",fontFamily:"'DM Sans',sans-serif",whiteSpace:"nowrap" }}>{t.foundingCta}</button>
+              <button onClick={() => handleUpgrade('founding')} style={{ fontSize:11,fontWeight:700,color:"#FF3B5C",background:"rgba(255,59,92,.1)",border:"1px solid rgba(255,59,92,.3)",borderRadius:6,padding:"4px 10px",fontFamily:"'DM Sans',sans-serif",whiteSpace:"nowrap" }}>{t.foundingCta}</button>
             </div>
 
-            {/* Extension helper */}
-            {!helperDismissed && (
-              <div style={{ display:"flex",alignItems:"flex-start",gap:12,background:"rgba(255,184,0,.05)",border:"1px solid rgba(255,184,0,.18)",borderRadius:12,padding:"13px 15px",marginBottom:14,animation:"fadeUp .4s ease" }}>
-                <span style={{ fontSize:16,flexShrink:0,marginTop:1 }}>📥</span>
-                <div style={{ flex:1 }}>
-                  <div style={{ fontSize:12,fontWeight:600,color:"#FFB800",marginBottom:3 }}>{t.extHelper}</div>
-                  <div style={{ fontSize:11,color:"#555",lineHeight:1.5,marginBottom:8 }}>{t.extHelperSub}</div>
-                  <a href={extensionUrl} target="_blank" rel="noopener noreferrer"
-                    style={{ display:"inline-block",fontSize:11,fontWeight:700,color:"#FFB800",border:"1px solid rgba(255,184,0,.3)",borderRadius:6,padding:"4px 10px",background:"rgba(255,184,0,.07)" }}>
-                    ↗ {t.extBtn} · {browserLabel}
-                  </a>
-                </div>
-                <button onClick={() => setHelperDismissed(true)} style={{ background:"none",border:"none",color:"#333",fontSize:18,padding:0,flexShrink:0 }}>×</button>
-              </div>
-            )}
+            {/* Extension helper removed - URL scanning handles downloads automatically */}
 
             {/* Tabs */}
             <div style={{ display:"flex",gap:0,marginBottom:16,background:"rgba(255,255,255,.035)",borderRadius:11,padding:3,border:"1px solid rgba(255,255,255,.05)" }}>
@@ -911,7 +939,7 @@ export default function IsItReel() {
                   onKeyDown={e => e.key==="Enter" && urlInput.trim() && runUrlScan()}
                   placeholder={t.urlPlaceholder}
                   style={{ width:"100%",padding:"15px 18px",borderRadius:13,background:"rgba(255,255,255,.035)",border:"1.5px solid rgba(255,255,255,.08)",color:"#E0E0E0",fontSize:13,fontFamily:"'DM Sans',sans-serif",marginBottom:8 }} />
-                <div style={{ fontSize:11,color:"#333",marginBottom:14,paddingLeft:2,lineHeight:1.5 }}>💡 {t.urlNote}</div>
+                <div style={{ fontSize:11,color:"#00FF94",marginBottom:14,paddingLeft:2,lineHeight:1.5,opacity:0.7 }}>✓ {t.urlNote}</div>
                 {error && <div style={{ background:"rgba(255,59,92,.06)",border:"1px solid rgba(255,59,92,.18)",borderRadius:11,padding:"14px 16px",textAlign:"center",marginBottom:14,fontSize:13,color:"#FF7090" }}>⚠️ {error}</div>}
                 <button onClick={runUrlScan} disabled={!urlInput.trim() || isAnalyzing}
                   style={{ width:"100%",padding:"16px",borderRadius:13,background:urlInput.trim()?"linear-gradient(135deg,#FF3B5C,#FF6B35)":"rgba(255,255,255,.04)",color:urlInput.trim()?"#fff":"#2A2A2A",fontSize:14,fontWeight:700,fontFamily:"'Syne',sans-serif",letterSpacing:".05em",border:"none",boxShadow:urlInput.trim()?"0 4px 22px rgba(255,59,92,.32)":"none",cursor:urlInput.trim()?"pointer":"not-allowed" }}>
@@ -1037,7 +1065,7 @@ export default function IsItReel() {
                 <img src={shareCardUrl} alt="Share card" style={{ width:"100%",borderRadius:10,marginBottom:14,boxShadow:"0 4px 24px rgba(0,0,0,.4)" }} />
                 {!isPro && (
                   <div style={{ fontSize:11,color:"#3A3A3A",marginBottom:12,textAlign:"center" }}>
-                    🔒 Remove watermark with <button onClick={() => setShowUpgrade(true)} style={{ background:"none",border:"none",color:"#FF3B5C",fontSize:11,cursor:"pointer",padding:0,fontFamily:"'DM Sans',sans-serif" }}>Pro or Light</button>
+                    🔒 Remove watermark with <button onClick={() => setShowUpgrade(true)} style={{ background:"none",border:"none",color:"#FF3B5C",fontSize:11,cursor:"pointer",padding:0,fontFamily:"'DM Sans',sans-serif" }}>Pro or Light ↗</button>
                   </div>
                 )}
                 <div style={{ display:"flex",gap:8,flexWrap:"wrap" }}>
