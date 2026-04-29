@@ -13,8 +13,44 @@ const STRIPE_PRICES = {
   pro: 'price_1TRYp4DhFdEbgvvO8u5awui6',
 };
 
+const RAILWAY_URL = 'https://isitreeel-ytdlp-production.up.railway.app';
+
 app.use(express.json({ limit: '50mb' }));
 app.use(express.static(path.join(__dirname, 'dist')));
+
+// ── RAILWAY URL EXTRACTION ──────────────────────────────────────────────────
+app.post('/api/extract-url', function(req, res) {
+  var url = req.body.url;
+  if (!url) return res.status(400).json({ error: 'URL required' });
+
+  var body = JSON.stringify({ url: url });
+
+  var options = {
+    hostname: 'isitreeel-ytdlp-production.up.railway.app',
+    port: 443,
+    path: '/extract',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Content-Length': Buffer.byteLength(body),
+    },
+  };
+
+  var https = require('https');
+  var proxyReq = https.request(options, function(proxyRes) {
+    var data = '';
+    proxyRes.on('data', function(chunk) { data += chunk; });
+    proxyRes.on('end', function() {
+      try { res.status(proxyRes.statusCode).json(JSON.parse(data)); }
+      catch(e) { res.status(500).json({ error: 'Failed to parse response' }); }
+    });
+  });
+  proxyReq.on('error', function(err) {
+    res.status(500).json({ error: 'Video download failed: ' + err.message });
+  });
+  proxyReq.write(body);
+  proxyReq.end();
+});
 
 // ── ANTHROPIC PROXY ──────────────────────────────────────────────────────────
 app.post('/api/analyze', function(req, res) {
@@ -159,3 +195,4 @@ app.get('*', function(req, res) {
 app.listen(PORT, function() {
   console.log('IsItReel running on port ' + PORT);
 });
+
