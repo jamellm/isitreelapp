@@ -380,38 +380,25 @@ Respond ONLY with valid JSON (no markdown):
 }
 
 async function analyzeUrl(url, lang = "en") {
-  const langMap = { en: "English", es: "Spanish", pt: "Portuguese", fr: "French" };
-  const prompt = `You are a deepfake expert. A user submitted this URL: ${url}. You cannot access the video directly. Provide honest contextual assessment in ${langMap[lang] || "English"}.
-
-Respond ONLY with valid JSON:
-{
-  "verdict": "SUSPICIOUS",
-  "confidence": 45,
-  "summary": "<2-3 sentences explaining this is URL-only, not frame analysis. In ${langMap[lang] || "English"}.>",
-  "whyFake": "<Honest explanation that direct frame analysis wasn't possible. Strongly recommend downloading and uploading the file. In ${langMap[lang] || "English"}.>",
-  "signals": [
-    { "label": "Direct frame analysis", "score": 0, "note": "Upload file for accurate results" },
-    { "label": "Platform context", "score": 5, "note": "URL-level assessment only" },
-    { "label": "Video accessibility", "score": 2, "note": "Cannot reach video frames" },
-    { "label": "Source reputation", "score": 5, "note": "Platform assessed" }
-  ],
-  "shareText": "<honest URL-only scan note max 140 chars in ${langMap[lang] || "English"}>"
-}`;
-
-  const response = await fetch("/api/analyze", {
+  // Step 1: Download video and extract frames via Railway yt-dlp service
+  const extractRes = await fetch("/api/extract-url", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: "claude-haiku-4-5-20251001",
-      max_tokens: 800,
-      messages: [{ role: "user", content: prompt }],
-    }),
+    body: JSON.stringify({ url }),
   });
-  if (!response.ok) throw new Error(`API error: ${response.status}`);
-  const data = await response.json();
-  const text = data.content.map((b) => b.text || "").join("");
-  return JSON.parse(text.replace(/```json|```/g, "").trim());
+
+  if (!extractRes.ok) {
+    const err = await extractRes.json().catch(() => ({}));
+    throw new Error(err.error || "Failed to download video. Try uploading the file directly.");
+  }
+
+  const { frames, title } = await extractRes.json();
+  if (!frames || frames.length === 0) throw new Error("No frames could be extracted from this video.");
+
+  // Step 2: Analyze the real frames with Claude
+  return analyzeFrames(frames, title || url, lang);
 }
+
 
 // ─── VISUAL SHARE CARD GENERATOR ──────────────────────────────────────────────
 function generateShareCard(verdict, confidence, shareText, isPro = false) {
