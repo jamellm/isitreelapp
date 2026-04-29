@@ -363,7 +363,7 @@ Respond ONLY with valid JSON (no markdown):
   "shareText": "<punchy verdict max 140 chars no hashtags in ${langMap[lang] || "English"}>"
 }`;
 
-  const response = await fetch("https://api.anthropic.com/v1/messages", {
+  const response = await fetch("/api/analyze", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -397,7 +397,7 @@ Respond ONLY with valid JSON:
   "shareText": "<honest URL-only scan note max 140 chars in ${langMap[lang] || "English"}>"
 }`;
 
-  const response = await fetch("https://api.anthropic.com/v1/messages", {
+  const response = await fetch("/api/analyze", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
