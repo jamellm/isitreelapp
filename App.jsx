@@ -1056,8 +1056,20 @@ function IsItReel() {
       }
     };
 
-    // Check for successful Stripe redirect
+    // Check for extension scan parameter — auto-populate URL and scan
     const params = new URLSearchParams(window.location.search);
+    const scanParam = params.get('scan');
+    if (scanParam) {
+      setInputMode('url');
+      setUrlInput(decodeURIComponent(scanParam));
+      window.history.replaceState({}, '', '/');
+      // Auto-trigger scan after short delay to let state settle
+      setTimeout(() => {
+        document.getElementById('isitreeel-scan-btn')?.click();
+      }, 500);
+    }
+
+    // Check for successful Stripe redirect
     if (params.get('upgraded') === 'true') {
       const sessionId = params.get('session_id');
       if (sessionId) {
