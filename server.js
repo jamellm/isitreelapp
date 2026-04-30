@@ -397,6 +397,14 @@ app.get('/api/health', function(req, res) {
 });
 
 // ── CLIENT ROUTING ───────────────────────────────────────────────────────────
+app.get('/privacy', function(req, res) {
+  res.sendFile(path.join(__dirname, 'public', 'privacy.html'));
+});
+
+app.get('/terms', function(req, res) {
+  res.sendFile(path.join(__dirname, 'public', 'terms.html'));
+});
+
 app.get('*', function(req, res) {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
