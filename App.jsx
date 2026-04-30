@@ -1008,6 +1008,17 @@ function IsItReel() {
         .tab-btn:hover{color:#DDD!important}
         .how-card:hover{transform:translateY(-3px);border-color:rgba(255,59,92,.25)!important}
         .plan-card:hover{border-color:rgba(255,59,92,.4)!important;transform:translateY(-2px)}
+        @media(max-width:600px){
+          .stats-grid{grid-template-columns:repeat(2,1fr)!important}
+          .how-grid{grid-template-columns:1fr!important}
+          .share-btns{flex-direction:column!important}
+          .signal-row{flex-wrap:wrap!important}
+          .signal-note{display:none!important}
+          .header-right{gap:6px!important}
+          .upgrade-modal{padding:24px 18px!important}
+          .hero-title{font-size:clamp(28px,8vw,44px)!important}
+          .founding-banner{flex-direction:column!important;align-items:flex-start!important}
+        }
       `}</style>
 
       {/* Ambient */}
@@ -1015,7 +1026,7 @@ function IsItReel() {
         backgroundImage:`radial-gradient(ellipse 80% 45% at 50% -8%,rgba(255,59,92,.12) 0%,transparent 65%),
           radial-gradient(ellipse 50% 30% at 90% 90%,rgba(0,255,148,.05) 0%,transparent 55%)` }} />
 
-      <div style={{ position:"relative",zIndex:1,maxWidth:780,margin:"0 auto",padding:"0 20px 120px" }}>
+      <div style={{ position:"relative",zIndex:1,maxWidth:780,margin:"0 auto",padding:"0 16px 100px" }}>
 
         {/* ── HEADER ── */}
         <header style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"26px 0 38px",borderBottom:"1px solid rgba(255,255,255,.05)",marginBottom:42 }}>
@@ -1027,7 +1038,7 @@ function IsItReel() {
             </div>
           </div>
 
-          <div style={{ display:"flex",alignItems:"center",gap:8,flexWrap:"wrap",justifyContent:"flex-end" }}>
+          <div className="header-right" style={{ display:"flex",alignItems:"center",gap:8,flexWrap:"wrap",justifyContent:"flex-end" }}>
             {/* Scan counter */}
             <div style={{ fontSize:11,color:"#555",display:"flex",alignItems:"center",gap:5 }}>
               <div style={{ width:5,height:5,borderRadius:"50%",background:"#00FF94",boxShadow:"0 0 6px #00FF94",animation:"pulse 2s ease infinite" }} />
@@ -1122,7 +1133,7 @@ function IsItReel() {
         {/* ── UPGRADE MODAL ── */}
         {showUpgrade && (
           <div style={{ position:"fixed",inset:0,background:"rgba(0,0,0,.85)",zIndex:1000,display:"flex",alignItems:"center",justifyContent:"center",padding:20 }} onClick={() => setShowUpgrade(false)}>
-            <div style={{ background:"#0F0F13",border:"1px solid rgba(255,59,92,.3)",borderRadius:20,padding:"36px 28px",maxWidth:480,width:"100%",boxShadow:"0 0 60px rgba(255,59,92,.15)" }} onClick={e => e.stopPropagation()}>
+            <div className="upgrade-modal" style={{ background:"#0F0F13",border:"1px solid rgba(255,59,92,.3)",borderRadius:20,padding:"36px 28px",maxWidth:480,width:"100%",boxShadow:"0 0 60px rgba(255,59,92,.15)" }} onClick={e => e.stopPropagation()}>
               <div style={{ fontSize:24,fontWeight:800,fontFamily:"'Syne',sans-serif",color:"#fff",marginBottom:8 }}>{t.upgradeTitle}</div>
               <div style={{ fontSize:13,color:"#666",marginBottom:28 }}>{t.upgradeSub}</div>
 
@@ -1166,7 +1177,7 @@ function IsItReel() {
             </div>
 
             <div style={{ fontSize:11,color:"#888",letterSpacing:".1em",marginBottom:12,textTransform:"uppercase" }}>{t.eyebrow}</div>
-            <h1 style={{ fontSize:clamp(36,54),fontWeight:800,fontFamily:"'Syne',sans-serif",lineHeight:1.1,letterSpacing:"-1.5px",marginBottom:14,color:"#fff" }}>
+            <h1 className="hero-title" style={{ fontSize:clamp(36,54),fontWeight:800,fontFamily:"'Syne',sans-serif",lineHeight:1.1,letterSpacing:"-1.5px",marginBottom:14,color:"#fff" }}>
               {t.heroTitle1}<br />
               <span style={{ background:"linear-gradient(90deg,#FF3B5C,#FF6B35)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent" }}>{t.heroTitle2}</span>
             </h1>
@@ -1178,7 +1189,7 @@ function IsItReel() {
         {(status === STATUS.idle || status === STATUS.error) && (
           <>
             {/* Founding offer banner */}
-            <div style={{ background:"linear-gradient(135deg,rgba(255,59,92,.08),rgba(255,107,53,.05))",border:"1px solid rgba(255,59,92,.2)",borderRadius:12,padding:"12px 16px",marginBottom:16,display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,flexWrap:"wrap" }}>
+            <div className="founding-banner" style={{ background:"linear-gradient(135deg,rgba(255,59,92,.08),rgba(255,107,53,.05))",border:"1px solid rgba(255,59,92,.2)",borderRadius:12,padding:"12px 16px",marginBottom:16,display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,flexWrap:"wrap" }}>
               <span style={{ fontSize:12,color:"#CCC" }}>{t.foundingOffer}</span>
               <button onClick={() => handleUpgrade('founding')} style={{ fontSize:11,fontWeight:700,color:"#FF3B5C",background:"rgba(255,59,92,.1)",border:"1px solid rgba(255,59,92,.3)",borderRadius:6,padding:"4px 10px",fontFamily:"'DM Sans',sans-serif",whiteSpace:"nowrap" }}>{t.foundingCta}</button>
             </div>
@@ -1269,7 +1280,7 @@ function IsItReel() {
                 <div style={{ fontSize:22,fontWeight:800,fontFamily:"'Syne',sans-serif",color:"#fff",marginBottom:8 }}>You probably can't tell. Neither can most people.</div>
                 <div style={{ fontSize:13,color:"#555",maxWidth:480,margin:"0 auto" }}>The numbers explain why IsItReel exists.</div>
               </div>
-              <div style={{ display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:12,marginBottom:12 }}>
+              <div className="stats-grid" style={{ display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:12,marginBottom:12 }}>
                 {[
                   { stat:"24.5%", label:"Human accuracy detecting deepfake video", sub:"You're essentially guessing", color:"#FF3B5C" },
                   { stat:"8M+", label:"Deepfake videos circulating in 2025", sub:"Up from 500K in 2023 — 16x growth", color:"#FFB800" },
@@ -1295,7 +1306,7 @@ function IsItReel() {
                 <div style={{ fontSize:10,fontWeight:700,letterSpacing:".14em",color:"#FF3B5C",textTransform:"uppercase",marginBottom:10 }}>Simple & transparent</div>
                 <div style={{ fontSize:24,fontWeight:800,fontFamily:"'Syne',sans-serif",color:"#fff" }}>{t.howTitle}</div>
               </div>
-              <div style={{ display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:14 }}>
+              <div className="how-grid" style={{ display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:14 }}>
                 {[
                   { num:"01", title:t.how1Title, desc:t.how1Desc, icon:"📁" },
                   { num:"02", title:t.how2Title, desc:t.how2Desc, icon:"🔬" },
@@ -1386,13 +1397,13 @@ function IsItReel() {
                   const bc = sig.score>6?"#FF3B5C":sig.score>3?"#FFB800":"#00FF94";
                   const pct = `${(sig.score/10)*100}%`;
                   return (
-                    <div key={i} style={{ display:"flex",alignItems:"center",gap:8,marginBottom:i<result.signals.length-1?12:0 }}>
+                    <div key={i} className="signal-row" style={{ display:"flex",alignItems:"center",gap:8,marginBottom:i<result.signals.length-1?12:0 }}>
                       <div style={{ fontSize:11,color:"#777",width:190,flexShrink:0,lineHeight:1.3 }}>{sig.label}</div>
                       <div style={{ flex:1,height:4,background:"rgba(255,255,255,.05)",borderRadius:99,overflow:"hidden" }}>
                         <div style={{ "--w":pct,height:"100%",width:pct,background:bc,borderRadius:99,animation:"barIn .9s ease forwards" }} />
                       </div>
                       <div style={{ fontSize:10,color:"#3A3A3A",width:26,textAlign:"right",flexShrink:0 }}>{sig.score}/10</div>
-                      <div style={{ fontSize:10,color:"#404040",width:100,textAlign:"right",flexShrink:0,lineHeight:1.3 }}>{sig.note}</div>
+                      <div className="signal-note" style={{ fontSize:10,color:"#404040",width:100,textAlign:"right",flexShrink:0,lineHeight:1.3 }}>{sig.note}</div>
                     </div>
                   );
                 })}
@@ -1409,7 +1420,7 @@ function IsItReel() {
                     🔒 Remove watermark with <button onClick={() => setShowUpgrade(true)} style={{ background:"none",border:"none",color:"#FF3B5C",fontSize:11,cursor:"pointer",padding:0,fontFamily:"'DM Sans',sans-serif" }}>Pro or Light ↗</button>
                   </div>
                 )}
-                <div style={{ display:"flex",gap:8,flexWrap:"wrap" }}>
+                <div className="share-btns" style={{ display:"flex",gap:8,flexWrap:"wrap" }}>
                   <button onClick={downloadCard} style={{ flex:1,padding:"10px 12px",borderRadius:9,background:"rgba(255,255,255,.04)",color:"#BBB",fontSize:12,fontWeight:600,border:"1px solid rgba(255,255,255,.06)",fontFamily:"'DM Sans',sans-serif",minWidth:120 }}>
                     ⬇ Download Card
                   </button>
@@ -1430,17 +1441,18 @@ function IsItReel() {
         )}
 
         {/* ── FOOTER ── */}
-        <div style={{ textAlign:"center",marginTop:72,paddingTop:28,borderTop:"1px solid rgba(255,255,255,.04)",fontSize:11,color:"#222" }}>
-          <div style={{ marginBottom:8 }}>
-            <span style={{ color:"#FF3B5C" }}>IsItReel</span> · isitreelapp.com · AI deepfake detection for the social media era
+        <div style={{ textAlign:"center",marginTop:72,paddingTop:28,borderTop:"1px solid rgba(255,255,255,.08)",fontSize:11,color:"#555" }}>
+          <div style={{ marginBottom:10 }}>
+            <span style={{ color:"#FF3B5C",fontWeight:700 }}>IsItReel</span>
+            <span style={{ color:"#444" }}> · isitreelapp.com · AI deepfake detection for the social media era</span>
           </div>
-          <a href="mailto:hello@isitreelapp.com" style={{ fontSize:10,color:"#2A2A2A",display:"block",marginBottom:6 }}>{t.orgLink} → hello@isitreelapp.com</a>
-          <div style={{ fontSize:10,color:"#282828",marginBottom:4 }}>
-            <a href="/privacy" style={{ color:"#282828",textDecoration:"none" }}>Privacy Policy</a>
-            {" · "}
-            <a href="/terms" style={{ color:"#282828",textDecoration:"none" }}>Terms of Service</a>
+          <a href="mailto:hello@isitreelapp.com" style={{ fontSize:11,color:"#666",display:"block",marginBottom:10 }}>{t.orgLink} → hello@isitreelapp.com</a>
+          <div style={{ fontSize:11,color:"#555",marginBottom:8,display:"flex",alignItems:"center",justifyContent:"center",gap:12 }}>
+            <a href="/privacy" style={{ color:"#666",textDecoration:"none" }} onMouseOver={e=>e.target.style.color="#FF3B5C"} onMouseOut={e=>e.target.style.color="#666"}>Privacy Policy</a>
+            <span style={{ color:"#333" }}>·</span>
+            <a href="/terms" style={{ color:"#666",textDecoration:"none" }} onMouseOver={e=>e.target.style.color="#FF3B5C"} onMouseOut={e=>e.target.style.color="#666"}>Terms of Service</a>
           </div>
-          <div style={{ fontSize:9,color:"#1A1A1A",marginTop:4 }}>4 languages · Free to start · Updated for Veo 3</div>
+          <div style={{ fontSize:10,color:"#444",marginTop:4 }}>4 languages · Free to start · Detection updated for Veo 3</div>
         </div>
       </div>
     </div>
