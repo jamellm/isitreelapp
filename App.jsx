@@ -572,38 +572,167 @@ function CommandCenter() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [loading, setLoading] = useState(false);
   const [output, setOutput] = useState('');
+  const [outputTab, setOutputTab] = useState('');
+  const [weekInput, setWeekInput] = useState('');
+  const [calendarOutput, setCalendarOutput] = useState('');
+  const [calendarLoading, setCalendarLoading] = useState(false);
+  const [statsOutput, setStatsOutput] = useState('');
+  const [statsLoading, setStatsLoading] = useState(false);
+  const [alertMsg, setAlertMsg] = useState('');
+  const [alertSent, setAlertSent] = useState(false);
 
   const login = () => {
     if (pw === CC_PASSWORD) { setAuthed(true); setPwErr(false); }
     else { setPwErr(true); }
   };
 
-  const runAgent = async (agentType, userInput) => {
-    setLoading(true); setOutput('');
+  const callClaude = async (prompt, maxTokens = 1500) => {
+    const res = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: maxTokens,
+        messages: [{ role: 'user', content: prompt }],
+      }),
+    });
+    const data = await res.json();
+    return data.content?.map(b => b.text || '').join('') || 'No response';
+  };
+
+  const runAgent = async (type, input) => {
+    setLoading(true); setOutput(''); setOutputTab(type);
     const prompts = {
-      xpost: `You are the IsItReel social media agent. Write a compelling X (Twitter) thread (3-5 tweets) about this deepfake/AI video news topic. Make it timely, factual, and end with a CTA to scan suspicious videos at isitreelapp.com. Topic: ${userInput}`,
-      blog: `You are the IsItReel SEO content agent. Write a 600-800 word blog post optimized for search about this topic. Include H2 headings, target keywords around deepfake detection, and naturally mention IsItReel as the tool to verify suspicious videos. Topic: ${userInput}`,
-      detection: `You are the IsItReel detection intelligence agent. Research this new AI video model or deepfake technique and recommend specific updates to IsItReel's detection prompt. What new signals should be added? What patterns does this model leave? Model/technique: ${userInput}`,
-      report: `You are the IsItReel Deepfake Report agent. Based on this scan data summary, write a compelling monthly "State of Deepfakes" report section suitable for journalists and fact-checkers to cite. Data: ${userInput}`,
-      geo: `You are the IsItReel GEO optimization agent. Write 3 optimized answers for AI search engines (Perplexity, ChatGPT Search, Gemini) that would make IsItReel appear when users ask about deepfake detection. The answers should be factual, helpful, and naturally position IsItReel. Query topic: ${userInput}`,
+      xpost: `You are the IsItReel X (Twitter) content agent. Write a compelling X thread (3-5 tweets, numbered) about this deepfake/AI video topic. Be timely, factual, and end with a CTA to scan suspicious videos at isitreelapp.com. Use relevant hashtags. Make it punchy and shareable.
+
+Topic: ${input}`,
+      blog: `You are the IsItReel SEO content agent. Write a 700-900 word blog post optimized for search about this topic. Include:
+- SEO-optimized H1 title
+- Meta description (155 chars)
+- 3-4 H2 sections
+- Natural mentions of IsItReel as the solution
+- Target keywords around deepfake detection
+- Strong CTA at the end
+
+Topic: ${input}`,
+      detection: `You are the IsItReel Detection Intelligence agent. Analyze this new AI video model or deepfake technique and provide:
+1. Key artifacts/tells this model leaves behind
+2. Specific new signals to add to IsItReel's detection prompt
+3. How to differentiate this model's output from authentic video
+4. Recommended prompt update text (ready to copy-paste)
+
+Model/technique: ${input}`,
+      report: `You are the IsItReel Deepfake Report agent. Write a compelling "State of Deepfakes" monthly report section suitable for journalists to cite. Include:
+- Executive summary
+- Key findings with percentages
+- Trend analysis
+- Expert commentary voice
+- Implications for society
+
+Scan data: ${input}`,
+      geo: `You are the IsItReel GEO (Generative Engine Optimization) agent. Write 3 optimized Q&A pairs that would make IsItReel appear when people ask AI search engines (Perplexity, ChatGPT Search, Gemini) about deepfake detection. Each answer should be factual, helpful, 150-200 words, and naturally position IsItReel.
+
+Query topics: ${input}`,
+      whatsapp: `You are the IsItReel WhatsApp content agent. Create 5 short, shareable messages optimized for WhatsApp forwarding about this deepfake topic. Each message should:
+- Be under 200 characters
+- Include the IsItReel link
+- Work in a WhatsApp group context
+- Feel natural, not promotional
+- Available in EN, ES, PT, FR
+
+Topic: ${input}`,
+      journalist: `You are the IsItReel PR agent. Write a compelling journalist outreach email about this deepfake story/topic. Include:
+- Subject line (3 options)
+- Personalized opening
+- The news hook
+- IsItReel's scan result or relevant data
+- Clear ask
+- Keep it under 200 words
+
+Story/topic: ${input}`,
+      viral: `You are the IsItReel Viral Moment Monitor. Analyze this trending deepfake story and create a complete content package:
+1. X thread (3 tweets)
+2. Instagram caption
+3. Facebook post
+4. Blog post title + first paragraph
+5. Journalist email subject line
+6. WhatsApp message (short, shareable)
+All should drive traffic to isitreelapp.com
+
+Story: ${input}`,
     };
     try {
-      const res = await fetch('/api/analyze', {
+      const text = await callClaude(prompts[type], 2000);
+      setOutput(text);
+    } catch(err) { setOutput('Error: ' + err.message); }
+    setLoading(false);
+  };
+
+  const generateCalendar = async () => {
+    setCalendarLoading(true); setCalendarOutput('');
+    const prompt = `You are the IsItReel Content Calendar agent. Generate a complete 7-day content calendar for IsItReel (AI deepfake video detector at isitreelapp.com).
+
+Week focus/news context: ${weekInput || 'General deepfake awareness and IsItReel promotion'}
+
+For each day provide:
+- Platform(s): X, TikTok, Instagram, Facebook
+- Content type: Screen recording scan reveal / Educational / Data stat / News reaction / Tutorial / Community
+- Caption (EN): Ready to post
+- Caption (ES): Spanish translation
+- Caption (PT): Portuguese translation  
+- Caption (FR): French translation
+- Hashtags: Platform-optimized
+- CapCut template suggestion: Which style to use
+- Best posting time: By region
+
+Format each day clearly. Make content feel native to each platform, not cross-posted. Include at least 2 viral moment opportunities and 1 WhatsApp-optimized post.`;
+    try {
+      const text = await callClaude(prompt, 3000);
+      setCalendarOutput(text);
+    } catch(err) { setCalendarOutput('Error: ' + err.message); }
+    setCalendarLoading(false);
+  };
+
+  const checkStats = async () => {
+    setStatsLoading(true); setStatsOutput('');
+    const prompt = `You are the IsItReel Stats Monitor agent. Search your knowledge for the most current deepfake statistics available as of 2025-2026. Provide:
+
+1. CURRENT STATS (with sources):
+- Number of deepfake videos circulating
+- Human detection accuracy rate
+- Financial losses to deepfake fraud
+- % of people who have encountered deepfakes
+- Detection market size and growth
+
+2. STATS THAT MAY HAVE CHANGED:
+- Flag any stats that might be outdated
+- Suggest what to search for to verify current numbers
+
+3. HOMEPAGE COPY UPDATE:
+- Draft updated stat copy for IsItReel's homepage based on latest numbers
+- Keep the same format as current stats section
+
+4. NEW STATS TO ADD:
+- Any new compelling statistics worth adding to the homepage`;
+    try {
+      const text = await callClaude(prompt, 2000);
+      setStatsOutput(text);
+    } catch(err) { setStatsOutput('Error: ' + err.message); }
+    setStatsLoading(false);
+  };
+
+  const sendAlert = async () => {
+    if (!alertMsg.trim()) return;
+    try {
+      await fetch('/api/alert', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-haiku-4-5-20251001',
-          max_tokens: 1500,
-          messages: [{ role: 'user', content: prompts[agentType] }],
-        }),
+        body: JSON.stringify({ message: alertMsg }),
       });
-      const data = await res.json();
-      const text = data.content?.map(b => b.text || '').join('') || 'No response';
-      setOutput(text);
-    } catch(err) {
-      setOutput('Error: ' + err.message);
-    }
-    setLoading(false);
+      setAlertSent(true);
+      setTimeout(() => setAlertSent(false), 3000);
+      setAlertMsg('');
+    } catch(err) { console.log(err); }
   };
 
   if (!authed) return (
@@ -613,7 +742,7 @@ function CommandCenter() {
         <div style={{ fontSize:20, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:6 }}>Command Center</div>
         <div style={{ fontSize:12, color:'#555', marginBottom:28 }}>IsItReel — Internal Dashboard</div>
         <input type="password" value={pw} onChange={e => setPw(e.target.value)} onKeyDown={e => e.key==='Enter' && login()}
-          placeholder="Enter password" style={{ width:'100%', padding:'12px 16px', borderRadius:10, background:'rgba(255,255,255,.06)', border:`1px solid ${pwErr?'rgba(255,59,92,.5)':'rgba(255,255,255,.1)'}`, color:'#E0E0E0', fontSize:14, marginBottom:12, outline:'none', fontFamily:"'DM Sans',sans-serif" }} />
+          placeholder="Enter password" style={{ width:'100%', padding:'12px 16px', borderRadius:10, background:'rgba(255,255,255,.06)', border:`1px solid ${pwErr?'rgba(255,59,92,.5)':'rgba(255,255,255,.1)'}`, color:'#E0E0E0', fontSize:14, marginBottom:12, outline:'none', fontFamily:"'DM Sans',sans-serif", boxSizing:'border-box' }} />
         {pwErr && <div style={{ fontSize:11, color:'#FF3B5C', marginBottom:12 }}>Incorrect password</div>}
         <button onClick={login} style={{ width:'100%', padding:'12px', borderRadius:10, background:'linear-gradient(135deg,#FF3B5C,#FF6B35)', color:'#fff', fontSize:14, fontWeight:700, border:'none', cursor:'pointer', fontFamily:"'Syne',sans-serif" }}>Enter</button>
         <div style={{ marginTop:16 }}><a href="/" style={{ fontSize:11, color:'#444', textDecoration:'none' }}>← Back to IsItReel</a></div>
@@ -625,140 +754,248 @@ function CommandCenter() {
     { id:'dashboard', label:'📊 Dashboard' },
     { id:'xagent', label:'𝕏 X Agent' },
     { id:'blogagent', label:'✍️ Blog Agent' },
+    { id:'viral', label:'🔥 Viral Moment' },
+    { id:'calendar', label:'📅 Content Calendar' },
     { id:'detection', label:'🔬 Detection Intel' },
     { id:'report', label:'📋 Deepfake Report' },
     { id:'geo', label:'🌐 GEO Agent' },
+    { id:'whatsapp', label:'💬 WhatsApp Agent' },
+    { id:'journalist', label:'📰 PR Agent' },
+    { id:'statsmonitor', label:'📈 Stats Monitor' },
+    { id:'alerts', label:'🔔 Alerts' },
   ];
 
-  const AgentPanel = ({ type, placeholder, buttonLabel }) => {
+  const AgentPanel = ({ type, placeholder, buttonLabel, description }) => {
     const [input, setInput] = useState('');
     return (
       <div>
+        <div style={{ fontSize:13, color:'#555', marginBottom:16, lineHeight:1.6 }}>{description}</div>
         <textarea value={input} onChange={e => setInput(e.target.value)} placeholder={placeholder}
-          style={{ width:'100%', padding:'14px 16px', borderRadius:12, background:'rgba(255,255,255,.04)', border:'1px solid rgba(255,255,255,.08)', color:'#E0E0E0', fontSize:13, fontFamily:"'DM Sans',sans-serif", minHeight:100, resize:'vertical', outline:'none', marginBottom:12 }} />
+          style={{ width:'100%', padding:'14px 16px', borderRadius:12, background:'rgba(255,255,255,.04)', border:'1px solid rgba(255,255,255,.08)', color:'#E0E0E0', fontSize:13, fontFamily:"'DM Sans',sans-serif", minHeight:100, resize:'vertical', outline:'none', marginBottom:12, boxSizing:'border-box' }} />
         <button onClick={() => runAgent(type, input)} disabled={loading || !input.trim()}
-          style={{ padding:'11px 24px', borderRadius:10, background:input.trim()&&!loading?'linear-gradient(135deg,#FF3B5C,#FF6B35)':'rgba(255,255,255,.05)', color:input.trim()&&!loading?'#fff':'#333', fontSize:13, fontWeight:700, border:'none', cursor:input.trim()&&!loading?'pointer':'not-allowed', fontFamily:"'Syne',sans-serif", marginBottom:20 }}>
-          {loading ? 'Running...' : buttonLabel}
+          style={{ padding:'11px 28px', borderRadius:10, background:input.trim()&&!loading?'linear-gradient(135deg,#FF3B5C,#FF6B35)':'rgba(255,255,255,.05)', color:input.trim()&&!loading?'#fff':'#333', fontSize:13, fontWeight:700, border:'none', cursor:input.trim()&&!loading?'pointer':'not-allowed', fontFamily:"'Syne',sans-serif", marginBottom:20 }}>
+          {loading && outputTab === type ? '⏳ Running...' : buttonLabel}
         </button>
-        {output && (
+        {output && outputTab === type && (
           <div style={{ background:'rgba(255,255,255,.03)', border:'1px solid rgba(255,255,255,.07)', borderRadius:12, padding:'20px', position:'relative' }}>
-            <button onClick={() => navigator.clipboard.writeText(output)} style={{ position:'absolute', top:12, right:12, background:'rgba(255,255,255,.08)', border:'none', color:'#888', fontSize:11, padding:'4px 10px', borderRadius:6, cursor:'pointer' }}>Copy</button>
-            <pre style={{ whiteSpace:'pre-wrap', color:'#CCC', fontSize:13, lineHeight:1.7, fontFamily:"'DM Sans',sans-serif", margin:0 }}>{output}</pre>
+            <button onClick={() => navigator.clipboard.writeText(output)} style={{ position:'absolute', top:12, right:12, background:'rgba(255,255,255,.08)', border:'none', color:'#888', fontSize:11, padding:'4px 10px', borderRadius:6, cursor:'pointer' }}>📋 Copy</button>
+            <pre style={{ whiteSpace:'pre-wrap', color:'#CCC', fontSize:13, lineHeight:1.7, fontFamily:"'DM Sans',sans-serif", margin:0, paddingRight:60 }}>{output}</pre>
           </div>
         )}
       </div>
     );
   };
 
+  const stats = [
+    { label:'Total Scans', value:'Loading...', icon:'🔍', color:'#00FF94' },
+    { label:'FAKE Verdicts', value:'—', icon:'🚫', color:'#FF3B5C' },
+    { label:'AUTHENTIC', value:'—', icon:'✅', color:'#00FF94' },
+    { label:'SUSPICIOUS', value:'—', icon:'⚠️', color:'#FFB800' },
+  ];
+
   return (
-    <div style={{ minHeight:'100vh', background:'#06060A', fontFamily:"'DM Sans',sans-serif", color:'#F0F0F0' }}>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap');*{box-sizing:border-box;margin:0;padding:0}button{cursor:pointer}textarea{outline:none}`}</style>
-      
+    <div style={{ minHeight:'100vh', background:'#06060A', fontFamily:"'DM Sans',sans-serif", color:'#F0F0F0', display:'flex', flexDirection:'column' }}>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap');*{box-sizing:border-box;margin:0;padding:0}button{cursor:pointer}textarea,input{outline:none}`}</style>
+
       {/* Header */}
-      <div style={{ background:'rgba(255,255,255,.03)', borderBottom:'1px solid rgba(255,255,255,.06)', padding:'16px 32px', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+      <div style={{ background:'rgba(255,255,255,.03)', borderBottom:'1px solid rgba(255,255,255,.06)', padding:'14px 28px', display:'flex', alignItems:'center', justifyContent:'space-between', flexShrink:0 }}>
         <div style={{ display:'flex', alignItems:'center', gap:12 }}>
           <div style={{ width:32, height:32, borderRadius:8, background:'linear-gradient(135deg,#FF3B5C,#FF6B35)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:11, fontWeight:900, color:'#fff', fontFamily:"'Syne',sans-serif" }}>IR</div>
           <div>
-            <div style={{ fontSize:16, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif" }}>IsItReel Command Center</div>
-            <div style={{ fontSize:10, color:'#555' }}>Internal Dashboard — Private</div>
+            <div style={{ fontSize:15, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif" }}>IsItReel Command Center</div>
+            <div style={{ fontSize:10, color:'#444' }}>Private Dashboard · {new Date().toLocaleDateString('en-US', {weekday:'long', month:'long', day:'numeric'})}</div>
           </div>
         </div>
-        <a href="/" style={{ fontSize:12, color:'#555', textDecoration:'none' }}>← Back to app</a>
+        <div style={{ display:'flex', alignItems:'center', gap:16 }}>
+          <div style={{ fontSize:11, color:'#00FF94' }}>● Live</div>
+          <a href="/" style={{ fontSize:12, color:'#555', textDecoration:'none' }}>← Back to app</a>
+        </div>
       </div>
 
-      <div style={{ display:'flex', minHeight:'calc(100vh - 65px)' }}>
+      <div style={{ display:'flex', flex:1, overflow:'hidden' }}>
         {/* Sidebar */}
-        <div style={{ width:220, background:'rgba(255,255,255,.02)', borderRight:'1px solid rgba(255,255,255,.05)', padding:'24px 16px', flexShrink:0 }}>
+        <div style={{ width:210, background:'rgba(255,255,255,.02)', borderRight:'1px solid rgba(255,255,255,.05)', padding:'20px 12px', flexShrink:0, overflowY:'auto' }}>
+          <div style={{ fontSize:9, fontWeight:700, letterSpacing:'.12em', color:'#333', textTransform:'uppercase', marginBottom:10, paddingLeft:4 }}>Agents</div>
           {tabs.map(tab => (
-            <button key={tab.id} onClick={() => { setActiveTab(tab.id); setOutput(''); }}
-              style={{ display:'block', width:'100%', padding:'10px 14px', borderRadius:9, background:activeTab===tab.id?'rgba(255,59,92,.12)':'transparent', color:activeTab===tab.id?'#FF3B5C':'#666', fontSize:13, fontWeight:activeTab===tab.id?600:400, border:'none', textAlign:'left', marginBottom:4, fontFamily:"'DM Sans',sans-serif" }}>
+            <button key={tab.id} onClick={() => { setActiveTab(tab.id); setOutput(''); setOutputTab(''); }}
+              style={{ display:'block', width:'100%', padding:'9px 12px', borderRadius:8, background:activeTab===tab.id?'rgba(255,59,92,.12)':'transparent', color:activeTab===tab.id?'#FF3B5C':'#555', fontSize:12, fontWeight:activeTab===tab.id?600:400, border:'none', textAlign:'left', marginBottom:2, fontFamily:"'DM Sans',sans-serif", transition:'all .15s' }}>
               {tab.label}
             </button>
           ))}
-          <div style={{ marginTop:'auto', paddingTop:32, borderTop:'1px solid rgba(255,255,255,.05)', marginTop:32 }}>
-            <div style={{ fontSize:10, color:'#333', lineHeight:1.6 }}>
-              IsItReel v1.0<br/>
-              Command Center v1.0<br/>
-              <span style={{ color:'#00FF94' }}>● Live</span>
-            </div>
-          </div>
         </div>
 
-        {/* Main content */}
-        <div style={{ flex:1, padding:'32px', overflowY:'auto' }}>
-          
+        {/* Main */}
+        <div style={{ flex:1, padding:'28px 32px', overflowY:'auto' }}>
+
           {activeTab === 'dashboard' && (
             <div>
-              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:6 }}>Dashboard</div>
-              <div style={{ fontSize:13, color:'#555', marginBottom:32 }}>Welcome back. All agents ready.</div>
-              <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:16, marginBottom:32 }}>
+              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:4 }}>Dashboard</div>
+              <div style={{ fontSize:13, color:'#444', marginBottom:28 }}>All 10 agents ready. Click any agent in the sidebar to get started.</div>
+
+              {/* Stats row */}
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:12, marginBottom:24 }}>
+                {stats.map((s,i) => (
+                  <div key={i} style={{ background:'rgba(255,255,255,.03)', border:'1px solid rgba(255,255,255,.06)', borderRadius:12, padding:'16px' }}>
+                    <div style={{ fontSize:20, marginBottom:6 }}>{s.icon}</div>
+                    <div style={{ fontSize:22, fontWeight:800, color:s.color, fontFamily:"'Syne',sans-serif" }}>{s.value}</div>
+                    <div style={{ fontSize:11, color:'#444', marginTop:4 }}>{s.label}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Agent cards */}
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:12, marginBottom:24 }}>
                 {[
-                  { label:'X Agent', desc:'Write viral X threads about deepfake news', icon:'𝕏', tab:'xagent' },
-                  { label:'Blog Agent', desc:'Generate SEO blog posts targeting deepfake keywords', icon:'✍️', tab:'blogagent' },
-                  { label:'Detection Intel', desc:'Monitor new AI models and update detection prompts', icon:'🔬', tab:'detection' },
-                  { label:'Deepfake Report', desc:'Auto-compile monthly State of Deepfakes report', icon:'📋', tab:'report' },
-                  { label:'GEO Agent', desc:'Optimize IsItReel visibility on AI search engines', icon:'🌐', tab:'geo' },
-                  { label:'More coming', desc:'WhatsApp content, multilingual social, link building', icon:'🔜', tab:'dashboard' },
+                  { id:'xagent', icon:'𝕏', label:'X Agent', desc:'Write viral X threads about deepfake news. One click, ready to post.' },
+                  { id:'blogagent', icon:'✍️', label:'Blog Agent', desc:'SEO-optimized blog posts targeting deepfake keywords. With meta description.' },
+                  { id:'viral', icon:'🔥', label:'Viral Moment', desc:'Full content package for breaking deepfake stories. X + IG + FB + email.' },
+                  { id:'calendar', icon:'📅', label:'Content Calendar', desc:'7-day content plan. All 4 languages. All platforms. CapCut suggestions.' },
+                  { id:'detection', icon:'🔬', label:'Detection Intel', desc:'Monitor new AI models. Get prompt update recommendations instantly.' },
+                  { id:'report', icon:'📋', label:'Deepfake Report', desc:'Monthly journalist-ready report. Auto-compiled from scan data.' },
+                  { id:'geo', icon:'🌐', label:'GEO Agent', desc:'Optimize for Perplexity, ChatGPT Search, Gemini. AI search visibility.' },
+                  { id:'whatsapp', icon:'💬', label:'WhatsApp Agent', desc:'Short shareable messages for WhatsApp in all 4 languages.' },
+                  { id:'journalist', icon:'📰', label:'PR Agent', desc:'Journalist outreach emails with subject line options. Under 200 words.' },
+                  { id:'statsmonitor', icon:'📈', label:'Stats Monitor', desc:'Check if homepage stats are current. Get updated copy ready to deploy.' },
+                  { id:'alerts', icon:'🔔', label:'Alerts', desc:'Send manual Telegram alerts to your phone instantly.' },
+                  { id:'dashboard', icon:'🔜', label:'More coming', desc:'Link building, competitor monitor, email sequences, and more.' },
                 ].map((card, i) => (
-                  <div key={i} onClick={() => card.tab !== 'dashboard' && setActiveTab(card.tab)}
-                    style={{ background:'rgba(255,255,255,.03)', border:'1px solid rgba(255,255,255,.06)', borderRadius:14, padding:'20px', cursor:card.tab!=='dashboard'?'pointer':'default', transition:'all .2s' }}
-                    onMouseOver={e => { if(card.tab!=='dashboard') e.currentTarget.style.borderColor='rgba(255,59,92,.3)'; }}
-                    onMouseOut={e => e.currentTarget.style.borderColor='rgba(255,255,255,.06)'}>
-                    <div style={{ fontSize:24, marginBottom:10 }}>{card.icon}</div>
-                    <div style={{ fontSize:13, fontWeight:700, color:'#DDD', marginBottom:6 }}>{card.label}</div>
+                  <div key={i} onClick={() => card.id !== 'dashboard' && setActiveTab(card.id)}
+                    style={{ background:'rgba(255,255,255,.03)', border:'1px solid rgba(255,255,255,.06)', borderRadius:12, padding:'18px', cursor:card.id!=='dashboard'?'pointer':'default', transition:'all .2s' }}
+                    onMouseOver={e => { if(card.id!=='dashboard') { e.currentTarget.style.borderColor='rgba(255,59,92,.3)'; e.currentTarget.style.background='rgba(255,59,92,.05)'; }}}
+                    onMouseOut={e => { e.currentTarget.style.borderColor='rgba(255,255,255,.06)'; e.currentTarget.style.background='rgba(255,255,255,.03)'; }}>
+                    <div style={{ fontSize:22, marginBottom:8 }}>{card.icon}</div>
+                    <div style={{ fontSize:13, fontWeight:700, color:'#DDD', marginBottom:5 }}>{card.label}</div>
                     <div style={{ fontSize:11, color:'#444', lineHeight:1.5 }}>{card.desc}</div>
                   </div>
                 ))}
               </div>
+
+              {/* Next steps */}
               <div style={{ background:'rgba(0,255,148,.04)', border:'1px solid rgba(0,255,148,.1)', borderRadius:12, padding:'16px 20px' }}>
-                <div style={{ fontSize:12, color:'#00FF94', fontWeight:600, marginBottom:4 }}>Next steps</div>
-                <div style={{ fontSize:12, color:'#555', lineHeight:1.7 }}>
-                  1. Run the X Agent on a trending deepfake story<br/>
-                  2. Generate your first SEO blog post<br/>
-                  3. Submit IsItReel to Product Hunt<br/>
-                  4. Set up hello@isitreelapp.com on your phone
-                </div>
+                <div style={{ fontSize:12, color:'#00FF94', fontWeight:600, marginBottom:8 }}>🚀 Launch checklist</div>
+                {[
+                  'Run Viral Moment agent on a trending deepfake story',
+                  'Generate first week of Content Calendar',
+                  'Submit IsItReel to Product Hunt (Tuesday or Wednesday)',
+                  'Create social pages: @isitreelapp on X, TikTok, Instagram, Facebook',
+                  'Post first scan reveal video on all platforms',
+                  'Run Stats Monitor to verify homepage numbers are current',
+                  'Send test Telegram alert to verify alerts working',
+                ].map((item, i) => (
+                  <div key={i} style={{ fontSize:12, color:'#444', marginBottom:5, display:'flex', gap:8 }}>
+                    <span style={{ color:'#333' }}>□</span>{item}
+                  </div>
+                ))}
               </div>
             </div>
           )}
 
           {activeTab === 'xagent' && (
             <div>
-              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:6 }}>𝕏 X Agent</div>
-              <div style={{ fontSize:13, color:'#555', marginBottom:24 }}>Paste a deepfake news story, trending topic, or scan result. Get a ready-to-post X thread.</div>
-              <AgentPanel type="xpost" placeholder="Paste a news headline, deepfake story, or describe the topic..." buttonLabel="Generate X Thread →" />
+              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:4 }}>𝕏 X Agent</div>
+              <AgentPanel type="xpost" placeholder="Paste a news headline, deepfake story, or describe what you want to post about..." buttonLabel="Generate X Thread →" description="Paste a deepfake news story or topic. Get a ready-to-post X thread in seconds with hashtags and CTA." />
             </div>
           )}
 
           {activeTab === 'blogagent' && (
             <div>
-              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:6 }}>✍️ Blog Agent</div>
-              <div style={{ fontSize:13, color:'#555', marginBottom:24 }}>Enter a topic and get an SEO-optimized blog post targeting deepfake detection keywords.</div>
-              <AgentPanel type="blog" placeholder="e.g. How to tell if a TikTok video is AI generated..." buttonLabel="Generate Blog Post →" />
+              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:4 }}>✍️ Blog Agent</div>
+              <AgentPanel type="blog" placeholder="e.g. How to tell if a TikTok video is AI generated in 2025..." buttonLabel="Generate Blog Post →" description="Enter a topic and get a full SEO-optimized blog post with title, meta description, H2 sections, and CTA." />
+            </div>
+          )}
+
+          {activeTab === 'viral' && (
+            <div>
+              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:4 }}>🔥 Viral Moment Monitor</div>
+              <AgentPanel type="viral" placeholder="Paste the breaking deepfake story, viral video description, or trending topic..." buttonLabel="Generate Full Content Package →" description="When a deepfake story breaks, paste it here. Get a complete content package — X thread, Instagram caption, Facebook post, blog opener, journalist subject line, and WhatsApp message. All ready to post in under 5 minutes." />
+            </div>
+          )}
+
+          {activeTab === 'calendar' && (
+            <div>
+              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:4 }}>📅 Content Calendar</div>
+              <div style={{ fontSize:13, color:'#555', marginBottom:16, lineHeight:1.6 }}>Generate a full 7-day content plan across all platforms in all 4 languages. Optionally add context about what's happening in the news this week.</div>
+              <textarea value={weekInput} onChange={e => setWeekInput(e.target.value)} placeholder="Optional: What's happening in deepfake news this week? Any specific topics to focus on? Leave blank for general content..."
+                style={{ width:'100%', padding:'14px 16px', borderRadius:12, background:'rgba(255,255,255,.04)', border:'1px solid rgba(255,255,255,.08)', color:'#E0E0E0', fontSize:13, fontFamily:"'DM Sans',sans-serif", minHeight:80, resize:'vertical', outline:'none', marginBottom:12 }} />
+              <button onClick={generateCalendar} disabled={calendarLoading}
+                style={{ padding:'11px 28px', borderRadius:10, background:!calendarLoading?'linear-gradient(135deg,#FF3B5C,#FF6B35)':'rgba(255,255,255,.05)', color:!calendarLoading?'#fff':'#333', fontSize:13, fontWeight:700, border:'none', cursor:!calendarLoading?'pointer':'not-allowed', fontFamily:"'Syne',sans-serif", marginBottom:20 }}>
+                {calendarLoading ? "⏳ Generating 7-day calendar..." : "📅 Generate This Week's Calendar →"}
+              </button>
+              {calendarOutput && (
+                <div style={{ background:'rgba(255,255,255,.03)', border:'1px solid rgba(255,255,255,.07)', borderRadius:12, padding:'20px', position:'relative' }}>
+                  <button onClick={() => navigator.clipboard.writeText(calendarOutput)} style={{ position:'absolute', top:12, right:12, background:'rgba(255,255,255,.08)', border:'none', color:'#888', fontSize:11, padding:'4px 10px', borderRadius:6, cursor:'pointer' }}>📋 Copy</button>
+                  <pre style={{ whiteSpace:'pre-wrap', color:'#CCC', fontSize:13, lineHeight:1.7, fontFamily:"'DM Sans',sans-serif", margin:0, paddingRight:60 }}>{calendarOutput}</pre>
+                </div>
+              )}
             </div>
           )}
 
           {activeTab === 'detection' && (
             <div>
-              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:6 }}>🔬 Detection Intelligence</div>
-              <div style={{ fontSize:13, color:'#555', marginBottom:24 }}>Enter a new AI video model or deepfake technique. Get a recommended prompt update for IsItReel.</div>
-              <AgentPanel type="detection" placeholder="e.g. Google Veo 3 with audio generation launched today..." buttonLabel="Analyze & Recommend Update →" />
+              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:4 }}>🔬 Detection Intelligence</div>
+              <AgentPanel type="detection" placeholder="e.g. Google Veo 3 with audio generation launched — what should IsItReel's prompt include to catch it?" buttonLabel="Analyze & Get Prompt Update →" description="Enter a new AI video model or deepfake technique. Get specific signals to add to IsItReel's detection prompt, ready to copy-paste." />
             </div>
           )}
 
           {activeTab === 'report' && (
             <div>
-              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:6 }}>📋 Deepfake Report Agent</div>
-              <div style={{ fontSize:13, color:'#555', marginBottom:24 }}>Paste your scan data summary and get a journalist-ready monthly Deepfake Report section.</div>
-              <AgentPanel type="report" placeholder="e.g. This month: 1,247 videos scanned. 34% flagged as FAKE, 28% SUSPICIOUS, 38% AUTHENTIC. Most common: TikTok videos..." buttonLabel="Generate Report Section →" />
+              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:4 }}>📋 Monthly Deepfake Report</div>
+              <AgentPanel type="report" placeholder="e.g. This month IsItReel scanned 1,847 videos. 38% FAKE, 29% SUSPICIOUS, 33% AUTHENTIC. Most common platform: TikTok (42%). Most scanned content type: Political figures..." buttonLabel="Generate Report Section →" description="Paste this month's scan summary data. Get a journalist-ready monthly Deepfake Report section you can publish and send to press." />
             </div>
           )}
 
           {activeTab === 'geo' && (
             <div>
-              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:6 }}>🌐 GEO Agent</div>
-              <div style={{ fontSize:13, color:'#555', marginBottom:24 }}>Enter a search query topic. Get optimized answers that position IsItReel on AI search engines like Perplexity, ChatGPT Search, and Gemini.</div>
-              <AgentPanel type="geo" placeholder="e.g. how to detect AI generated video, is this video real, deepfake detection tool..." buttonLabel="Generate GEO Content →" />
+              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:4 }}>🌐 GEO Agent</div>
+              <AgentPanel type="geo" placeholder="e.g. how to detect AI generated video, is this video real or fake, best deepfake detector 2025..." buttonLabel="Generate GEO Content →" description="Enter search queries people ask AI engines. Get optimized Q&A pairs that position IsItReel as the answer on Perplexity, ChatGPT Search, and Gemini." />
+            </div>
+          )}
+
+          {activeTab === 'whatsapp' && (
+            <div>
+              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:4 }}>💬 WhatsApp Agent</div>
+              <AgentPanel type="whatsapp" placeholder="e.g. viral deepfake of politician spreading in WhatsApp groups, want to warn people and drive to IsItReel..." buttonLabel="Generate WhatsApp Messages →" description="Create short, shareable WhatsApp messages in all 4 languages. Optimized for forwarding in group chats — feels natural, not promotional." />
+            </div>
+          )}
+
+          {activeTab === 'journalist' && (
+            <div>
+              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:4 }}>📰 PR Agent</div>
+              <AgentPanel type="journalist" placeholder="e.g. viral deepfake of CEO spreading on LinkedIn, IsItReel detected it as FAKE at 94% confidence..." buttonLabel="Generate Journalist Email →" description="Paste a deepfake story and IsItReel's scan result. Get a compelling journalist outreach email with 3 subject line options, under 200 words, ready to send." />
+            </div>
+          )}
+
+          {activeTab === 'statsmonitor' && (
+            <div>
+              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:4 }}>📈 Stats Monitor</div>
+              <div style={{ fontSize:13, color:'#555', marginBottom:20, lineHeight:1.6 }}>Check if IsItReel's homepage statistics are current. Get updated copy ready to deploy if numbers have changed.</div>
+              <button onClick={checkStats} disabled={statsLoading}
+                style={{ padding:'11px 28px', borderRadius:10, background:!statsLoading?'linear-gradient(135deg,#FF3B5C,#FF6B35)':'rgba(255,255,255,.05)', color:!statsLoading?'#fff':'#333', fontSize:13, fontWeight:700, border:'none', cursor:!statsLoading?'pointer':'not-allowed', fontFamily:"'Syne',sans-serif", marginBottom:20 }}>
+                {statsLoading ? '⏳ Checking stats...' : '📈 Check Current Stats →'}
+              </button>
+              {statsOutput && (
+                <div style={{ background:'rgba(255,255,255,.03)', border:'1px solid rgba(255,255,255,.07)', borderRadius:12, padding:'20px', position:'relative' }}>
+                  <button onClick={() => navigator.clipboard.writeText(statsOutput)} style={{ position:'absolute', top:12, right:12, background:'rgba(255,255,255,.08)', border:'none', color:'#888', fontSize:11, padding:'4px 10px', borderRadius:6, cursor:'pointer' }}>📋 Copy</button>
+                  <pre style={{ whiteSpace:'pre-wrap', color:'#CCC', fontSize:13, lineHeight:1.7, fontFamily:"'DM Sans',sans-serif", margin:0, paddingRight:60 }}>{statsOutput}</pre>
+                </div>
+              )}
+            </div>
+          )}
+
+          {activeTab === 'alerts' && (
+            <div>
+              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:4 }}>🔔 Telegram Alerts</div>
+              <div style={{ fontSize:13, color:'#555', marginBottom:20, lineHeight:1.6 }}>Send manual alerts to your Telegram. Automatic alerts fire when new subscribers join.</div>
+              <div style={{ background:'rgba(0,255,148,.04)', border:'1px solid rgba(0,255,148,.1)', borderRadius:12, padding:'14px 18px', marginBottom:20 }}>
+                <div style={{ fontSize:12, color:'#00FF94', fontWeight:600, marginBottom:4 }}>Automatic alerts configured:</div>
+                <div style={{ fontSize:12, color:'#444' }}>✓ New subscriber joins → instant Telegram notification</div>
+              </div>
+              <textarea value={alertMsg} onChange={e => setAlertMsg(e.target.value)} placeholder="Type a manual alert message to send to your Telegram..."
+                style={{ width:'100%', padding:'14px 16px', borderRadius:12, background:'rgba(255,255,255,.04)', border:'1px solid rgba(255,255,255,.08)', color:'#E0E0E0', fontSize:13, fontFamily:"'DM Sans',sans-serif", minHeight:80, resize:'vertical', outline:'none', marginBottom:12 }} />
+              <button onClick={sendAlert} disabled={!alertMsg.trim()}
+                style={{ padding:'11px 28px', borderRadius:10, background:alertMsg.trim()?'linear-gradient(135deg,#FF3B5C,#FF6B35)':'rgba(255,255,255,.05)', color:alertMsg.trim()?'#fff':'#333', fontSize:13, fontWeight:700, border:'none', cursor:alertMsg.trim()?'pointer':'not-allowed', fontFamily:"'Syne',sans-serif" }}>
+                {alertSent ? '✓ Sent to Telegram!' : '🔔 Send Alert →'}
+              </button>
             </div>
           )}
 
@@ -767,6 +1004,7 @@ function CommandCenter() {
     </div>
   );
 }
+
 
 function IsItReel() {
   const [lang, setLang] = useState(detectLang);
