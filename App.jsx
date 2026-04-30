@@ -1064,7 +1064,7 @@ function IsItReel() {
       setUrlInput(decodeURIComponent(scanParam));
       window.history.replaceState({}, '', '/');
       setTimeout(() => {
-        document.getElementById('isitreeel-scan-btn')?.click();
+        document.getElementById('isitreel-scan-btn')?.click();
       }, 500);
     }
 
