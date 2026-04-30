@@ -42,6 +42,47 @@ function getSession(token) {
   return session;
 }
 
+// ── TELEGRAM ALERTS ───────────────────────────────────────────────────────────
+function sendTelegram(message) {
+  var botToken = process.env.TELEGRAM_BOT_TOKEN;
+  var chatId = process.env.TELEGRAM_CHAT_ID;
+  if (!botToken || !chatId) return;
+
+  var body = JSON.stringify({
+    chat_id: chatId,
+    text: message,
+    parse_mode: 'HTML',
+  });
+
+  var options = {
+    hostname: 'api.telegram.org',
+    port: 443,
+    path: '/bot' + botToken + '/sendMessage',
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Content-Length': Buffer.byteLength(body),
+    },
+  };
+
+  var req = https.request(options, function(res) {
+    res.on('data', function() {});
+  });
+  req.on('error', function(err) {
+    console.log('Telegram alert failed:', err.message);
+  });
+  req.write(body);
+  req.end();
+}
+
+// Manual alert endpoint for Command Center
+app.post('/api/alert', function(req, res) {
+  var message = req.body.message;
+  if (!message) return res.status(400).json({ error: 'Message required' });
+  sendTelegram(message);
+  res.json({ sent: true });
+});
+
 // Raw body needed for Stripe webhook signature verification
 app.use('/api/webhook', express.raw({ type: 'application/json' }));
 app.use(express.json({ limit: '50mb' }));
@@ -260,6 +301,7 @@ app.post('/api/webhook', function(req, res) {
     // Store token mapped to Stripe session ID for retrieval
     sessions.set('stripe_' + session.id, { token, tier, email });
     console.log('New subscriber:', email, tier);
+    sendTelegram('🎉 <b>New IsItReel Subscriber!</b>\n\nTier: ' + tier.toUpperCase() + '\nEmail: ' + (email || 'unknown') + '\nTime: ' + new Date().toLocaleString());
   }
 
   if (event.type === 'customer.subscription.deleted') {
@@ -422,4 +464,3 @@ app.get('*', function(req, res) {
 app.listen(PORT, function() {
   console.log('IsItReel running on port ' + PORT);
 });
-
