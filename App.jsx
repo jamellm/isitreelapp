@@ -28,7 +28,7 @@ const T = {
     how2Title: "AI scans 8 signals",
     how2Desc: "Our model extracts key frames and analyzes facial artifacts, eye reflections, lip sync, skin texture and more.",
     how3Title: "Get your verdict",
-    how3Desc: "Receive an instant authenticity verdict with confidence score, signal breakdown, and plain-English explanation.",
+    how3Desc: "Receive an instant authenticity verdict with confidence score, signal breakdown, and a clear explanation in your language.",
     accuracy: "Detects most deepfakes & AI manipulation",
     accuracySub: "High-quality Veo/Sora remains an evolving challenge",
     scansLabel: "videos analyzed",
@@ -97,7 +97,7 @@ const T = {
     how2Title: "La IA escanea 8 señales",
     how2Desc: "Nuestro modelo extrae fotogramas clave y analiza artefactos faciales, reflejos oculares, sincronización labial y más.",
     how3Title: "Obtén tu veredicto",
-    how3Desc: "Recibe un veredicto de autenticidad instantáneo con puntuación de confianza y explicación en lenguaje simple.",
+    how3Desc: "Recibe un veredicto instantáneo con puntuación de confianza y explicación clara en tu idioma.",
     accuracy: "Detecta la mayoría de deepfakes",
     accuracySub: "Video Veo/Sora de alta calidad es un desafío en evolución",
     scansLabel: "videos analizados",
@@ -166,7 +166,7 @@ const T = {
     how2Title: "A IA escaneia 8 sinais",
     how2Desc: "Nosso modelo extrai quadros-chave e analisa artefatos faciais, reflexos oculares, sincronia labial e mais.",
     how3Title: "Obtenha seu veredicto",
-    how3Desc: "Receba um veredicto de autenticidade instantâneo com pontuação de confiança e explicação em linguagem simples.",
+    how3Desc: "Receba um veredicto instantâneo com pontuação de confiança e explicação clara no seu idioma.",
     accuracy: "Detecta a maioria dos deepfakes",
     accuracySub: "Vídeo Veo/Sora de alta qualidade é um desafio em evolução",
     scansLabel: "vídeos analisados",
@@ -235,7 +235,7 @@ const T = {
     how2Title: "L'IA scanne 8 signaux",
     how2Desc: "Notre modèle extrait des images clés et analyse les artefacts faciaux, reflets oculaires, synchronisation labiale et plus.",
     how3Title: "Obtenez votre verdict",
-    how3Desc: "Recevez un verdict d'authenticité instantané avec score de confiance et explication en langage simple.",
+    how3Desc: "Recevez un verdict instantané avec score de confiance et explication claire dans votre langue.",
     accuracy: "Détecte la plupart des deepfakes",
     accuracySub: "La vidéo Veo/Sora haute qualité reste un défi en évolution",
     scansLabel: "vidéos analysées",
@@ -553,7 +553,221 @@ function roundRect(ctx, x, y, w, h, r) {
 }
 
 // ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
-export default function IsItReel() {
+// ─── COMMAND CENTER PASSWORD ─────────────────────────────────────────────────
+const CC_PASSWORD = 'IR-CC-2026';
+
+// ─── ROUTER ──────────────────────────────────────────────────────────────────
+export default function App() {
+  const isCC = window.location.pathname === '/command-center';
+  if (isCC) return <CommandCenter />;
+  return <IsItReel />;
+}
+
+// ─── COMMAND CENTER ───────────────────────────────────────────────────────────
+function CommandCenter() {
+  const [authed, setAuthed] = useState(false);
+  const [pw, setPw] = useState('');
+  const [pwErr, setPwErr] = useState(false);
+  const [activeTab, setActiveTab] = useState('dashboard');
+  const [loading, setLoading] = useState(false);
+  const [output, setOutput] = useState('');
+
+  const login = () => {
+    if (pw === CC_PASSWORD) { setAuthed(true); setPwErr(false); }
+    else { setPwErr(true); }
+  };
+
+  const runAgent = async (agentType, userInput) => {
+    setLoading(true); setOutput('');
+    const prompts = {
+      xpost: `You are the IsItReel social media agent. Write a compelling X (Twitter) thread (3-5 tweets) about this deepfake/AI video news topic. Make it timely, factual, and end with a CTA to scan suspicious videos at isitreelapp.com. Topic: ${userInput}`,
+      blog: `You are the IsItReel SEO content agent. Write a 600-800 word blog post optimized for search about this topic. Include H2 headings, target keywords around deepfake detection, and naturally mention IsItReel as the tool to verify suspicious videos. Topic: ${userInput}`,
+      detection: `You are the IsItReel detection intelligence agent. Research this new AI video model or deepfake technique and recommend specific updates to IsItReel's detection prompt. What new signals should be added? What patterns does this model leave? Model/technique: ${userInput}`,
+      report: `You are the IsItReel Deepfake Report agent. Based on this scan data summary, write a compelling monthly "State of Deepfakes" report section suitable for journalists and fact-checkers to cite. Data: ${userInput}`,
+      geo: `You are the IsItReel GEO optimization agent. Write 3 optimized answers for AI search engines (Perplexity, ChatGPT Search, Gemini) that would make IsItReel appear when users ask about deepfake detection. The answers should be factual, helpful, and naturally position IsItReel. Query topic: ${userInput}`,
+    };
+    try {
+      const res = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 1500,
+          messages: [{ role: 'user', content: prompts[agentType] }],
+        }),
+      });
+      const data = await res.json();
+      const text = data.content?.map(b => b.text || '').join('') || 'No response';
+      setOutput(text);
+    } catch(err) {
+      setOutput('Error: ' + err.message);
+    }
+    setLoading(false);
+  };
+
+  if (!authed) return (
+    <div style={{ minHeight:'100vh', background:'#06060A', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:"'DM Sans',sans-serif" }}>
+      <div style={{ background:'rgba(255,255,255,.04)', border:'1px solid rgba(255,255,255,.08)', borderRadius:16, padding:'40px 32px', width:360, textAlign:'center' }}>
+        <div style={{ width:44, height:44, borderRadius:10, background:'linear-gradient(135deg,#FF3B5C,#FF6B35)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:14, fontWeight:900, color:'#fff', margin:'0 auto 20px', fontFamily:"'Syne',sans-serif" }}>IR</div>
+        <div style={{ fontSize:20, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:6 }}>Command Center</div>
+        <div style={{ fontSize:12, color:'#555', marginBottom:28 }}>IsItReel — Internal Dashboard</div>
+        <input type="password" value={pw} onChange={e => setPw(e.target.value)} onKeyDown={e => e.key==='Enter' && login()}
+          placeholder="Enter password" style={{ width:'100%', padding:'12px 16px', borderRadius:10, background:'rgba(255,255,255,.06)', border:`1px solid ${pwErr?'rgba(255,59,92,.5)':'rgba(255,255,255,.1)'}`, color:'#E0E0E0', fontSize:14, marginBottom:12, outline:'none', fontFamily:"'DM Sans',sans-serif" }} />
+        {pwErr && <div style={{ fontSize:11, color:'#FF3B5C', marginBottom:12 }}>Incorrect password</div>}
+        <button onClick={login} style={{ width:'100%', padding:'12px', borderRadius:10, background:'linear-gradient(135deg,#FF3B5C,#FF6B35)', color:'#fff', fontSize:14, fontWeight:700, border:'none', cursor:'pointer', fontFamily:"'Syne',sans-serif" }}>Enter</button>
+        <div style={{ marginTop:16 }}><a href="/" style={{ fontSize:11, color:'#444', textDecoration:'none' }}>← Back to IsItReel</a></div>
+      </div>
+    </div>
+  );
+
+  const tabs = [
+    { id:'dashboard', label:'📊 Dashboard' },
+    { id:'xagent', label:'𝕏 X Agent' },
+    { id:'blogagent', label:'✍️ Blog Agent' },
+    { id:'detection', label:'🔬 Detection Intel' },
+    { id:'report', label:'📋 Deepfake Report' },
+    { id:'geo', label:'🌐 GEO Agent' },
+  ];
+
+  const AgentPanel = ({ type, placeholder, buttonLabel }) => {
+    const [input, setInput] = useState('');
+    return (
+      <div>
+        <textarea value={input} onChange={e => setInput(e.target.value)} placeholder={placeholder}
+          style={{ width:'100%', padding:'14px 16px', borderRadius:12, background:'rgba(255,255,255,.04)', border:'1px solid rgba(255,255,255,.08)', color:'#E0E0E0', fontSize:13, fontFamily:"'DM Sans',sans-serif", minHeight:100, resize:'vertical', outline:'none', marginBottom:12 }} />
+        <button onClick={() => runAgent(type, input)} disabled={loading || !input.trim()}
+          style={{ padding:'11px 24px', borderRadius:10, background:input.trim()&&!loading?'linear-gradient(135deg,#FF3B5C,#FF6B35)':'rgba(255,255,255,.05)', color:input.trim()&&!loading?'#fff':'#333', fontSize:13, fontWeight:700, border:'none', cursor:input.trim()&&!loading?'pointer':'not-allowed', fontFamily:"'Syne',sans-serif", marginBottom:20 }}>
+          {loading ? 'Running...' : buttonLabel}
+        </button>
+        {output && (
+          <div style={{ background:'rgba(255,255,255,.03)', border:'1px solid rgba(255,255,255,.07)', borderRadius:12, padding:'20px', position:'relative' }}>
+            <button onClick={() => navigator.clipboard.writeText(output)} style={{ position:'absolute', top:12, right:12, background:'rgba(255,255,255,.08)', border:'none', color:'#888', fontSize:11, padding:'4px 10px', borderRadius:6, cursor:'pointer' }}>Copy</button>
+            <pre style={{ whiteSpace:'pre-wrap', color:'#CCC', fontSize:13, lineHeight:1.7, fontFamily:"'DM Sans',sans-serif", margin:0 }}>{output}</pre>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  return (
+    <div style={{ minHeight:'100vh', background:'#06060A', fontFamily:"'DM Sans',sans-serif", color:'#F0F0F0' }}>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap');*{box-sizing:border-box;margin:0;padding:0}button{cursor:pointer}textarea{outline:none}`}</style>
+      
+      {/* Header */}
+      <div style={{ background:'rgba(255,255,255,.03)', borderBottom:'1px solid rgba(255,255,255,.06)', padding:'16px 32px', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+        <div style={{ display:'flex', alignItems:'center', gap:12 }}>
+          <div style={{ width:32, height:32, borderRadius:8, background:'linear-gradient(135deg,#FF3B5C,#FF6B35)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:11, fontWeight:900, color:'#fff', fontFamily:"'Syne',sans-serif" }}>IR</div>
+          <div>
+            <div style={{ fontSize:16, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif" }}>IsItReel Command Center</div>
+            <div style={{ fontSize:10, color:'#555' }}>Internal Dashboard — Private</div>
+          </div>
+        </div>
+        <a href="/" style={{ fontSize:12, color:'#555', textDecoration:'none' }}>← Back to app</a>
+      </div>
+
+      <div style={{ display:'flex', minHeight:'calc(100vh - 65px)' }}>
+        {/* Sidebar */}
+        <div style={{ width:220, background:'rgba(255,255,255,.02)', borderRight:'1px solid rgba(255,255,255,.05)', padding:'24px 16px', flexShrink:0 }}>
+          {tabs.map(tab => (
+            <button key={tab.id} onClick={() => { setActiveTab(tab.id); setOutput(''); }}
+              style={{ display:'block', width:'100%', padding:'10px 14px', borderRadius:9, background:activeTab===tab.id?'rgba(255,59,92,.12)':'transparent', color:activeTab===tab.id?'#FF3B5C':'#666', fontSize:13, fontWeight:activeTab===tab.id?600:400, border:'none', textAlign:'left', marginBottom:4, fontFamily:"'DM Sans',sans-serif" }}>
+              {tab.label}
+            </button>
+          ))}
+          <div style={{ marginTop:'auto', paddingTop:32, borderTop:'1px solid rgba(255,255,255,.05)', marginTop:32 }}>
+            <div style={{ fontSize:10, color:'#333', lineHeight:1.6 }}>
+              IsItReel v1.0<br/>
+              Command Center v1.0<br/>
+              <span style={{ color:'#00FF94' }}>● Live</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Main content */}
+        <div style={{ flex:1, padding:'32px', overflowY:'auto' }}>
+          
+          {activeTab === 'dashboard' && (
+            <div>
+              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:6 }}>Dashboard</div>
+              <div style={{ fontSize:13, color:'#555', marginBottom:32 }}>Welcome back. All agents ready.</div>
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:16, marginBottom:32 }}>
+                {[
+                  { label:'X Agent', desc:'Write viral X threads about deepfake news', icon:'𝕏', tab:'xagent' },
+                  { label:'Blog Agent', desc:'Generate SEO blog posts targeting deepfake keywords', icon:'✍️', tab:'blogagent' },
+                  { label:'Detection Intel', desc:'Monitor new AI models and update detection prompts', icon:'🔬', tab:'detection' },
+                  { label:'Deepfake Report', desc:'Auto-compile monthly State of Deepfakes report', icon:'📋', tab:'report' },
+                  { label:'GEO Agent', desc:'Optimize IsItReel visibility on AI search engines', icon:'🌐', tab:'geo' },
+                  { label:'More coming', desc:'WhatsApp content, multilingual social, link building', icon:'🔜', tab:'dashboard' },
+                ].map((card, i) => (
+                  <div key={i} onClick={() => card.tab !== 'dashboard' && setActiveTab(card.tab)}
+                    style={{ background:'rgba(255,255,255,.03)', border:'1px solid rgba(255,255,255,.06)', borderRadius:14, padding:'20px', cursor:card.tab!=='dashboard'?'pointer':'default', transition:'all .2s' }}
+                    onMouseOver={e => { if(card.tab!=='dashboard') e.currentTarget.style.borderColor='rgba(255,59,92,.3)'; }}
+                    onMouseOut={e => e.currentTarget.style.borderColor='rgba(255,255,255,.06)'}>
+                    <div style={{ fontSize:24, marginBottom:10 }}>{card.icon}</div>
+                    <div style={{ fontSize:13, fontWeight:700, color:'#DDD', marginBottom:6 }}>{card.label}</div>
+                    <div style={{ fontSize:11, color:'#444', lineHeight:1.5 }}>{card.desc}</div>
+                  </div>
+                ))}
+              </div>
+              <div style={{ background:'rgba(0,255,148,.04)', border:'1px solid rgba(0,255,148,.1)', borderRadius:12, padding:'16px 20px' }}>
+                <div style={{ fontSize:12, color:'#00FF94', fontWeight:600, marginBottom:4 }}>Next steps</div>
+                <div style={{ fontSize:12, color:'#555', lineHeight:1.7 }}>
+                  1. Run the X Agent on a trending deepfake story<br/>
+                  2. Generate your first SEO blog post<br/>
+                  3. Submit IsItReel to Product Hunt<br/>
+                  4. Set up hello@isitreelapp.com on your phone
+                </div>
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'xagent' && (
+            <div>
+              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:6 }}>𝕏 X Agent</div>
+              <div style={{ fontSize:13, color:'#555', marginBottom:24 }}>Paste a deepfake news story, trending topic, or scan result. Get a ready-to-post X thread.</div>
+              <AgentPanel type="xpost" placeholder="Paste a news headline, deepfake story, or describe the topic..." buttonLabel="Generate X Thread →" />
+            </div>
+          )}
+
+          {activeTab === 'blogagent' && (
+            <div>
+              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:6 }}>✍️ Blog Agent</div>
+              <div style={{ fontSize:13, color:'#555', marginBottom:24 }}>Enter a topic and get an SEO-optimized blog post targeting deepfake detection keywords.</div>
+              <AgentPanel type="blog" placeholder="e.g. How to tell if a TikTok video is AI generated..." buttonLabel="Generate Blog Post →" />
+            </div>
+          )}
+
+          {activeTab === 'detection' && (
+            <div>
+              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:6 }}>🔬 Detection Intelligence</div>
+              <div style={{ fontSize:13, color:'#555', marginBottom:24 }}>Enter a new AI video model or deepfake technique. Get a recommended prompt update for IsItReel.</div>
+              <AgentPanel type="detection" placeholder="e.g. Google Veo 3 with audio generation launched today..." buttonLabel="Analyze & Recommend Update →" />
+            </div>
+          )}
+
+          {activeTab === 'report' && (
+            <div>
+              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:6 }}>📋 Deepfake Report Agent</div>
+              <div style={{ fontSize:13, color:'#555', marginBottom:24 }}>Paste your scan data summary and get a journalist-ready monthly Deepfake Report section.</div>
+              <AgentPanel type="report" placeholder="e.g. This month: 1,247 videos scanned. 34% flagged as FAKE, 28% SUSPICIOUS, 38% AUTHENTIC. Most common: TikTok videos..." buttonLabel="Generate Report Section →" />
+            </div>
+          )}
+
+          {activeTab === 'geo' && (
+            <div>
+              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:6 }}>🌐 GEO Agent</div>
+              <div style={{ fontSize:13, color:'#555', marginBottom:24 }}>Enter a search query topic. Get optimized answers that position IsItReel on AI search engines like Perplexity, ChatGPT Search, and Gemini.</div>
+              <AgentPanel type="geo" placeholder="e.g. how to detect AI generated video, is this video real, deepfake detection tool..." buttonLabel="Generate GEO Content →" />
+            </div>
+          )}
+
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function IsItReel() {
   const [lang, setLang] = useState(detectLang);
   const [langOpen, setLangOpen] = useState(false);
   const [status, setStatus] = useState(STATUS.idle);
@@ -577,15 +791,58 @@ export default function IsItReel() {
   const fileRef = useRef();
   const t = T[lang];
 
-  // Check URL params for successful Stripe upgrade
+  // Session management - check stored token and URL params
   useEffect(() => {
+    // Check for existing session token
+    const checkSession = async () => {
+      const token = localStorage.getItem('isitreeel_token');
+      if (token) {
+        try {
+          const res = await fetch('/api/verify-token', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token }),
+          });
+          const data = await res.json();
+          if (data.valid) {
+            setTier(data.tier);
+            setIsPro(data.tier === 'pro' || data.tier === 'founding');
+            setUserEmail(data.email || '');
+          } else {
+            localStorage.removeItem('isitreeel_token');
+          }
+        } catch(e) {
+          console.log('Session check failed:', e.message);
+        }
+      }
+    };
+
+    // Check for successful Stripe redirect
     const params = new URLSearchParams(window.location.search);
     if (params.get('upgraded') === 'true') {
-      const t = params.get('tier') || 'pro';
-      setTier(t);
-      // Clean URL
+      const sessionId = params.get('session_id');
+      if (sessionId) {
+        fetch('/api/create-session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sessionId }),
+        })
+        .then(r => r.json())
+        .then(data => {
+          if (data.token) {
+            localStorage.setItem('isitreeel_token', data.token);
+            setTier(data.tier);
+            setIsPro(data.tier === 'pro' || data.tier === 'founding');
+            setUserEmail(data.email || '');
+          }
+        })
+        .catch(e => console.log('Session creation failed:', e.message));
+      }
       window.history.replaceState({}, '', '/');
+    } else {
+      checkSession();
     }
+
     // Push initial history state so back button works
     window.history.pushState({ page: 'home' }, '', '/');
     window.onpopstate = () => {
@@ -594,13 +851,25 @@ export default function IsItReel() {
     };
   }, []);
 
+  // Persist free scan count in localStorage with daily reset
+  useEffect(() => {
+    const today = new Date().toDateString();
+    const stored = JSON.parse(localStorage.getItem('isitreeel_scans') || '{}');
+    if (stored.date === today) {
+      setFreeScansUsed(stored.count || 0);
+    } else {
+      localStorage.setItem('isitreeel_scans', JSON.stringify({ date: today, count: 0 }));
+      setFreeScansUsed(0);
+    }
+  }, []);
+
   // Stripe checkout handler
   const handleUpgrade = async (selectedTier) => {
     try {
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ tier: selectedTier }),
+        body: JSON.stringify({ tier: selectedTier, includeSessionId: true }),
       });
       const data = await res.json();
       if (data.url) window.location.href = data.url;
@@ -635,7 +904,8 @@ export default function IsItReel() {
   }, [handleFile]);
 
   const checkFreeLimit = () => {
-    if (!isPro && freeScansUsed >= FREE_SCAN_LIMIT) {
+    const limit = SCAN_LIMITS[tier] || FREE_SCAN_LIMIT;
+    if (freeScansUsed >= limit) {
       setShowUpgrade(true);
       return false;
     }
@@ -651,8 +921,12 @@ export default function IsItReel() {
       const res = await analyzeFrames(frames, file.name, lang);
       setResult(res);
       setStatus(STATUS.done);
-      setFreeScansUsed(n => n + 1);
+      const newCount = freeScansUsed + 1;
+      setFreeScansUsed(newCount);
       setScanCount(c => c + 1);
+      // Persist scan count
+      const today = new Date().toDateString();
+      localStorage.setItem('isitreeel_scans', JSON.stringify({ date: today, count: newCount }));
       const card = generateShareCard(res.verdict, res.confidence, res.shareText, isPro);
       setShareCardUrl(card);
       saveToHistory({ verdict: res.verdict, confidence: res.confidence, name: file.name, time: Date.now(), summary: res.summary });
@@ -669,8 +943,11 @@ export default function IsItReel() {
       const res = await analyzeUrl(urlInput.trim(), lang);
       setResult(res);
       setStatus(STATUS.done);
-      setFreeScansUsed(n => n + 1);
+      const newCount2 = freeScansUsed + 1;
+      setFreeScansUsed(newCount2);
       setScanCount(c => c + 1);
+      const today2 = new Date().toDateString();
+      localStorage.setItem('isitreeel_scans', JSON.stringify({ date: today2, count: newCount2 }));
       const card = generateShareCard(res.verdict, res.confidence, res.shareText, isPro);
       setShareCardUrl(card);
       saveToHistory({ verdict: res.verdict, confidence: res.confidence, name: urlInput.slice(0, 50), time: Date.now(), summary: res.summary });
@@ -792,12 +1069,25 @@ export default function IsItReel() {
               )}
             </div>
 
-            {!isPro && (
+            {isPro ? (
+              <button onClick={async () => {
+                if (!userEmail) return;
+                const res = await fetch('/api/customer-portal', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ email: userEmail }),
+                });
+                const data = await res.json();
+                if (data.url) window.location.href = data.url;
+              }} style={{ fontSize:11,fontWeight:600,color:"#00FF94",background:"rgba(0,255,148,.08)",border:"1px solid rgba(0,255,148,.25)",borderRadius:7,padding:"6px 14px",fontFamily:"'DM Sans',sans-serif",cursor:"pointer" }}>
+                ✓ {tier.charAt(0).toUpperCase() + tier.slice(1)} — Manage
+              </button>
+            ) : (
               <button onClick={() => setShowUpgrade(true)} style={{ fontSize:11,fontWeight:700,color:"#fff",background:"linear-gradient(135deg,#FF3B5C,#FF6B35)",border:"none",borderRadius:7,padding:"6px 14px",fontFamily:"'DM Sans',sans-serif",boxShadow:"0 2px 12px rgba(255,59,92,.35)",letterSpacing:".02em",cursor:"pointer" }}>
                 Upgrade ↗
               </button>
             )}
-            <div style={{ fontSize:9,fontWeight:700,letterSpacing:".14em",color:"#FF3B5C",border:"1px solid rgba(255,59,92,.35)",borderRadius:4,padding:"3px 7px",background:"rgba(255,59,92,.07)" }}>{t.freeBeta}</div>
+            {!isPro && <div style={{ fontSize:9,fontWeight:700,letterSpacing:".14em",color:"#FF3B5C",border:"1px solid rgba(255,59,92,.35)",borderRadius:4,padding:"3px 7px",background:"rgba(255,59,92,.07)" }}>{t.freeBeta}</div>}
           </div>
         </header>
         {/* Home button - shows when not on idle screen */}
@@ -972,6 +1262,33 @@ export default function IsItReel() {
               </>
             )}
 
+            {/* ── STATS SECTION ── */}
+            <div style={{ marginTop:48,paddingTop:44,borderTop:"1px solid rgba(255,255,255,.05)" }}>
+              <div style={{ textAlign:"center",marginBottom:28 }}>
+                <div style={{ fontSize:10,fontWeight:700,letterSpacing:".14em",color:"#FF3B5C",textTransform:"uppercase",marginBottom:10 }}>The deepfake crisis is real</div>
+                <div style={{ fontSize:22,fontWeight:800,fontFamily:"'Syne',sans-serif",color:"#fff",marginBottom:8 }}>You probably can't tell. Neither can most people.</div>
+                <div style={{ fontSize:13,color:"#555",maxWidth:480,margin:"0 auto" }}>The numbers explain why IsItReel exists.</div>
+              </div>
+              <div style={{ display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:12,marginBottom:12 }}>
+                {[
+                  { stat:"24.5%", label:"Human accuracy detecting deepfake video", sub:"You're essentially guessing", color:"#FF3B5C" },
+                  { stat:"8M+", label:"Deepfake videos circulating in 2025", sub:"Up from 500K in 2023 — 16x growth", color:"#FFB800" },
+                  { stat:"60%", label:"Of people have encountered a deepfake", sub:"Most didn't know it", color:"#FFB800" },
+                  { stat:"$25B", label:"Lost to deepfake fraud in 2025", sub:"Growing 32% annually", color:"#FF3B5C" },
+                ].map((item,i) => (
+                  <div key={i} style={{ background:"rgba(255,255,255,.025)",border:"1px solid rgba(255,255,255,.06)",borderRadius:14,padding:"20px 18px" }}>
+                    <div style={{ fontSize:32,fontWeight:900,fontFamily:"'Syne',sans-serif",color:item.color,marginBottom:6,letterSpacing:"-1px" }}>{item.stat}</div>
+                    <div style={{ fontSize:12,color:"#CCC",fontWeight:600,marginBottom:4,lineHeight:1.4 }}>{item.label}</div>
+                    <div style={{ fontSize:11,color:"#444",fontStyle:"italic" }}>{item.sub}</div>
+                  </div>
+                ))}
+              </div>
+              <div style={{ background:"rgba(0,255,148,.04)",border:"1px solid rgba(0,255,148,.12)",borderRadius:12,padding:"14px 18px",textAlign:"center" }}>
+                <span style={{ fontSize:12,color:"#00FF94",fontWeight:600 }}>0.1% of people </span>
+                <span style={{ fontSize:12,color:"#555" }}>can correctly identify all fake and real media — IsItReel gives everyone AI-level accuracy instantly.</span>
+              </div>
+            </div>
+
             {/* ── HOW IT WORKS ── */}
             <div style={{ marginTop:56,paddingTop:48,borderTop:"1px solid rgba(255,255,255,.05)" }}>
               <div style={{ textAlign:"center",marginBottom:32 }}>
@@ -1117,8 +1434,13 @@ export default function IsItReel() {
           <div style={{ marginBottom:8 }}>
             <span style={{ color:"#FF3B5C" }}>IsItReel</span> · isitreelapp.com · AI deepfake detection for the social media era
           </div>
-          <a href="mailto:hello@isitreelapp.com" style={{ fontSize:10,color:"#2A2A2A",display:"block",marginBottom:4 }}>{t.orgLink} → hello@isitreelapp.com</a>
-          <div style={{ fontSize:9,color:"#1A1A1A",marginTop:4 }}>96% accuracy · 4 languages · Free to start</div>
+          <a href="mailto:hello@isitreelapp.com" style={{ fontSize:10,color:"#2A2A2A",display:"block",marginBottom:6 }}>{t.orgLink} → hello@isitreelapp.com</a>
+          <div style={{ fontSize:10,color:"#282828",marginBottom:4 }}>
+            <a href="/privacy" style={{ color:"#282828",textDecoration:"none" }}>Privacy Policy</a>
+            {" · "}
+            <a href="/terms" style={{ color:"#282828",textDecoration:"none" }}>Terms of Service</a>
+          </div>
+          <div style={{ fontSize:9,color:"#1A1A1A",marginTop:4 }}>4 languages · Free to start · Updated for Veo 3</div>
         </div>
       </div>
     </div>
