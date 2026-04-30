@@ -952,8 +952,20 @@ function IsItReel() {
       setShareCardUrl(card);
       saveToHistory({ verdict: res.verdict, confidence: res.confidence, name: urlInput.slice(0, 50), time: Date.now(), summary: res.summary });
     } catch (err) {
-      setError(err.message || t.analysisError);
+      // Clean platform-specific error messages
+      let errMsg = err.message || t.analysisError;
+      if (errMsg.includes('login required') || errMsg.includes('cookies')) {
+        errMsg = '⚠️ This platform requires login to download. Please screen record the video and upload it using the Upload File tab instead.';
+      } else if (errMsg.includes('timeout') || errMsg.includes('Download timeout')) {
+        errMsg = '⚠️ Video took too long to download. Try uploading the file directly using the Upload File tab.';
+      } else if (errMsg.includes('Unsupported platform')) {
+        errMsg = "⚠️ This platform isn't supported yet. Try downloading the video and uploading it using the Upload File tab.";
+      } else if (errMsg.includes('No frames')) {
+        errMsg = '⚠️ Could not extract frames from this video. Try downloading and uploading it directly.';
+      }
+      setError(errMsg);
       setStatus(STATUS.error);
+      setInputMode('file'); // Switch to file tab as fallback
     }
   };
 
