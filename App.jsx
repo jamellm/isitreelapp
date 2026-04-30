@@ -1220,8 +1220,15 @@ function IsItReel() {
     }
   };
 
-  const runUrlScan = async () => {
+ const runUrlScan = async () => {
     if (!urlInput.trim() || !checkFreeLimit()) return;
+    const trimmedUrl = urlInput.trim();
+    const isBrowserOnly = trimmedUrl.includes('youtube.com') || trimmedUrl.includes('x.com') || trimmedUrl.includes('twitter.com');
+    if (isBrowserOnly) {
+      setError('YouTube and X videos cannot be scanned by URL. Download the video and upload it using the Upload File tab instead.');
+      setInputMode('file');
+      return;
+    }
     setStatus(STATUS.analyzing); setError(null); setResult(null); setShareCardUrl(null);
     try {
       const res = await analyzeUrl(urlInput.trim(), lang);
