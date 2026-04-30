@@ -427,6 +427,17 @@ app.post('/api/customer-portal', function(req, res) {
 });
 
 // ── HEALTH CHECK ─────────────────────────────────────────────────────────────
+app.get('/api/telegram-test', function(req, res) {
+  var botToken = process.env.TELEGRAM_BOT_TOKEN;
+  var chatId = process.env.TELEGRAM_CHAT_ID;
+  res.json({
+    hasBotToken: !!botToken,
+    hasChatId: !!chatId,
+    tokenPrefix: botToken ? botToken.substring(0, 10) + '...' : 'MISSING',
+    chatId: chatId || 'MISSING'
+  });
+});
+
 app.get('/api/health', function(req, res) {
   var apiKey = process.env.ANTHROPIC_API_KEY;
   var stripeKey = process.env.STRIPE_SECRET_KEY;
