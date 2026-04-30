@@ -1060,13 +1060,17 @@ function IsItReel() {
     const params = new URLSearchParams(window.location.search);
     const scanParam = params.get('scan');
     if (scanParam) {
-      setInputMode('url');
-      setUrlInput(decodeURIComponent(scanParam));
-      window.history.replaceState({}, '', '/');
-      setTimeout(() => {
-        document.getElementById('isitreel-scan-btn')?.click();
-      }, 500);
-    }
+  const decodedUrl = decodeURIComponent(scanParam);
+  const isBrowserOnly = decodedUrl.includes('youtube.com') || decodedUrl.includes('x.com') || decodedUrl.includes('twitter.com');
+  setInputMode('url');
+  setUrlInput(decodedUrl);
+  window.history.replaceState({}, '', '/');
+  if (!isBrowserOnly) {
+    setTimeout(() => {
+      document.getElementById('isitreel-scan-btn')?.click();
+    }, 1500);
+  }
+}
 
     // Handle extension browser-side frame capture (YouTube)
     const extensionScan = params.get('extensionscan');
