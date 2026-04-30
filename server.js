@@ -76,8 +76,8 @@ function sendTelegram(message) {
 }
 
 // Manual alert endpoint for Command Center
-app.post('/api/alert', function(req, res) {
-  var message = req.body.message;
+app.post('/api/alert', express.json(), function(req, res) {
+  var message = req.body && req.body.message;
   if (!message) return res.status(400).json({ error: 'Message required' });
   sendTelegram(message);
   res.json({ sent: true });
