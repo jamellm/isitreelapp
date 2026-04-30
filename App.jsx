@@ -558,8 +558,9 @@ const CC_PASSWORD = 'IR-CC-2026';
 
 // ─── ROUTER ──────────────────────────────────────────────────────────────────
 export default function App() {
-  const isCC = window.location.pathname === '/command-center';
-  if (isCC) return <CommandCenter />;
+  const [path, setPath] = useState(window.location.pathname);
+  useEffect(() => { setPath(window.location.pathname); }, []);
+  if (path === '/command-center') return <CommandCenter />;
   return <IsItReel />;
 }
 
