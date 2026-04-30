@@ -39,7 +39,7 @@ const T = {
     dropFormats: "MP4 · MOV · WebM · AVI · up to 250MB",
     dropTip: "Have a video file from WhatsApp or camera roll? Drop it here.",
     urlPlaceholder: "Paste a Facebook, TikTok, YouTube, Instagram or X URL...",
-    urlNote: "We download and scan the video automatically. Works with Facebook, TikTok, YouTube, Instagram and X.",
+    urlNote: "Works with Facebook and TikTok. For YouTube and X, install the free IsItReel Chrome extension below.",
     urlAnalyze: "SCAN THIS URL →",
     scanBtn: "SCAN THIS VIDEO →",
     selectFirst: "SELECT A VIDEO TO SCAN",
@@ -108,7 +108,7 @@ const T = {
     dropFormats: "MP4 · MOV · WebM · AVI · hasta 250MB",
     dropTip: "¿Tienes un video de WhatsApp o cámara? Suéltalo aquí.",
     urlPlaceholder: "Pega una URL de Facebook, TikTok, YouTube, Instagram o X...",
-    urlNote: "Descargamos y escaneamos el video automáticamente. Compatible con Facebook, TikTok, YouTube, Instagram y X.",
+    urlNote: "Funciona con Facebook y TikTok. Para YouTube y X, instala la extensión gratuita de IsItReel.",
     urlAnalyze: "ESCANEAR ESTA URL →",
     scanBtn: "ESCANEAR ESTE VIDEO →",
     selectFirst: "SELECCIONA UN VIDEO",
@@ -177,7 +177,7 @@ const T = {
     dropFormats: "MP4 · MOV · WebM · AVI · até 250MB",
     dropTip: "Tem um vídeo do WhatsApp ou câmera? Solte-o aqui.",
     urlPlaceholder: "Cole uma URL do Facebook, TikTok, YouTube, Instagram ou X...",
-    urlNote: "Baixamos e escaneamos o vídeo automaticamente. Funciona com Facebook, TikTok, YouTube, Instagram e X.",
+    urlNote: "Funciona com Facebook e TikTok. Para YouTube e X, instale a extensão gratuita IsItReel.",
     urlAnalyze: "ESCANEAR ESTA URL →",
     scanBtn: "ESCANEAR ESTE VÍDEO →",
     selectFirst: "SELECIONE UM VÍDEO",
@@ -246,7 +246,7 @@ const T = {
     dropFormats: "MP4 · MOV · WebM · AVI · jusqu'à 250MB",
     dropTip: "Vous avez une vidéo WhatsApp ou de votre caméra ? Déposez-la ici.",
     urlPlaceholder: "Collez une URL Facebook, TikTok, YouTube, Instagram ou X...",
-    urlNote: "Nous téléchargeons et scannons la vidéo automatiquement. Compatible avec Facebook, TikTok, YouTube, Instagram et X.",
+    urlNote: "Fonctionne avec Facebook et TikTok. Pour YouTube et X, installez l'extension gratuite IsItReel.",
     urlAnalyze: "SCANNER CETTE URL →",
     scanBtn: "SCANNER CETTE VIDÉO →",
     selectFirst: "SÉLECTIONNEZ UNE VIDÉO",
@@ -1063,10 +1063,39 @@ function IsItReel() {
       setInputMode('url');
       setUrlInput(decodeURIComponent(scanParam));
       window.history.replaceState({}, '', '/');
-      // Auto-trigger scan after short delay to let state settle
       setTimeout(() => {
         document.getElementById('isitreeel-scan-btn')?.click();
       }, 500);
+    }
+
+    // Handle extension browser-side frame capture (YouTube)
+    const extensionScan = params.get('extensionscan');
+    if (extensionScan === '1') {
+      window.history.replaceState({}, '', '/');
+      // Check if Chrome extension storage has pending frames
+      if (typeof chrome !== 'undefined' && chrome.storage) {
+        chrome.storage.local.get(['pendingFrames'], async (result) => {
+          if (result.pendingFrames && result.pendingFrames.frames?.length > 0) {
+            const { frames, title } = result.pendingFrames;
+            // Clear the pending frames
+            chrome.storage.local.remove(['pendingFrames']);
+            // Trigger analysis directly with the frames
+            setStatus(STATUS.analyzing);
+            try {
+              const res = await analyzeFrames(frames, title || 'YouTube video', lang);
+              setResult(res);
+              setFreeScansUsed(n => n + 1);
+              setScanCount(c => c + 1);
+              const card = generateShareCard(res.verdict, res.confidence, res.shareText, isPro);
+              setShareCardUrl(card);
+              setStatus(STATUS.done);
+            } catch(err) {
+              setError(err.message);
+              setStatus(STATUS.error);
+            }
+          }
+        });
+      }
     }
 
     // Check for successful Stripe redirect
