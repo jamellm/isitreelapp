@@ -1285,7 +1285,7 @@ function IsItReel() {
         .how-card:hover{transform:translateY(-3px);border-color:rgba(255,59,92,.25)!important}
         .plan-card:hover{border-color:rgba(255,59,92,.4)!important;transform:translateY(-2px)}
        @media(max-width:600px){
-  .stats-grid{grid-template-columns:repeat(2,1fr)!important}
+  .stats-grid{grid-template-columns:1fr!important}
   .how-grid{grid-template-columns:1fr!important}
   .share-btns{flex-direction:column!important}
   .signal-row{flex-wrap:wrap!important}
