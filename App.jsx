@@ -1160,6 +1160,7 @@ function IsItReel() {
   }, [handleFile]);
 
   const checkFreeLimit = () => {
+    if (ADMIN_BYPASS) return true;
     const limit = SCAN_LIMITS[tier] || FREE_SCAN_LIMIT;
     if (freeScansUsed >= limit) {
       setShowUpgrade(true);
