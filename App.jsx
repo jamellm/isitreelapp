@@ -82,7 +82,7 @@ const T = {
     foundingFeatures: "Everything in Pro · Price locked forever",
     comingSoon: "Coming Soon",
     whatsappTip: "Received a suspicious video on WhatsApp?",
-    whatsappSub: "Save it to your phone first, then upload it here. On iPhone: press & hold the video → Save. On Android: tap the download icon → find it in your gallery.",
+    whatsappSub: "Download it to your phone first, then upload it here. On iPhone: press & hold the video → Save to Files. On Android: tap the download icon → find it in your gallery.",
     whatsappDismiss: "Got it",
   },
   es: {
@@ -151,7 +151,7 @@ const T = {
     foundingFeatures: "Todo en Pro · Precio bloqueado para siempre",
     comingSoon: "Próximamente",
     whatsappTip: "¿Recibiste un video sospechoso en WhatsApp?",
-    whatsappSub: "Guárdalo en tu teléfono primero, luego súbelo aquí. En iPhone: mantén presionado → Guardar. En Android: toca el ícono de descarga → encuéntralo en tu galería.",
+    whatsappSub: "Descárgalo en tu teléfono primero, luego súbelo aquí. En iPhone: mantén presionado → Guardar en Archivos. En Android: toca el ícono de descarga → encuéntralo en tu galería.",
     whatsappDismiss: "Entendido",
   },
   pt: {
@@ -220,7 +220,7 @@ const T = {
     foundingFeatures: "Tudo no Pro · Preço travado para sempre",
     comingSoon: "Em Breve",
     whatsappTip: "Recebeu um vídeo suspeito no WhatsApp?",
-    whatsappSub: "Salve-o no seu telefone primeiro, depois envie aqui. No iPhone: pressione e segure → Salvar. No Android: toque no ícone de download → encontre na galeria.",
+    whatsappSub: "Baixe-o no seu telefone primeiro, depois envie aqui. No iPhone: pressione e segure → Salvar em Arquivos. No Android: toque no ícono de download → encontre na galeria.",
     whatsappDismiss: "Entendi",
   },
   fr: {
@@ -289,7 +289,7 @@ const T = {
     foundingFeatures: "Tout en Pro · Prix bloqué pour toujours",
     comingSoon: "Bientôt Disponible",
     whatsappTip: "Vous avez reçu une vidéo suspecte sur WhatsApp?",
-    whatsappSub: "Enregistrez-la d'abord sur votre téléphone, puis téléchargez-la ici. Sur iPhone: appuyez longuement → Enregistrer. Sur Android: appuyez sur l'icône de téléchargement → trouvez-la dans votre galerie.",
+    whatsappSub: "Téléchargez-la sur votre téléphone d'abord, puis uploadez-la ici. Sur iPhone: appuyez longuement → Enregistrer dans Fichiers. Sur Android: appuyez sur l'icône de téléchargement → trouvez-la dans votre galerie.",
     whatsappDismiss: "Compris",
   },
 };
