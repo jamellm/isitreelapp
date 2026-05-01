@@ -1072,36 +1072,7 @@ function IsItReel() {
   }
 }
 
-    // Handle extension browser-side frame capture (YouTube)
-    const extensionScan = params.get('extensionscan');
-    if (extensionScan === '1') {
-      window.history.replaceState({}, '', '/');
-      // Check if Chrome extension storage has pending frames
-      if (typeof chrome !== 'undefined' && chrome.storage) {
-        chrome.storage.local.get(['pendingFrames'], async (result) => {
-          if (result.pendingFrames && result.pendingFrames.frames?.length > 0) {
-            const { frames, title } = result.pendingFrames;
-            // Clear the pending frames
-            chrome.storage.local.remove(['pendingFrames']);
-            // Trigger analysis directly with the frames
-            setStatus(STATUS.analyzing);
-            try {
-              const res = await analyzeFrames(frames, title || 'YouTube video', lang);
-              setResult(res);
-              setFreeScansUsed(n => n + 1);
-              setScanCount(c => c + 1);
-              const card = generateShareCard(res.verdict, res.confidence, res.shareText, isPro);
-              setShareCardUrl(card);
-              setStatus(STATUS.done);
-            } catch(err) {
-              setError(err.message);
-              setStatus(STATUS.error);
-            }
-          }
-        });
-      }
-    }
-
+  
     // Check for successful Stripe redirect
     if (params.get('upgraded') === 'true') {
       const sessionId = params.get('session_id');
