@@ -1304,7 +1304,7 @@ function IsItReel() {
         backgroundImage:`radial-gradient(ellipse 80% 45% at 50% -8%,rgba(255,59,92,.12) 0%,transparent 65%),
           radial-gradient(ellipse 50% 30% at 90% 90%,rgba(0,255,148,.05) 0%,transparent 55%)` }} />
 
-      <div style={{ position:"relative",zIndex:1,maxWidth:780,margin:"0 auto",padding:"0 16px 100px" }}>
+      <div style={{ position:"relative",zIndex:1,maxWidth:780,margin:"0 auto",padding:"0 12px 100px" }}>
 
         {/* ── HEADER ── */}
         <header style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"26px 0 38px",borderBottom:"1px solid rgba(255,255,255,.05)",marginBottom:42 }}>
