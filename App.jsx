@@ -368,29 +368,22 @@ function extractFramesStandard(videoFile, count = 6) {
 }
 
 async function extractFramesWithFfmpeg(videoFile, count = 6) {
-  const { FFmpeg } = await import('https://unpkg.com/@ffmpeg/ffmpeg@0.12.6/dist/esm/index.js');
-  const { fetchFile, toBlobURL } = await import('https://unpkg.com/@ffmpeg/util@0.12.1/dist/esm/index.js');
-  
-  const ffmpeg = new FFmpeg();
-  const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
-  
-  await ffmpeg.load({
-    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
-    wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+  const RAILWAY_URL = 'https://isitreeel-ytdlp-production.up.railway.app';
+  const formData = new FormData();
+  formData.append('video', videoFile);
+
+  const res = await fetch(`${RAILWAY_URL}/convert-and-extract`, {
+    method: 'POST',
+    body: formData,
   });
 
-  const inputName = 'input' + videoFile.name.slice(videoFile.name.lastIndexOf('.'));
-  await ffmpeg.writeFile(inputName, await fetchFile(videoFile));
-  await ffmpeg.exec(['-i', inputName, '-vf', `fps=1`, '-vframes', String(count), '-f', 'image2', 'frame%d.jpg']);
-
-  const frames = [];
-  for (let i = 1; i <= count; i++) {
-    try {
-      const data = await ffmpeg.readFile(`frame${i}.jpg`);
-      const b64 = btoa(String.fromCharCode(...data));
-      frames.push(b64);
-    } catch(e) {}
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || 'Conversion failed');
   }
+
+  const { frames } = await res.json();
+  if (!frames || frames.length === 0) throw new Error('No frames returned');
   return frames;
 }
 
