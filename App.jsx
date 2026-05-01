@@ -393,23 +393,33 @@ async function analyzeFrames(frames, filename, lang = "en") {
     type: "image",
     source: { type: "base64", media_type: "image/jpeg", data: b64 },
   }));
-  const prompt = `You are an expert deepfake and AI-generated video detection system with specialized knowledge of modern AI video generation models including Google Veo, OpenAI Sora, Runway Gen-3, Stable Video Diffusion, and similar tools. Analyze these ${frames.length} frames from "${filename}". Respond entirely in ${langMap[lang] || "English"}.
+  const prompt = `You are an expert deepfake and AI-generated video detection system. Analyze these ${frames.length} frames from "${filename}". Respond entirely in ${langMap[lang] || "English"}.
 
-CRITICAL: Modern AI video generators (Veo, Sora, Runway) produce extremely photorealistic output specifically designed to defeat detection. Do NOT assume authentic just because the video looks high quality or realistic. High production quality is itself a signal worth examining carefully.
+CRITICAL MINDSET: You are a SKEPTIC, not a believer. Your default assumption is that ANY video could be AI-generated. Modern AI video generators (Google Veo, OpenAI Sora, Runway Gen-3, Kling, Pika) produce photorealistic output designed to fool detection. High production quality, perfect lighting, and smooth motion are RED FLAGS, not signs of authenticity.
 
-Examine each frame aggressively for ALL of these signals:
+AUTOMATIC FAKE INDICATORS — if you see ANY of these, verdict must be FAKE or SUSPICIOUS:
+- Skin that looks too smooth or perfect
+- Eyes that don't reflect light naturally or blink unnaturally
+- Hair that moves too uniformly or looks rendered
+- Background that is too clean, symmetrical, or blurred
+- Motion that is too smooth — no natural camera shake or micro-jitter
+- Lighting that is perfectly consistent across all frames
+- Facial features that are slightly too symmetrical
+- Any watermarks, generation artifacts, or text overlays in corners
+- Lip movements that don't perfectly match speech patterns
+- Clothing or fabric that moves unnaturally
+
+Examine each frame for ALL of these signals:
 ${SIGNALS.map((s, i) => `${i + 1}. ${s}`).join("\n")}
 
-ADDITIONAL signals specific to high-quality AI video generation:
-9. Skin that is too perfect — lacks natural micro-variations, pores, blemishes, natural asymmetry
-10. Motion that is unnaturally smooth — real cameras have micro-jitter, AI video is often too stable
-11. Background elements that are slightly too perfect or symmetrical
-12. Lighting that is perfectly consistent across all frames — real environments have subtle variation
-13. Hair and fabric physics that follow slightly unnatural patterns
-14. Depth of field or bokeh that looks computationally generated
-15. Any "Veo", "Sora", "Runway", "AI" watermarks or generation artifacts in corners or edges
+VERDICT RULES:
+- AUTHENTIC: Only if you find multiple clear signs of genuine human imperfection AND zero AI indicators
+- SUSPICIOUS: Any doubt whatsoever — unexplained perfection, single AI indicator, or inability to confirm authenticity
+- FAKE: Clear AI indicators present, or video is suspiciously perfect in multiple ways
 
-When in doubt between AUTHENTIC and SUSPICIOUS, choose SUSPICIOUS. When in doubt between SUSPICIOUS and FAKE, choose FAKE. It is better to flag legitimate video as suspicious than to miss actual AI-generated content.
+When in doubt between AUTHENTIC and SUSPICIOUS, ALWAYS choose SUSPICIOUS.
+When in doubt between SUSPICIOUS and FAKE, ALWAYS choose FAKE.
+It is far better to flag a real video as suspicious than to miss actual AI-generated content.
 
 Respond ONLY with valid JSON (no markdown):
 {
@@ -418,7 +428,7 @@ Respond ONLY with valid JSON (no markdown):
   "summary": "<2-3 sentence plain verdict in ${langMap[lang] || "English"}>",
   "whyFake": "<3-5 sentences of specific technical observations from the actual frames. Mention what you saw, where, and what it means for a non-expert. In ${langMap[lang] || "English"}.>",
   "signals": [{ "label": "<name>", "score": <0-10>, "note": "<brief finding>" }],
-  "shareText": "<punchy verdict max 140 chars no hashtags in ${langMap[lang] || "English"}>"
+  "shareText": "<punchy verdict max 140 chars no hashtags in ${langMap[lang] || "English"}"
 }`;
 
   const response = await fetch("/api/analyze", {
