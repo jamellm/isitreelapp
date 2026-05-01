@@ -1648,7 +1648,7 @@ function IsItReel() {
             {/* Verdict card */}
             <div style={{ borderRadius:20,background:vc.bg,border:`1.5px solid ${vc.border}`,boxShadow:`0 0 48px ${vc.glow}`,padding:"34px 28px 26px",textAlign:"center",marginBottom:16 }}>
               <div style={{ fontSize:48,marginBottom:9 }}>{verdictEmoji}</div>
-              <div style={{ fontSize:38,fontWeight:900,fontFamily:"'Syne',sans-serif",letterSpacing:".06em",color:vc.color,marginBottom:7 }}>{verdictLabel}</div>
+              <div style={{ fontSize:"clamp(24px,8vw,38px)",fontWeight:900,fontFamily:"'Syne',sans-serif",letterSpacing:".06em",color:vc.color,marginBottom:7 }}>{verdictLabel}</div>
               <div style={{ display:"inline-flex",alignItems:"center",gap:7,background:"rgba(255,255,255,.05)",borderRadius:20,padding:"4px 14px",marginBottom:16 }}>
                 <div style={{ width:5,height:5,borderRadius:"50%",background:vc.color }} />
                 <span style={{ fontSize:11,color:"rgba(255,255,255,.45)" }}>{t.confidence}: {result.confidence}%</span>
