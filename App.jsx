@@ -326,7 +326,18 @@ function detectLang() {
   return LANGS[nav]?.enabled ? nav : "en";
 }
 
-function extractFrames(videoFile, count = 6) {
+async function extractFrames(videoFile, count = 6) {
+  // Try standard extraction first
+  try {
+    const frames = await extractFramesStandard(videoFile, count);
+    if (frames.length > 0) return frames;
+  } catch(e) {}
+
+  // Fallback: convert with ffmpeg.wasm then extract
+  return await extractFramesWithFfmpeg(videoFile, count);
+}
+
+function extractFramesStandard(videoFile, count = 6) {
   return new Promise((resolve, reject) => {
     const video = document.createElement("video");
     const canvas = document.createElement("canvas");
@@ -354,6 +365,33 @@ function extractFrames(videoFile, count = 6) {
     };
     video.onerror = reject;
   });
+}
+
+async function extractFramesWithFfmpeg(videoFile, count = 6) {
+  const { FFmpeg } = await import('https://unpkg.com/@ffmpeg/ffmpeg@0.12.6/dist/esm/index.js');
+  const { fetchFile, toBlobURL } = await import('https://unpkg.com/@ffmpeg/util@0.12.1/dist/esm/index.js');
+  
+  const ffmpeg = new FFmpeg();
+  const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm';
+  
+  await ffmpeg.load({
+    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+    wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+  });
+
+  const inputName = 'input' + videoFile.name.slice(videoFile.name.lastIndexOf('.'));
+  await ffmpeg.writeFile(inputName, await fetchFile(videoFile));
+  await ffmpeg.exec(['-i', inputName, '-vf', `fps=1`, '-vframes', String(count), '-f', 'image2', 'frame%d.jpg']);
+
+  const frames = [];
+  for (let i = 1; i <= count; i++) {
+    try {
+      const data = await ffmpeg.readFile(`frame${i}.jpg`);
+      const b64 = btoa(String.fromCharCode(...data));
+      frames.push(b64);
+    } catch(e) {}
+  }
+  return frames;
 }
 
 async function analyzeFrames(frames, filename, lang = "en") {
