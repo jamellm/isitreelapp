@@ -316,6 +316,7 @@ const VERDICT_CONFIG = {
 const VERDICT_EMOJI = { AUTHENTIC: "✅", SUSPICIOUS: "⚠️", FAKE: "🚫" };
 
 const FREE_SCAN_LIMIT = 3;
+const ADMIN_BYPASS = true; // Set to false before public launch
 const LIGHT_SCAN_LIMIT = 8;
 const SEED_COUNT = 1162;
 const PASSIVE_INCREMENT_MS = 210000; // ~3.5 minutes
