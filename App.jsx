@@ -1600,7 +1600,7 @@ function IsItReel() {
               </div>
 
               {/* Accuracy trust signal */}
-              <div style={{ display:"flex",alignItems:"center",justifyContent:"center",gap:24,marginTop:32,padding:"20px",background:"rgba(0,255,148,.04)",border:"1px solid rgba(0,255,148,.1)",borderRadius:12 }}>
+              <div className="trust-signal" style={{ display:"flex",alignItems:"center",justifyContent:"center",gap:24,marginTop:32,padding:"20px",background:"rgba(0,255,148,.04)",border:"1px solid rgba(0,255,148,.1)",borderRadius:12 }}>
                 <div style={{ textAlign:"center" }}>
                   <div style={{ fontSize:16,fontWeight:900,fontFamily:"'Syne',sans-serif",color:"#00FF94",lineHeight:1.2 }}>{t.accuracy}</div>
                   <div style={{ fontSize:10,color:"#444",marginTop:4,lineHeight:1.4 }}>{t.accuracySub}</div>
