@@ -1772,6 +1772,7 @@ function IsItReel() {
             <a href="/terms" style={{ color:"#666",textDecoration:"none" }} onMouseOver={e=>e.target.style.color="#FF3B5C"} onMouseOut={e=>e.target.style.color="#666"}>Terms of Service</a>
           </div>
           <div style={{ fontSize:10,color:"#444",marginTop:4 }}>4 languages · Free to start · Detection updated for Veo 3</div>
+<div style={{ fontSize:10,color:"#333",marginTop:6,maxWidth:460,margin:"6px auto 0",lineHeight:1.5 }}>AI detection is an evolving field. Our model is continuously updated — use results as a strong indicator, not a final verdict.</div>
         </div>
       </div>
     </div>
