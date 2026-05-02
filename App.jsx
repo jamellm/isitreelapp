@@ -90,7 +90,7 @@ const T = {
     eyebrow: "Pega. Escanea. Comparte la verdad.",
     heroTitle1: "¿Este video es",
     heroTitle2: "real o falso?",
-    "Pega una URL de Facebook Reels para un veredicto instantáneo — sin descargas. ¿Tienes un video de otra plataforma? Descárgalo y súbelo directamente.",
+    heroSub: "Pega una URL de Facebook Reels para un veredicto instantáneo — sin descargas. ¿Tienes un video de otra plataforma? Descárgalo y súbelo directamente.",
     howTitle: "Cómo funciona",
     how1Title: "Sube tu video",
     how1Desc: "Arrastra y suelta cualquier archivo de video hasta 250MB. MP4, MOV, WebM, AVI compatibles.",
