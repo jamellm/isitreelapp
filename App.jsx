@@ -39,7 +39,6 @@ const T = {
     dropFormats: "MP4 · MOV · WebM · AVI · up to 250MB",
     dropTip: "Have a video from another platform? Download it and drop it here.",
     urlPlaceholder: "Paste a Facebook Reels URL...",
-    urlNote: "For other platforms, download the video and use the Upload File tab.",
     urlAnalyze: "SCAN THIS URL →",
     scanBtn: "SCAN THIS VIDEO →",
     selectFirst: "SELECT A VIDEO TO SCAN",
@@ -108,7 +107,6 @@ const T = {
     dropFormats: "MP4 · MOV · WebM · AVI · hasta 250MB",
     dropTip: "¿Tienes un video de otra plataforma? Descárgalo y suéltalo aquí.",
     urlPlaceholder: "Pega una URL de Facebook Reels...",
-    urlNote: "Para otras plataformas, descarga el video y usa la pestaña Subir Archivo.",
     urlAnalyze: "ESCANEAR ESTA URL →",
     scanBtn: "ESCANEAR ESTE VIDEO →",
     selectFirst: "SELECCIONA UN VIDEO",
@@ -177,7 +175,6 @@ const T = {
     dropFormats: "MP4 · MOV · WebM · AVI · até 250MB",
     dropTip: "Tem um vídeo de outra plataforma? Baixe-o e solte aqui.",
     urlPlaceholder: "Cole uma URL do Facebook Reels...",
-    urlNote: "Para outras plataformas, baixe o vídeo e use a aba Enviar Arquivo.",
     urlAnalyze: "ESCANEAR ESTA URL →",
     scanBtn: "ESCANEAR ESTE VÍDEO →",
     selectFirst: "SELECIONE UM VÍDEO",
@@ -246,7 +243,6 @@ const T = {
     dropFormats: "MP4 · MOV · WebM · AVI · jusqu'à 250MB",
     dropTip: "Vous avez une vidéo d'une autre plateforme? Téléchargez-la et déposez-la ici.",
     urlPlaceholder: "Collez une URL Facebook Reels...",
-    urlNote: "Pour les autres plateformes, téléchargez la vidéo et utilisez l'onglet Télécharger Fichier.",
     urlAnalyze: "SCANNER CETTE URL →",
     scanBtn: "SCANNER CETTE VIDÉO →",
     selectFirst: "SÉLECTIONNEZ UNE VIDÉO",
@@ -1552,7 +1548,6 @@ function IsItReel() {
                   onKeyDown={e => e.key==="Enter" && urlInput.trim() && runUrlScan()}
                   placeholder={t.urlPlaceholder}
                   style={{ width:"100%",padding:"15px 18px",borderRadius:13,background:"rgba(255,255,255,.035)",border:"1.5px solid rgba(255,255,255,.08)",color:"#E0E0E0",fontSize:13,fontFamily:"'DM Sans',sans-serif",marginBottom:8 }} />
-                <div style={{ fontSize:11,color:"#00FF94",marginBottom:14,paddingLeft:2,lineHeight:1.5,opacity:0.7 }}>✓ {t.urlNote}</div>
                 {error && <div style={{ background:"rgba(255,59,92,.06)",border:"1px solid rgba(255,59,92,.18)",borderRadius:11,padding:"14px 16px",textAlign:"center",marginBottom:14,fontSize:13,color:"#FF7090" }}>⚠️ {error}</div>}
                 <button onClick={runUrlScan} disabled={!urlInput.trim() || isAnalyzing}
                   style={{ width:"100%",padding:"16px",borderRadius:13,background:urlInput.trim()?"linear-gradient(135deg,#FF3B5C,#FF6B35)":"rgba(255,255,255,.04)",color:urlInput.trim()?"#fff":"#2A2A2A",fontSize:14,fontWeight:700,fontFamily:"'Syne',sans-serif",letterSpacing:".05em",border:"none",boxShadow:urlInput.trim()?"0 4px 22px rgba(255,59,92,.32)":"none",cursor:urlInput.trim()?"pointer":"not-allowed" }}>
