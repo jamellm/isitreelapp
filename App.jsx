@@ -1637,6 +1637,10 @@ function IsItReel() {
               <p style={{ fontSize: 14, lineHeight: 1.68, color: "rgba(255,255,255,.68)", maxWidth: 480, margin: "0 auto" }}>{result.summary}</p>
             </div>
 
+            <div style={{ fontSize: 12, color: "gray", textAlign: "center", marginTop: 8, marginBottom: 16 }}>
+              This verdict reflects AI generation detection only. Authentic videos may still contain surprising, staged, or misleading content.
+            </div>
+
             {/* Why section */}
             {result.whyFake && (
               <div style={{ background: "rgba(255,255,255,.022)", border: "1px solid rgba(255,255,255,.055)", borderRadius: 14, padding: "20px 22px", marginBottom: 14 }}>
