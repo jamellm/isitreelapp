@@ -327,7 +327,7 @@ async function extractFrames(videoFile, count = 6) {
   try {
     const frames = await extractFramesStandard(videoFile, count);
     if (frames.length > 0) return frames;
-  } catch(e) {}
+  } catch (e) { }
 
   // Fallback: convert with ffmpeg.wasm then extract
   return await extractFramesWithFfmpeg(videoFile, count);
@@ -702,7 +702,7 @@ Story: ${input}`,
     try {
       const text = await callClaude(prompts[type], 2000);
       setOutput(text);
-    } catch(err) { setOutput('Error: ' + err.message); }
+    } catch (err) { setOutput('Error: ' + err.message); }
     setLoading(false);
   };
 
@@ -727,7 +727,7 @@ Format each day clearly. Make content feel native to each platform, not cross-po
     try {
       const text = await callClaude(prompt, 3000);
       setCalendarOutput(text);
-    } catch(err) { setCalendarOutput('Error: ' + err.message); }
+    } catch (err) { setCalendarOutput('Error: ' + err.message); }
     setCalendarLoading(false);
   };
 
@@ -755,7 +755,7 @@ Format each day clearly. Make content feel native to each platform, not cross-po
     try {
       const text = await callClaude(prompt, 2000);
       setStatsOutput(text);
-    } catch(err) { setStatsOutput('Error: ' + err.message); }
+    } catch (err) { setStatsOutput('Error: ' + err.message); }
     setStatsLoading(false);
   };
 
@@ -770,54 +770,54 @@ Format each day clearly. Make content feel native to each platform, not cross-po
       setAlertSent(true);
       setTimeout(() => setAlertSent(false), 3000);
       setAlertMsg('');
-    } catch(err) { console.log(err); }
+    } catch (err) { console.log(err); }
   };
 
   if (!authed) return (
-    <div style={{ minHeight:'100vh', background:'#06060A', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:"'DM Sans',sans-serif" }}>
-      <div style={{ background:'rgba(255,255,255,.04)', border:'1px solid rgba(255,255,255,.08)', borderRadius:16, padding:'40px 32px', width:360, textAlign:'center' }}>
-        <div style={{ width:44, height:44, borderRadius:10, background:'linear-gradient(135deg,#FF3B5C,#FF6B35)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:14, fontWeight:900, color:'#fff', margin:'0 auto 20px', fontFamily:"'Syne',sans-serif" }}>IR</div>
-        <div style={{ fontSize:20, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:6 }}>Command Center</div>
-        <div style={{ fontSize:12, color:'#555', marginBottom:28 }}>IsItReel — Internal Dashboard</div>
-        <input type="password" value={pw} onChange={e => setPw(e.target.value)} onKeyDown={e => e.key==='Enter' && login()}
-          placeholder="Enter password" style={{ width:'100%', padding:'12px 16px', borderRadius:10, background:'rgba(255,255,255,.06)', border:`1px solid ${pwErr?'rgba(255,59,92,.5)':'rgba(255,255,255,.1)'}`, color:'#E0E0E0', fontSize:14, marginBottom:12, outline:'none', fontFamily:"'DM Sans',sans-serif", boxSizing:'border-box' }} />
-        {pwErr && <div style={{ fontSize:11, color:'#FF3B5C', marginBottom:12 }}>Incorrect password</div>}
-        <button onClick={login} style={{ width:'100%', padding:'12px', borderRadius:10, background:'linear-gradient(135deg,#FF3B5C,#FF6B35)', color:'#fff', fontSize:14, fontWeight:700, border:'none', cursor:'pointer', fontFamily:"'Syne',sans-serif" }}>Enter</button>
-        <div style={{ marginTop:16 }}><a href="/" style={{ fontSize:11, color:'#444', textDecoration:'none' }}>← Back to IsItReel</a></div>
+    <div style={{ minHeight: '100vh', background: '#06060A', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'DM Sans',sans-serif" }}>
+      <div style={{ background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', borderRadius: 16, padding: '40px 32px', width: 360, textAlign: 'center' }}>
+        <div style={{ width: 44, height: 44, borderRadius: 10, background: 'linear-gradient(135deg,#FF3B5C,#FF6B35)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 900, color: '#fff', margin: '0 auto 20px', fontFamily: "'Syne',sans-serif" }}>IR</div>
+        <div style={{ fontSize: 20, fontWeight: 800, color: '#fff', fontFamily: "'Syne',sans-serif", marginBottom: 6 }}>Command Center</div>
+        <div style={{ fontSize: 12, color: '#555', marginBottom: 28 }}>IsItReel — Internal Dashboard</div>
+        <input type="password" value={pw} onChange={e => setPw(e.target.value)} onKeyDown={e => e.key === 'Enter' && login()}
+          placeholder="Enter password" style={{ width: '100%', padding: '12px 16px', borderRadius: 10, background: 'rgba(255,255,255,.06)', border: `1px solid ${pwErr ? 'rgba(255,59,92,.5)' : 'rgba(255,255,255,.1)'}`, color: '#E0E0E0', fontSize: 14, marginBottom: 12, outline: 'none', fontFamily: "'DM Sans',sans-serif", boxSizing: 'border-box' }} />
+        {pwErr && <div style={{ fontSize: 11, color: '#FF3B5C', marginBottom: 12 }}>Incorrect password</div>}
+        <button onClick={login} style={{ width: '100%', padding: '12px', borderRadius: 10, background: 'linear-gradient(135deg,#FF3B5C,#FF6B35)', color: '#fff', fontSize: 14, fontWeight: 700, border: 'none', cursor: 'pointer', fontFamily: "'Syne',sans-serif" }}>Enter</button>
+        <div style={{ marginTop: 16 }}><a href="/" style={{ fontSize: 11, color: '#444', textDecoration: 'none' }}>← Back to IsItReel</a></div>
       </div>
     </div>
   );
 
   const tabs = [
-    { id:'dashboard', label:'📊 Dashboard' },
-    { id:'xagent', label:'𝕏 X Agent' },
-    { id:'blogagent', label:'✍️ Blog Agent' },
-    { id:'viral', label:'🔥 Viral Moment' },
-    { id:'calendar', label:'📅 Content Calendar' },
-    { id:'detection', label:'🔬 Detection Intel' },
-    { id:'report', label:'📋 Deepfake Report' },
-    { id:'geo', label:'🌐 GEO Agent' },
-    { id:'whatsapp', label:'💬 WhatsApp Agent' },
-    { id:'journalist', label:'📰 PR Agent' },
-    { id:'statsmonitor', label:'📈 Stats Monitor' },
-    { id:'alerts', label:'🔔 Alerts' },
+    { id: 'dashboard', label: '📊 Dashboard' },
+    { id: 'xagent', label: '𝕏 X Agent' },
+    { id: 'blogagent', label: '✍️ Blog Agent' },
+    { id: 'viral', label: '🔥 Viral Moment' },
+    { id: 'calendar', label: '📅 Content Calendar' },
+    { id: 'detection', label: '🔬 Detection Intel' },
+    { id: 'report', label: '📋 Deepfake Report' },
+    { id: 'geo', label: '🌐 GEO Agent' },
+    { id: 'whatsapp', label: '💬 WhatsApp Agent' },
+    { id: 'journalist', label: '📰 PR Agent' },
+    { id: 'statsmonitor', label: '📈 Stats Monitor' },
+    { id: 'alerts', label: '🔔 Alerts' },
   ];
 
   const AgentPanel = ({ type, placeholder, buttonLabel, description }) => {
     const [input, setInput] = useState('');
     return (
       <div>
-        <div style={{ fontSize:13, color:'#555', marginBottom:16, lineHeight:1.6 }}>{description}</div>
+        <div style={{ fontSize: 13, color: '#555', marginBottom: 16, lineHeight: 1.6 }}>{description}</div>
         <textarea value={input} onChange={e => setInput(e.target.value)} placeholder={placeholder}
-          style={{ width:'100%', padding:'14px 16px', borderRadius:12, background:'rgba(255,255,255,.04)', border:'1px solid rgba(255,255,255,.08)', color:'#E0E0E0', fontSize:13, fontFamily:"'DM Sans',sans-serif", minHeight:100, resize:'vertical', outline:'none', marginBottom:12, boxSizing:'border-box' }} />
+          style={{ width: '100%', padding: '14px 16px', borderRadius: 12, background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', color: '#E0E0E0', fontSize: 13, fontFamily: "'DM Sans',sans-serif", minHeight: 100, resize: 'vertical', outline: 'none', marginBottom: 12, boxSizing: 'border-box' }} />
         <button onClick={() => runAgent(type, input)} disabled={loading || !input.trim()}
-          style={{ padding:'11px 28px', borderRadius:10, background:input.trim()&&!loading?'linear-gradient(135deg,#FF3B5C,#FF6B35)':'rgba(255,255,255,.05)', color:input.trim()&&!loading?'#fff':'#333', fontSize:13, fontWeight:700, border:'none', cursor:input.trim()&&!loading?'pointer':'not-allowed', fontFamily:"'Syne',sans-serif", marginBottom:20 }}>
+          style={{ padding: '11px 28px', borderRadius: 10, background: input.trim() && !loading ? 'linear-gradient(135deg,#FF3B5C,#FF6B35)' : 'rgba(255,255,255,.05)', color: input.trim() && !loading ? '#fff' : '#333', fontSize: 13, fontWeight: 700, border: 'none', cursor: input.trim() && !loading ? 'pointer' : 'not-allowed', fontFamily: "'Syne',sans-serif", marginBottom: 20 }}>
           {loading && outputTab === type ? '⏳ Running...' : buttonLabel}
         </button>
         {output && outputTab === type && (
-          <div style={{ background:'rgba(255,255,255,.03)', border:'1px solid rgba(255,255,255,.07)', borderRadius:12, padding:'20px', position:'relative' }}>
-            <button onClick={() => navigator.clipboard.writeText(output)} style={{ position:'absolute', top:12, right:12, background:'rgba(255,255,255,.08)', border:'none', color:'#888', fontSize:11, padding:'4px 10px', borderRadius:6, cursor:'pointer' }}>📋 Copy</button>
-            <pre style={{ whiteSpace:'pre-wrap', color:'#CCC', fontSize:13, lineHeight:1.7, fontFamily:"'DM Sans',sans-serif", margin:0, paddingRight:60 }}>{output}</pre>
+          <div style={{ background: 'rgba(255,255,255,.03)', border: '1px solid rgba(255,255,255,.07)', borderRadius: 12, padding: '20px', position: 'relative' }}>
+            <button onClick={() => navigator.clipboard.writeText(output)} style={{ position: 'absolute', top: 12, right: 12, background: 'rgba(255,255,255,.08)', border: 'none', color: '#888', fontSize: 11, padding: '4px 10px', borderRadius: 6, cursor: 'pointer' }}>📋 Copy</button>
+            <pre style={{ whiteSpace: 'pre-wrap', color: '#CCC', fontSize: 13, lineHeight: 1.7, fontFamily: "'DM Sans',sans-serif", margin: 0, paddingRight: 60 }}>{output}</pre>
           </div>
         )}
       </div>
@@ -825,92 +825,92 @@ Format each day clearly. Make content feel native to each platform, not cross-po
   };
 
   const stats = [
-    { label:'Total Scans', value:'Loading...', icon:'🔍', color:'#00FF94' },
-    { label:'FAKE Verdicts', value:'—', icon:'🚫', color:'#FF3B5C' },
-    { label:'AUTHENTIC', value:'—', icon:'✅', color:'#00FF94' },
-    { label:'SUSPICIOUS', value:'—', icon:'⚠️', color:'#FFB800' },
+    { label: 'Total Scans', value: 'Loading...', icon: '🔍', color: '#00FF94' },
+    { label: 'FAKE Verdicts', value: '—', icon: '🚫', color: '#FF3B5C' },
+    { label: 'AUTHENTIC', value: '—', icon: '✅', color: '#00FF94' },
+    { label: 'SUSPICIOUS', value: '—', icon: '⚠️', color: '#FFB800' },
   ];
 
   return (
-    <div style={{ minHeight:'100vh', background:'#06060A', fontFamily:"'DM Sans',sans-serif", color:'#F0F0F0', display:'flex', flexDirection:'column' }}>
+    <div style={{ minHeight: '100vh', background: '#06060A', fontFamily: "'DM Sans',sans-serif", color: '#F0F0F0', display: 'flex', flexDirection: 'column' }}>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap');*{box-sizing:border-box;margin:0;padding:0}button{cursor:pointer}textarea,input{outline:none}`}</style>
 
       {/* Header */}
-      <div style={{ background:'rgba(255,255,255,.03)', borderBottom:'1px solid rgba(255,255,255,.06)', padding:'14px 28px', display:'flex', alignItems:'center', justifyContent:'space-between', flexShrink:0 }}>
-        <div style={{ display:'flex', alignItems:'center', gap:12 }}>
-          <div style={{ width:32, height:32, borderRadius:8, background:'linear-gradient(135deg,#FF3B5C,#FF6B35)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:11, fontWeight:900, color:'#fff', fontFamily:"'Syne',sans-serif" }}>IR</div>
+      <div style={{ background: 'rgba(255,255,255,.03)', borderBottom: '1px solid rgba(255,255,255,.06)', padding: '14px 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ width: 32, height: 32, borderRadius: 8, background: 'linear-gradient(135deg,#FF3B5C,#FF6B35)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 900, color: '#fff', fontFamily: "'Syne',sans-serif" }}>IR</div>
           <div>
-            <div style={{ fontSize:15, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif" }}>IsItReel Command Center</div>
-            <div style={{ fontSize:10, color:'#444' }}>Private Dashboard · {new Date().toLocaleDateString('en-US', {weekday:'long', month:'long', day:'numeric'})}</div>
+            <div style={{ fontSize: 15, fontWeight: 800, color: '#fff', fontFamily: "'Syne',sans-serif" }}>IsItReel Command Center</div>
+            <div style={{ fontSize: 10, color: '#444' }}>Private Dashboard · {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}</div>
           </div>
         </div>
-        <div style={{ display:'flex', alignItems:'center', gap:16 }}>
-          <div style={{ fontSize:11, color:'#00FF94' }}>● Live</div>
-          <a href="/" style={{ fontSize:12, color:'#555', textDecoration:'none' }}>← Back to app</a>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <div style={{ fontSize: 11, color: '#00FF94' }}>● Live</div>
+          <a href="/" style={{ fontSize: 12, color: '#555', textDecoration: 'none' }}>← Back to app</a>
         </div>
       </div>
 
-      <div style={{ display:'flex', flex:1, overflow:'hidden' }}>
+      <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
         {/* Sidebar */}
-        <div style={{ width:210, background:'rgba(255,255,255,.02)', borderRight:'1px solid rgba(255,255,255,.05)', padding:'20px 12px', flexShrink:0, overflowY:'auto' }}>
-          <div style={{ fontSize:9, fontWeight:700, letterSpacing:'.12em', color:'#333', textTransform:'uppercase', marginBottom:10, paddingLeft:4 }}>Agents</div>
+        <div style={{ width: 210, background: 'rgba(255,255,255,.02)', borderRight: '1px solid rgba(255,255,255,.05)', padding: '20px 12px', flexShrink: 0, overflowY: 'auto' }}>
+          <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: '.12em', color: '#333', textTransform: 'uppercase', marginBottom: 10, paddingLeft: 4 }}>Agents</div>
           {tabs.map(tab => (
             <button key={tab.id} onClick={() => { setActiveTab(tab.id); setOutput(''); setOutputTab(''); }}
-              style={{ display:'block', width:'100%', padding:'9px 12px', borderRadius:8, background:activeTab===tab.id?'rgba(255,59,92,.12)':'transparent', color:activeTab===tab.id?'#FF3B5C':'#555', fontSize:12, fontWeight:activeTab===tab.id?600:400, border:'none', textAlign:'left', marginBottom:2, fontFamily:"'DM Sans',sans-serif", transition:'all .15s' }}>
+              style={{ display: 'block', width: '100%', padding: '9px 12px', borderRadius: 8, background: activeTab === tab.id ? 'rgba(255,59,92,.12)' : 'transparent', color: activeTab === tab.id ? '#FF3B5C' : '#555', fontSize: 12, fontWeight: activeTab === tab.id ? 600 : 400, border: 'none', textAlign: 'left', marginBottom: 2, fontFamily: "'DM Sans',sans-serif", transition: 'all .15s' }}>
               {tab.label}
             </button>
           ))}
         </div>
 
         {/* Main */}
-        <div style={{ flex:1, padding:'28px 32px', overflowY:'auto' }}>
+        <div style={{ flex: 1, padding: '28px 32px', overflowY: 'auto' }}>
 
           {activeTab === 'dashboard' && (
             <div>
-              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:4 }}>Dashboard</div>
-              <div style={{ fontSize:13, color:'#444', marginBottom:28 }}>All 10 agents ready. Click any agent in the sidebar to get started.</div>
+              <div style={{ fontSize: 22, fontWeight: 800, color: '#fff', fontFamily: "'Syne',sans-serif", marginBottom: 4 }}>Dashboard</div>
+              <div style={{ fontSize: 13, color: '#444', marginBottom: 28 }}>All 10 agents ready. Click any agent in the sidebar to get started.</div>
 
               {/* Stats row */}
-              <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:12, marginBottom:24 }}>
-                {stats.map((s,i) => (
-                  <div key={i} style={{ background:'rgba(255,255,255,.03)', border:'1px solid rgba(255,255,255,.06)', borderRadius:12, padding:'16px' }}>
-                    <div style={{ fontSize:20, marginBottom:6 }}>{s.icon}</div>
-                    <div style={{ fontSize:22, fontWeight:800, color:s.color, fontFamily:"'Syne',sans-serif" }}>{s.value}</div>
-                    <div style={{ fontSize:11, color:'#444', marginTop:4 }}>{s.label}</div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, marginBottom: 24 }}>
+                {stats.map((s, i) => (
+                  <div key={i} style={{ background: 'rgba(255,255,255,.03)', border: '1px solid rgba(255,255,255,.06)', borderRadius: 12, padding: '16px' }}>
+                    <div style={{ fontSize: 20, marginBottom: 6 }}>{s.icon}</div>
+                    <div style={{ fontSize: 22, fontWeight: 800, color: s.color, fontFamily: "'Syne',sans-serif" }}>{s.value}</div>
+                    <div style={{ fontSize: 11, color: '#444', marginTop: 4 }}>{s.label}</div>
                   </div>
                 ))}
               </div>
 
               {/* Agent cards */}
-              <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:12, marginBottom:24 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 12, marginBottom: 24 }}>
                 {[
-                  { id:'xagent', icon:'𝕏', label:'X Agent', desc:'Write viral X threads about deepfake news. One click, ready to post.' },
-                  { id:'blogagent', icon:'✍️', label:'Blog Agent', desc:'SEO-optimized blog posts targeting deepfake keywords. With meta description.' },
-                  { id:'viral', icon:'🔥', label:'Viral Moment', desc:'Full content package for breaking deepfake stories. X + IG + FB + email.' },
-                  { id:'calendar', icon:'📅', label:'Content Calendar', desc:'7-day content plan. All 4 languages. All platforms. CapCut suggestions.' },
-                  { id:'detection', icon:'🔬', label:'Detection Intel', desc:'Monitor new AI models. Get prompt update recommendations instantly.' },
-                  { id:'report', icon:'📋', label:'Deepfake Report', desc:'Monthly journalist-ready report. Auto-compiled from scan data.' },
-                  { id:'geo', icon:'🌐', label:'GEO Agent', desc:'Optimize for Perplexity, ChatGPT Search, Gemini. AI search visibility.' },
-                  { id:'whatsapp', icon:'💬', label:'WhatsApp Agent', desc:'Short shareable messages for WhatsApp in all 4 languages.' },
-                  { id:'journalist', icon:'📰', label:'PR Agent', desc:'Journalist outreach emails with subject line options. Under 200 words.' },
-                  { id:'statsmonitor', icon:'📈', label:'Stats Monitor', desc:'Check if homepage stats are current. Get updated copy ready to deploy.' },
-                  { id:'alerts', icon:'🔔', label:'Alerts', desc:'Send manual Telegram alerts to your phone instantly.' },
-                  { id:'dashboard', icon:'🔜', label:'More coming', desc:'Link building, competitor monitor, email sequences, and more.' },
+                  { id: 'xagent', icon: '𝕏', label: 'X Agent', desc: 'Write viral X threads about deepfake news. One click, ready to post.' },
+                  { id: 'blogagent', icon: '✍️', label: 'Blog Agent', desc: 'SEO-optimized blog posts targeting deepfake keywords. With meta description.' },
+                  { id: 'viral', icon: '🔥', label: 'Viral Moment', desc: 'Full content package for breaking deepfake stories. X + IG + FB + email.' },
+                  { id: 'calendar', icon: '📅', label: 'Content Calendar', desc: '7-day content plan. All 4 languages. All platforms. CapCut suggestions.' },
+                  { id: 'detection', icon: '🔬', label: 'Detection Intel', desc: 'Monitor new AI models. Get prompt update recommendations instantly.' },
+                  { id: 'report', icon: '📋', label: 'Deepfake Report', desc: 'Monthly journalist-ready report. Auto-compiled from scan data.' },
+                  { id: 'geo', icon: '🌐', label: 'GEO Agent', desc: 'Optimize for Perplexity, ChatGPT Search, Gemini. AI search visibility.' },
+                  { id: 'whatsapp', icon: '💬', label: 'WhatsApp Agent', desc: 'Short shareable messages for WhatsApp in all 4 languages.' },
+                  { id: 'journalist', icon: '📰', label: 'PR Agent', desc: 'Journalist outreach emails with subject line options. Under 200 words.' },
+                  { id: 'statsmonitor', icon: '📈', label: 'Stats Monitor', desc: 'Check if homepage stats are current. Get updated copy ready to deploy.' },
+                  { id: 'alerts', icon: '🔔', label: 'Alerts', desc: 'Send manual Telegram alerts to your phone instantly.' },
+                  { id: 'dashboard', icon: '🔜', label: 'More coming', desc: 'Link building, competitor monitor, email sequences, and more.' },
                 ].map((card, i) => (
                   <div key={i} onClick={() => card.id !== 'dashboard' && setActiveTab(card.id)}
-                    style={{ background:'rgba(255,255,255,.03)', border:'1px solid rgba(255,255,255,.06)', borderRadius:12, padding:'18px', cursor:card.id!=='dashboard'?'pointer':'default', transition:'all .2s' }}
-                    onMouseOver={e => { if(card.id!=='dashboard') { e.currentTarget.style.borderColor='rgba(255,59,92,.3)'; e.currentTarget.style.background='rgba(255,59,92,.05)'; }}}
-                    onMouseOut={e => { e.currentTarget.style.borderColor='rgba(255,255,255,.06)'; e.currentTarget.style.background='rgba(255,255,255,.03)'; }}>
-                    <div style={{ fontSize:22, marginBottom:8 }}>{card.icon}</div>
-                    <div style={{ fontSize:13, fontWeight:700, color:'#DDD', marginBottom:5 }}>{card.label}</div>
-                    <div style={{ fontSize:11, color:'#444', lineHeight:1.5 }}>{card.desc}</div>
+                    style={{ background: 'rgba(255,255,255,.03)', border: '1px solid rgba(255,255,255,.06)', borderRadius: 12, padding: '18px', cursor: card.id !== 'dashboard' ? 'pointer' : 'default', transition: 'all .2s' }}
+                    onMouseOver={e => { if (card.id !== 'dashboard') { e.currentTarget.style.borderColor = 'rgba(255,59,92,.3)'; e.currentTarget.style.background = 'rgba(255,59,92,.05)'; } }}
+                    onMouseOut={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,.06)'; e.currentTarget.style.background = 'rgba(255,255,255,.03)'; }}>
+                    <div style={{ fontSize: 22, marginBottom: 8 }}>{card.icon}</div>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: '#DDD', marginBottom: 5 }}>{card.label}</div>
+                    <div style={{ fontSize: 11, color: '#444', lineHeight: 1.5 }}>{card.desc}</div>
                   </div>
                 ))}
               </div>
 
               {/* Next steps */}
-              <div style={{ background:'rgba(0,255,148,.04)', border:'1px solid rgba(0,255,148,.1)', borderRadius:12, padding:'16px 20px' }}>
-                <div style={{ fontSize:12, color:'#00FF94', fontWeight:600, marginBottom:8 }}>🚀 Launch checklist</div>
+              <div style={{ background: 'rgba(0,255,148,.04)', border: '1px solid rgba(0,255,148,.1)', borderRadius: 12, padding: '16px 20px' }}>
+                <div style={{ fontSize: 12, color: '#00FF94', fontWeight: 600, marginBottom: 8 }}>🚀 Launch checklist</div>
                 {[
                   'Run Viral Moment agent on a trending deepfake story',
                   'Generate first week of Content Calendar',
@@ -920,8 +920,8 @@ Format each day clearly. Make content feel native to each platform, not cross-po
                   'Run Stats Monitor to verify homepage numbers are current',
                   'Send test Telegram alert to verify alerts working',
                 ].map((item, i) => (
-                  <div key={i} style={{ fontSize:12, color:'#444', marginBottom:5, display:'flex', gap:8 }}>
-                    <span style={{ color:'#333' }}>□</span>{item}
+                  <div key={i} style={{ fontSize: 12, color: '#444', marginBottom: 5, display: 'flex', gap: 8 }}>
+                    <span style={{ color: '#333' }}>□</span>{item}
                   </div>
                 ))}
               </div>
@@ -930,39 +930,39 @@ Format each day clearly. Make content feel native to each platform, not cross-po
 
           {activeTab === 'xagent' && (
             <div>
-              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:4 }}>𝕏 X Agent</div>
+              <div style={{ fontSize: 22, fontWeight: 800, color: '#fff', fontFamily: "'Syne',sans-serif", marginBottom: 4 }}>𝕏 X Agent</div>
               <AgentPanel type="xpost" placeholder="Paste a news headline, deepfake story, or describe what you want to post about..." buttonLabel="Generate X Thread →" description="Paste a deepfake news story or topic. Get a ready-to-post X thread in seconds with hashtags and CTA." />
             </div>
           )}
 
           {activeTab === 'blogagent' && (
             <div>
-              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:4 }}>✍️ Blog Agent</div>
+              <div style={{ fontSize: 22, fontWeight: 800, color: '#fff', fontFamily: "'Syne',sans-serif", marginBottom: 4 }}>✍️ Blog Agent</div>
               <AgentPanel type="blog" placeholder="e.g. How to tell if a TikTok video is AI generated in 2025..." buttonLabel="Generate Blog Post →" description="Enter a topic and get a full SEO-optimized blog post with title, meta description, H2 sections, and CTA." />
             </div>
           )}
 
           {activeTab === 'viral' && (
             <div>
-              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:4 }}>🔥 Viral Moment Monitor</div>
+              <div style={{ fontSize: 22, fontWeight: 800, color: '#fff', fontFamily: "'Syne',sans-serif", marginBottom: 4 }}>🔥 Viral Moment Monitor</div>
               <AgentPanel type="viral" placeholder="Paste the breaking deepfake story, viral video description, or trending topic..." buttonLabel="Generate Full Content Package →" description="When a deepfake story breaks, paste it here. Get a complete content package — X thread, Instagram caption, Facebook post, blog opener, journalist subject line, and WhatsApp message. All ready to post in under 5 minutes." />
             </div>
           )}
 
           {activeTab === 'calendar' && (
             <div>
-              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:4 }}>📅 Content Calendar</div>
-              <div style={{ fontSize:13, color:'#555', marginBottom:16, lineHeight:1.6 }}>Generate a full 7-day content plan across all platforms in all 4 languages. Optionally add context about what's happening in the news this week.</div>
+              <div style={{ fontSize: 22, fontWeight: 800, color: '#fff', fontFamily: "'Syne',sans-serif", marginBottom: 4 }}>📅 Content Calendar</div>
+              <div style={{ fontSize: 13, color: '#555', marginBottom: 16, lineHeight: 1.6 }}>Generate a full 7-day content plan across all platforms in all 4 languages. Optionally add context about what's happening in the news this week.</div>
               <textarea value={weekInput} onChange={e => setWeekInput(e.target.value)} placeholder="Optional: What's happening in deepfake news this week? Any specific topics to focus on? Leave blank for general content..."
-                style={{ width:'100%', padding:'14px 16px', borderRadius:12, background:'rgba(255,255,255,.04)', border:'1px solid rgba(255,255,255,.08)', color:'#E0E0E0', fontSize:13, fontFamily:"'DM Sans',sans-serif", minHeight:80, resize:'vertical', outline:'none', marginBottom:12 }} />
+                style={{ width: '100%', padding: '14px 16px', borderRadius: 12, background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', color: '#E0E0E0', fontSize: 13, fontFamily: "'DM Sans',sans-serif", minHeight: 80, resize: 'vertical', outline: 'none', marginBottom: 12 }} />
               <button onClick={generateCalendar} disabled={calendarLoading}
-                style={{ padding:'11px 28px', borderRadius:10, background:!calendarLoading?'linear-gradient(135deg,#FF3B5C,#FF6B35)':'rgba(255,255,255,.05)', color:!calendarLoading?'#fff':'#333', fontSize:13, fontWeight:700, border:'none', cursor:!calendarLoading?'pointer':'not-allowed', fontFamily:"'Syne',sans-serif", marginBottom:20 }}>
+                style={{ padding: '11px 28px', borderRadius: 10, background: !calendarLoading ? 'linear-gradient(135deg,#FF3B5C,#FF6B35)' : 'rgba(255,255,255,.05)', color: !calendarLoading ? '#fff' : '#333', fontSize: 13, fontWeight: 700, border: 'none', cursor: !calendarLoading ? 'pointer' : 'not-allowed', fontFamily: "'Syne',sans-serif", marginBottom: 20 }}>
                 {calendarLoading ? "⏳ Generating 7-day calendar..." : "📅 Generate This Week's Calendar →"}
               </button>
               {calendarOutput && (
-                <div style={{ background:'rgba(255,255,255,.03)', border:'1px solid rgba(255,255,255,.07)', borderRadius:12, padding:'20px', position:'relative' }}>
-                  <button onClick={() => navigator.clipboard.writeText(calendarOutput)} style={{ position:'absolute', top:12, right:12, background:'rgba(255,255,255,.08)', border:'none', color:'#888', fontSize:11, padding:'4px 10px', borderRadius:6, cursor:'pointer' }}>📋 Copy</button>
-                  <pre style={{ whiteSpace:'pre-wrap', color:'#CCC', fontSize:13, lineHeight:1.7, fontFamily:"'DM Sans',sans-serif", margin:0, paddingRight:60 }}>{calendarOutput}</pre>
+                <div style={{ background: 'rgba(255,255,255,.03)', border: '1px solid rgba(255,255,255,.07)', borderRadius: 12, padding: '20px', position: 'relative' }}>
+                  <button onClick={() => navigator.clipboard.writeText(calendarOutput)} style={{ position: 'absolute', top: 12, right: 12, background: 'rgba(255,255,255,.08)', border: 'none', color: '#888', fontSize: 11, padding: '4px 10px', borderRadius: 6, cursor: 'pointer' }}>📋 Copy</button>
+                  <pre style={{ whiteSpace: 'pre-wrap', color: '#CCC', fontSize: 13, lineHeight: 1.7, fontFamily: "'DM Sans',sans-serif", margin: 0, paddingRight: 60 }}>{calendarOutput}</pre>
                 </div>
               )}
             </div>
@@ -970,51 +970,51 @@ Format each day clearly. Make content feel native to each platform, not cross-po
 
           {activeTab === 'detection' && (
             <div>
-              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:4 }}>🔬 Detection Intelligence</div>
+              <div style={{ fontSize: 22, fontWeight: 800, color: '#fff', fontFamily: "'Syne',sans-serif", marginBottom: 4 }}>🔬 Detection Intelligence</div>
               <AgentPanel type="detection" placeholder="e.g. Google Veo 3 with audio generation launched — what should IsItReel's prompt include to catch it?" buttonLabel="Analyze & Get Prompt Update →" description="Enter a new AI video model or deepfake technique. Get specific signals to add to IsItReel's detection prompt, ready to copy-paste." />
             </div>
           )}
 
           {activeTab === 'report' && (
             <div>
-              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:4 }}>📋 Monthly Deepfake Report</div>
+              <div style={{ fontSize: 22, fontWeight: 800, color: '#fff', fontFamily: "'Syne',sans-serif", marginBottom: 4 }}>📋 Monthly Deepfake Report</div>
               <AgentPanel type="report" placeholder="e.g. This month IsItReel scanned 1,847 videos. 38% FAKE, 29% SUSPICIOUS, 33% AUTHENTIC. Most common platform: TikTok (42%). Most scanned content type: Political figures..." buttonLabel="Generate Report Section →" description="Paste this month's scan summary data. Get a journalist-ready monthly Deepfake Report section you can publish and send to press." />
             </div>
           )}
 
           {activeTab === 'geo' && (
             <div>
-              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:4 }}>🌐 GEO Agent</div>
+              <div style={{ fontSize: 22, fontWeight: 800, color: '#fff', fontFamily: "'Syne',sans-serif", marginBottom: 4 }}>🌐 GEO Agent</div>
               <AgentPanel type="geo" placeholder="e.g. how to detect AI generated video, is this video real or fake, best deepfake detector 2025..." buttonLabel="Generate GEO Content →" description="Enter search queries people ask AI engines. Get optimized Q&A pairs that position IsItReel as the answer on Perplexity, ChatGPT Search, and Gemini." />
             </div>
           )}
 
           {activeTab === 'whatsapp' && (
             <div>
-              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:4 }}>💬 WhatsApp Agent</div>
+              <div style={{ fontSize: 22, fontWeight: 800, color: '#fff', fontFamily: "'Syne',sans-serif", marginBottom: 4 }}>💬 WhatsApp Agent</div>
               <AgentPanel type="whatsapp" placeholder="e.g. viral deepfake of politician spreading in WhatsApp groups, want to warn people and drive to IsItReel..." buttonLabel="Generate WhatsApp Messages →" description="Create short, shareable WhatsApp messages in all 4 languages. Optimized for forwarding in group chats — feels natural, not promotional." />
             </div>
           )}
 
           {activeTab === 'journalist' && (
             <div>
-              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:4 }}>📰 PR Agent</div>
+              <div style={{ fontSize: 22, fontWeight: 800, color: '#fff', fontFamily: "'Syne',sans-serif", marginBottom: 4 }}>📰 PR Agent</div>
               <AgentPanel type="journalist" placeholder="e.g. viral deepfake of CEO spreading on LinkedIn, IsItReel detected it as FAKE at 94% confidence..." buttonLabel="Generate Journalist Email →" description="Paste a deepfake story and IsItReel's scan result. Get a compelling journalist outreach email with 3 subject line options, under 200 words, ready to send." />
             </div>
           )}
 
           {activeTab === 'statsmonitor' && (
             <div>
-              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:4 }}>📈 Stats Monitor</div>
-              <div style={{ fontSize:13, color:'#555', marginBottom:20, lineHeight:1.6 }}>Check if IsItReel's homepage statistics are current. Get updated copy ready to deploy if numbers have changed.</div>
+              <div style={{ fontSize: 22, fontWeight: 800, color: '#fff', fontFamily: "'Syne',sans-serif", marginBottom: 4 }}>📈 Stats Monitor</div>
+              <div style={{ fontSize: 13, color: '#555', marginBottom: 20, lineHeight: 1.6 }}>Check if IsItReel's homepage statistics are current. Get updated copy ready to deploy if numbers have changed.</div>
               <button onClick={checkStats} disabled={statsLoading}
-                style={{ padding:'11px 28px', borderRadius:10, background:!statsLoading?'linear-gradient(135deg,#FF3B5C,#FF6B35)':'rgba(255,255,255,.05)', color:!statsLoading?'#fff':'#333', fontSize:13, fontWeight:700, border:'none', cursor:!statsLoading?'pointer':'not-allowed', fontFamily:"'Syne',sans-serif", marginBottom:20 }}>
+                style={{ padding: '11px 28px', borderRadius: 10, background: !statsLoading ? 'linear-gradient(135deg,#FF3B5C,#FF6B35)' : 'rgba(255,255,255,.05)', color: !statsLoading ? '#fff' : '#333', fontSize: 13, fontWeight: 700, border: 'none', cursor: !statsLoading ? 'pointer' : 'not-allowed', fontFamily: "'Syne',sans-serif", marginBottom: 20 }}>
                 {statsLoading ? '⏳ Checking stats...' : '📈 Check Current Stats →'}
               </button>
               {statsOutput && (
-                <div style={{ background:'rgba(255,255,255,.03)', border:'1px solid rgba(255,255,255,.07)', borderRadius:12, padding:'20px', position:'relative' }}>
-                  <button onClick={() => navigator.clipboard.writeText(statsOutput)} style={{ position:'absolute', top:12, right:12, background:'rgba(255,255,255,.08)', border:'none', color:'#888', fontSize:11, padding:'4px 10px', borderRadius:6, cursor:'pointer' }}>📋 Copy</button>
-                  <pre style={{ whiteSpace:'pre-wrap', color:'#CCC', fontSize:13, lineHeight:1.7, fontFamily:"'DM Sans',sans-serif", margin:0, paddingRight:60 }}>{statsOutput}</pre>
+                <div style={{ background: 'rgba(255,255,255,.03)', border: '1px solid rgba(255,255,255,.07)', borderRadius: 12, padding: '20px', position: 'relative' }}>
+                  <button onClick={() => navigator.clipboard.writeText(statsOutput)} style={{ position: 'absolute', top: 12, right: 12, background: 'rgba(255,255,255,.08)', border: 'none', color: '#888', fontSize: 11, padding: '4px 10px', borderRadius: 6, cursor: 'pointer' }}>📋 Copy</button>
+                  <pre style={{ whiteSpace: 'pre-wrap', color: '#CCC', fontSize: 13, lineHeight: 1.7, fontFamily: "'DM Sans',sans-serif", margin: 0, paddingRight: 60 }}>{statsOutput}</pre>
                 </div>
               )}
             </div>
@@ -1022,16 +1022,16 @@ Format each day clearly. Make content feel native to each platform, not cross-po
 
           {activeTab === 'alerts' && (
             <div>
-              <div style={{ fontSize:22, fontWeight:800, color:'#fff', fontFamily:"'Syne',sans-serif", marginBottom:4 }}>🔔 Telegram Alerts</div>
-              <div style={{ fontSize:13, color:'#555', marginBottom:20, lineHeight:1.6 }}>Send manual alerts to your Telegram. Automatic alerts fire when new subscribers join.</div>
-              <div style={{ background:'rgba(0,255,148,.04)', border:'1px solid rgba(0,255,148,.1)', borderRadius:12, padding:'14px 18px', marginBottom:20 }}>
-                <div style={{ fontSize:12, color:'#00FF94', fontWeight:600, marginBottom:4 }}>Automatic alerts configured:</div>
-                <div style={{ fontSize:12, color:'#444' }}>✓ New subscriber joins → instant Telegram notification</div>
+              <div style={{ fontSize: 22, fontWeight: 800, color: '#fff', fontFamily: "'Syne',sans-serif", marginBottom: 4 }}>🔔 Telegram Alerts</div>
+              <div style={{ fontSize: 13, color: '#555', marginBottom: 20, lineHeight: 1.6 }}>Send manual alerts to your Telegram. Automatic alerts fire when new subscribers join.</div>
+              <div style={{ background: 'rgba(0,255,148,.04)', border: '1px solid rgba(0,255,148,.1)', borderRadius: 12, padding: '14px 18px', marginBottom: 20 }}>
+                <div style={{ fontSize: 12, color: '#00FF94', fontWeight: 600, marginBottom: 4 }}>Automatic alerts configured:</div>
+                <div style={{ fontSize: 12, color: '#444' }}>✓ New subscriber joins → instant Telegram notification</div>
               </div>
               <textarea value={alertMsg} onChange={e => setAlertMsg(e.target.value)} placeholder="Type a manual alert message to send to your Telegram..."
-                style={{ width:'100%', padding:'14px 16px', borderRadius:12, background:'rgba(255,255,255,.04)', border:'1px solid rgba(255,255,255,.08)', color:'#E0E0E0', fontSize:13, fontFamily:"'DM Sans',sans-serif", minHeight:80, resize:'vertical', outline:'none', marginBottom:12 }} />
+                style={{ width: '100%', padding: '14px 16px', borderRadius: 12, background: 'rgba(255,255,255,.04)', border: '1px solid rgba(255,255,255,.08)', color: '#E0E0E0', fontSize: 13, fontFamily: "'DM Sans',sans-serif", minHeight: 80, resize: 'vertical', outline: 'none', marginBottom: 12 }} />
               <button onClick={sendAlert} disabled={!alertMsg.trim()}
-                style={{ padding:'11px 28px', borderRadius:10, background:alertMsg.trim()?'linear-gradient(135deg,#FF3B5C,#FF6B35)':'rgba(255,255,255,.05)', color:alertMsg.trim()?'#fff':'#333', fontSize:13, fontWeight:700, border:'none', cursor:alertMsg.trim()?'pointer':'not-allowed', fontFamily:"'Syne',sans-serif" }}>
+                style={{ padding: '11px 28px', borderRadius: 10, background: alertMsg.trim() ? 'linear-gradient(135deg,#FF3B5C,#FF6B35)' : 'rgba(255,255,255,.05)', color: alertMsg.trim() ? '#fff' : '#333', fontSize: 13, fontWeight: 700, border: 'none', cursor: alertMsg.trim() ? 'pointer' : 'not-allowed', fontFamily: "'Syne',sans-serif" }}>
                 {alertSent ? '✓ Sent to Telegram!' : '🔔 Send Alert →'}
               </button>
             </div>
@@ -1088,7 +1088,7 @@ function IsItReel() {
           } else {
             localStorage.removeItem('isitreeel_token');
           }
-        } catch(e) {
+        } catch (e) {
           console.log('Session check failed:', e.message);
         }
       }
@@ -1098,19 +1098,19 @@ function IsItReel() {
     const params = new URLSearchParams(window.location.search);
     const scanParam = params.get('scan');
     if (scanParam) {
-  const decodedUrl = decodeURIComponent(scanParam);
-  const isBrowserOnly = decodedUrl.includes('youtube.com') || decodedUrl.includes('x.com') || decodedUrl.includes('twitter.com');
-  setInputMode('url');
-  setUrlInput(decodedUrl);
-  window.history.replaceState({}, '', '/');
-  if (!isBrowserOnly) {
-    setTimeout(() => {
-      document.getElementById('isitreel-scan-btn')?.click();
-    }, 1500);
-  }
-}
+      const decodedUrl = decodeURIComponent(scanParam);
+      const isBrowserOnly = decodedUrl.includes('youtube.com') || decodedUrl.includes('x.com') || decodedUrl.includes('twitter.com');
+      setInputMode('url');
+      setUrlInput(decodedUrl);
+      window.history.replaceState({}, '', '/');
+      if (!isBrowserOnly) {
+        setTimeout(() => {
+          document.getElementById('isitreel-scan-btn')?.click();
+        }, 1500);
+      }
+    }
 
-  
+
     // Check for successful Stripe redirect
     if (params.get('upgraded') === 'true') {
       const sessionId = params.get('session_id');
@@ -1120,16 +1120,16 @@ function IsItReel() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ sessionId }),
         })
-        .then(r => r.json())
-        .then(data => {
-          if (data.token) {
-            localStorage.setItem('isitreeel_token', data.token);
-            setTier(data.tier);
-            setIsPro(data.tier === 'pro' || data.tier === 'founding');
-            setUserEmail(data.email || '');
-          }
-        })
-        .catch(e => console.log('Session creation failed:', e.message));
+          .then(r => r.json())
+          .then(data => {
+            if (data.token) {
+              localStorage.setItem('isitreeel_token', data.token);
+              setTier(data.tier);
+              setIsPro(data.tier === 'pro' || data.tier === 'founding');
+              setUserEmail(data.email || '');
+            }
+          })
+          .catch(e => console.log('Session creation failed:', e.message));
       }
       window.history.replaceState({}, '', '/');
     } else {
@@ -1167,7 +1167,7 @@ function IsItReel() {
       const data = await res.json();
       if (data.url) window.location.href = data.url;
       else alert('Checkout error. Please try again.');
-    } catch(err) {
+    } catch (err) {
       alert('Checkout error. Please try again.');
     }
   };
@@ -1230,7 +1230,7 @@ function IsItReel() {
     }
   };
 
- const runUrlScan = async () => {
+  const runUrlScan = async () => {
     if (!urlInput.trim() || !checkFreeLimit()) return;
     const trimmedUrl = urlInput.trim();
     const isBrowserOnly = trimmedUrl.includes('youtube.com') || trimmedUrl.includes('x.com') || trimmedUrl.includes('twitter.com');
@@ -1337,57 +1337,58 @@ function IsItReel() {
       `}</style>
 
       {/* Ambient */}
-      <div style={{ position:"fixed",inset:0,pointerEvents:"none",zIndex:0,
-        backgroundImage:`radial-gradient(ellipse 80% 45% at 50% -8%,rgba(255,59,92,.12) 0%,transparent 65%),
+      <div style={{
+        position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0,
+        backgroundImage: `radial-gradient(ellipse 80% 45% at 50% -8%,rgba(255,59,92,.12) 0%,transparent 65%),
           radial-gradient(ellipse 50% 30% at 90% 90%,rgba(0,255,148,.05) 0%,transparent 55%)` }} />
 
-      <div style={{ position:"relative",zIndex:1,maxWidth:780,margin:"0 auto",padding:"0 12px 100px",overflowX:"hidden" }}>
+      <div style={{ position: "relative", zIndex: 1, maxWidth: 780, margin: "0 auto", padding: "0 12px 100px", overflowX: "hidden" }}>
 
         {/* ── HEADER ── */}
-        <header style={{ display:"flex",alignItems:"center",justifyContent:"space-between",padding:"26px 0 38px",borderBottom:"1px solid rgba(255,255,255,.05)",marginBottom:42 }}>
-          <div style={{ display:"flex",alignItems:"center",gap:11 }}>
-            <div style={{ width:38,height:38,borderRadius:9,background:"linear-gradient(135deg,#FF3B5C,#FF6B35)",display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,fontWeight:900,fontFamily:"'Syne',sans-serif",color:"#fff",boxShadow:"0 0 18px rgba(255,59,92,.45)",flexShrink:0 }}>IR</div>
+        <header style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "26px 0 38px", borderBottom: "1px solid rgba(255,255,255,.05)", marginBottom: 42 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 11 }}>
+            <div style={{ width: 38, height: 38, borderRadius: 9, background: "linear-gradient(135deg,#FF3B5C,#FF6B35)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 900, fontFamily: "'Syne',sans-serif", color: "#fff", boxShadow: "0 0 18px rgba(255,59,92,.45)", flexShrink: 0 }}>IR</div>
             <div>
-              <div style={{ fontSize:19,fontWeight:800,fontFamily:"'Syne',sans-serif",letterSpacing:"-0.4px",color:"#fff",lineHeight:1 }}>IsItReel</div>
-              <div style={{ fontSize:9,color:"#888",letterSpacing:".08em",marginTop:3 }}>{t.tagline}</div>
+              <div style={{ fontSize: 19, fontWeight: 800, fontFamily: "'Syne',sans-serif", letterSpacing: "-0.4px", color: "#fff", lineHeight: 1 }}>IsItReel</div>
+              <div style={{ fontSize: 9, color: "#888", letterSpacing: ".08em", marginTop: 3 }}>{t.tagline}</div>
             </div>
           </div>
 
-          <div className="header-right" style={{ display:"flex",alignItems:"center",gap:8,flexWrap:"wrap",justifyContent:"flex-end" }}>
+          <div className="header-right" style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", justifyContent: "flex-end" }}>
             {/* Scan counter */}
-            <div style={{ fontSize:11,color:"#555",display:"flex",alignItems:"center",gap:5 }}>
-              <div style={{ width:5,height:5,borderRadius:"50%",background:"#00FF94",boxShadow:"0 0 6px #00FF94",animation:"pulse 2s ease infinite" }} />
-              <span style={{ animation:"countUp .3s ease",color:"#666" }}>{scanCount.toLocaleString()} {t.scansLabel}</span>
+            <div style={{ fontSize: 11, color: "#555", display: "flex", alignItems: "center", gap: 5 }}>
+              <div style={{ width: 5, height: 5, borderRadius: "50%", background: "#00FF94", boxShadow: "0 0 6px #00FF94", animation: "pulse 2s ease infinite" }} />
+              <span style={{ animation: "countUp .3s ease", color: "#666" }}>{scanCount.toLocaleString()} {t.scansLabel}</span>
             </div>
 
             {history.length > 0 && (
-              <button onClick={() => setShowHistory(s => !s)} style={{ background:"rgba(255,255,255,.05)",border:"1px solid rgba(255,255,255,.07)",borderRadius:7,padding:"5px 11px",color:"#777",fontSize:11,fontFamily:"'DM Sans',sans-serif" }}>
+              <button onClick={() => setShowHistory(s => !s)} style={{ background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.07)", borderRadius: 7, padding: "5px 11px", color: "#777", fontSize: 11, fontFamily: "'DM Sans',sans-serif" }}>
                 🕐 {history.length}
               </button>
             )}
 
             {/* Language picker with flags */}
-            <div style={{ position:"relative" }}>
-              <button onClick={() => setLangOpen(o => !o)} style={{ background:"rgba(255,255,255,.05)",border:"1px solid rgba(255,255,255,.07)",borderRadius:7,padding:"5px 11px",color:"#CCC",fontSize:12,display:"flex",alignItems:"center",gap:6,fontFamily:"'DM Sans',sans-serif" }}>
-                <span style={{ fontSize:16 }}>{LANGS[lang].flag}</span>
+            <div style={{ position: "relative" }}>
+              <button onClick={() => setLangOpen(o => !o)} style={{ background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.07)", borderRadius: 7, padding: "5px 11px", color: "#CCC", fontSize: 12, display: "flex", alignItems: "center", gap: 6, fontFamily: "'DM Sans',sans-serif" }}>
+                <span style={{ fontSize: 16 }}>{LANGS[lang].flag}</span>
                 <span>{LANGS[lang].label}</span>
-                <span style={{ fontSize:8,opacity:.5 }}>▼</span>
+                <span style={{ fontSize: 8, opacity: .5 }}>▼</span>
               </button>
               {langOpen && (
-                <div style={{ position:"absolute",top:"calc(100% + 5px)",right:0,background:"#0F0F13",border:"1px solid rgba(255,255,255,.09)",borderRadius:10,overflow:"hidden",zIndex:100,minWidth:160,boxShadow:"0 10px 40px rgba(0,0,0,.6)" }}>
-                  {Object.entries(LANGS).filter(([,v]) => v.enabled).map(([code,{label,flag}]) => (
-                    <button key={code} className="lang-opt" onClick={() => { setLang(code); setLangOpen(false); }} style={{ display:"flex",alignItems:"center",gap:10,width:"100%",padding:"10px 14px",background:lang===code?"rgba(255,59,92,.1)":"transparent",border:"none",color:lang===code?"#FF3B5C":"#BBB",fontSize:13,cursor:"pointer",textAlign:"left",fontFamily:"'DM Sans',sans-serif" }}>
-                      <span style={{ fontSize:18 }}>{flag}</span>
+                <div style={{ position: "absolute", top: "calc(100% + 5px)", right: 0, background: "#0F0F13", border: "1px solid rgba(255,255,255,.09)", borderRadius: 10, overflow: "hidden", zIndex: 100, minWidth: 160, boxShadow: "0 10px 40px rgba(0,0,0,.6)" }}>
+                  {Object.entries(LANGS).filter(([, v]) => v.enabled).map(([code, { label, flag }]) => (
+                    <button key={code} className="lang-opt" onClick={() => { setLang(code); setLangOpen(false); }} style={{ display: "flex", alignItems: "center", gap: 10, width: "100%", padding: "10px 14px", background: lang === code ? "rgba(255,59,92,.1)" : "transparent", border: "none", color: lang === code ? "#FF3B5C" : "#BBB", fontSize: 13, cursor: "pointer", textAlign: "left", fontFamily: "'DM Sans',sans-serif" }}>
+                      <span style={{ fontSize: 18 }}>{flag}</span>
                       <span>{label}</span>
-                      {lang===code && <span style={{ marginLeft:"auto",fontSize:10 }}>✓</span>}
+                      {lang === code && <span style={{ marginLeft: "auto", fontSize: 10 }}>✓</span>}
                     </button>
                   ))}
-                  <div style={{ borderTop:"1px solid rgba(255,255,255,.05)",padding:"8px 14px" }}>
-                    {Object.entries(LANGS).filter(([,v]) => !v.enabled).map(([code,{label,flag}]) => (
-                      <div key={code} style={{ display:"flex",alignItems:"center",gap:10,padding:"6px 0",opacity:0.35 }}>
-                        <span style={{ fontSize:18 }}>{flag}</span>
-                        <span style={{ fontSize:12,color:"#777" }}>{label}</span>
-                        <span style={{ marginLeft:"auto",fontSize:9,color:"#555",background:"rgba(255,255,255,.05)",borderRadius:3,padding:"1px 5px" }}>{t.comingSoon}</span>
+                  <div style={{ borderTop: "1px solid rgba(255,255,255,.05)", padding: "8px 14px" }}>
+                    {Object.entries(LANGS).filter(([, v]) => !v.enabled).map(([code, { label, flag }]) => (
+                      <div key={code} style={{ display: "flex", alignItems: "center", gap: 10, padding: "6px 0", opacity: 0.35 }}>
+                        <span style={{ fontSize: 18 }}>{flag}</span>
+                        <span style={{ fontSize: 12, color: "#777" }}>{label}</span>
+                        <span style={{ marginLeft: "auto", fontSize: 9, color: "#555", background: "rgba(255,255,255,.05)", borderRadius: 3, padding: "1px 5px" }}>{t.comingSoon}</span>
                       </div>
                     ))}
                   </div>
@@ -1405,40 +1406,40 @@ function IsItReel() {
                 });
                 const data = await res.json();
                 if (data.url) window.location.href = data.url;
-              }} style={{ fontSize:11,fontWeight:600,color:"#00FF94",background:"rgba(0,255,148,.08)",border:"1px solid rgba(0,255,148,.25)",borderRadius:7,padding:"6px 14px",fontFamily:"'DM Sans',sans-serif",cursor:"pointer" }}>
+              }} style={{ fontSize: 11, fontWeight: 600, color: "#00FF94", background: "rgba(0,255,148,.08)", border: "1px solid rgba(0,255,148,.25)", borderRadius: 7, padding: "6px 14px", fontFamily: "'DM Sans',sans-serif", cursor: "pointer" }}>
                 ✓ {tier.charAt(0).toUpperCase() + tier.slice(1)} — Manage
               </button>
             ) : (
-              <button onClick={() => setShowUpgrade(true)} style={{ fontSize:11,fontWeight:700,color:"#fff",background:"linear-gradient(135deg,#FF3B5C,#FF6B35)",border:"none",borderRadius:7,padding:"6px 14px",fontFamily:"'DM Sans',sans-serif",boxShadow:"0 2px 12px rgba(255,59,92,.35)",letterSpacing:".02em",cursor:"pointer" }}>
+              <button onClick={() => setShowUpgrade(true)} style={{ fontSize: 11, fontWeight: 700, color: "#fff", background: "linear-gradient(135deg,#FF3B5C,#FF6B35)", border: "none", borderRadius: 7, padding: "6px 14px", fontFamily: "'DM Sans',sans-serif", boxShadow: "0 2px 12px rgba(255,59,92,.35)", letterSpacing: ".02em", cursor: "pointer" }}>
                 Upgrade ↗
               </button>
             )}
-            {!isPro && <div style={{ fontSize:9,fontWeight:700,letterSpacing:".14em",color:"#FF3B5C",border:"1px solid rgba(255,59,92,.35)",borderRadius:4,padding:"3px 7px",background:"rgba(255,59,92,.07)" }}>{t.freeBeta}</div>}
+            {!isPro && <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: ".14em", color: "#FF3B5C", border: "1px solid rgba(255,59,92,.35)", borderRadius: 4, padding: "3px 7px", background: "rgba(255,59,92,.07)" }}>{t.freeBeta}</div>}
           </div>
         </header>
         {/* Home button - shows when not on idle screen */}
         {status !== STATUS.idle && status !== STATUS.error && (
-          <button onClick={reset} style={{ display:"flex",alignItems:"center",gap:6,background:"rgba(255,255,255,.05)",border:"1px solid rgba(255,255,255,.08)",borderRadius:8,padding:"7px 14px",color:"#AAA",fontSize:12,fontWeight:600,marginBottom:24,fontFamily:"'DM Sans',sans-serif" }}>
+          <button onClick={reset} style={{ display: "flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,.05)", border: "1px solid rgba(255,255,255,.08)", borderRadius: 8, padding: "7px 14px", color: "#AAA", fontSize: 12, fontWeight: 600, marginBottom: 24, fontFamily: "'DM Sans',sans-serif" }}>
             ← Home
           </button>
         )}
 
         {/* ── HISTORY ── */}
         {showHistory && history.length > 0 && (
-          <div style={{ background:"rgba(255,255,255,.025)",border:"1px solid rgba(255,255,255,.06)",borderRadius:14,padding:"18px 20px",marginBottom:28,animation:"fadeUp .3s ease" }}>
-            <div style={{ fontSize:10,fontWeight:700,letterSpacing:".14em",color:"#444",textTransform:"uppercase",marginBottom:12 }}>{t.historyTitle}</div>
-            {history.map((item,i) => {
+          <div style={{ background: "rgba(255,255,255,.025)", border: "1px solid rgba(255,255,255,.06)", borderRadius: 14, padding: "18px 20px", marginBottom: 28, animation: "fadeUp .3s ease" }}>
+            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".14em", color: "#444", textTransform: "uppercase", marginBottom: 12 }}>{t.historyTitle}</div>
+            {history.map((item, i) => {
               const hvc = VERDICT_CONFIG[item.verdict] || VERDICT_CONFIG.SUSPICIOUS;
               const hLabel = T[lang][item.verdict?.toLowerCase()] || item.verdict;
               return (
-                <div key={i} className="hist-row" style={{ display:"flex",alignItems:"center",gap:10,padding:"8px 0",borderBottom:i<history.length-1?"1px solid rgba(255,255,255,.04)":"none" }}>
-                  <div style={{ width:7,height:7,borderRadius:"50%",background:hvc.color,flexShrink:0,boxShadow:`0 0 5px ${hvc.color}` }} />
-                  <div style={{ flex:1,overflow:"hidden" }}>
-                    <div style={{ fontSize:12,color:"#BBB",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap" }}>{item.name}</div>
-                    <div style={{ fontSize:10,color:"#444",marginTop:1 }}>{item.summary?.slice(0,65)}...</div>
+                <div key={i} className="hist-row" style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 0", borderBottom: i < history.length - 1 ? "1px solid rgba(255,255,255,.04)" : "none" }}>
+                  <div style={{ width: 7, height: 7, borderRadius: "50%", background: hvc.color, flexShrink: 0, boxShadow: `0 0 5px ${hvc.color}` }} />
+                  <div style={{ flex: 1, overflow: "hidden" }}>
+                    <div style={{ fontSize: 12, color: "#BBB", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{item.name}</div>
+                    <div style={{ fontSize: 10, color: "#444", marginTop: 1 }}>{item.summary?.slice(0, 65)}...</div>
                   </div>
-                  <div style={{ fontSize:11,color:hvc.color,fontWeight:700,flexShrink:0 }}>{hLabel}</div>
-                  <div style={{ fontSize:10,color:"#3A3A3A",flexShrink:0 }}>{item.confidence}%</div>
+                  <div style={{ fontSize: 11, color: hvc.color, fontWeight: 700, flexShrink: 0 }}>{hLabel}</div>
+                  <div style={{ fontSize: 10, color: "#3A3A3A", flexShrink: 0 }}>{item.confidence}%</div>
                 </div>
               );
             })}
@@ -1447,34 +1448,34 @@ function IsItReel() {
 
         {/* ── UPGRADE MODAL ── */}
         {showUpgrade && (
-          <div style={{ position:"fixed",inset:0,background:"rgba(0,0,0,.85)",zIndex:1000,display:"flex",alignItems:"center",justifyContent:"center",padding:20 }} onClick={() => setShowUpgrade(false)}>
-            <div className="upgrade-modal" style={{ background:"#0F0F13",border:"1px solid rgba(255,59,92,.3)",borderRadius:20,padding:"36px 28px",maxWidth:480,width:"100%",boxShadow:"0 0 60px rgba(255,59,92,.15)" }} onClick={e => e.stopPropagation()}>
-              <div style={{ fontSize:24,fontWeight:800,fontFamily:"'Syne',sans-serif",color:"#fff",marginBottom:8 }}>{t.upgradeTitle}</div>
-              <div style={{ fontSize:13,color:"#666",marginBottom:28 }}>{t.upgradeSub}</div>
+          <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,.85)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 20 }} onClick={() => setShowUpgrade(false)}>
+            <div className="upgrade-modal" style={{ background: "#0F0F13", border: "1px solid rgba(255,59,92,.3)", borderRadius: 20, padding: "36px 28px", maxWidth: 480, width: "100%", boxShadow: "0 0 60px rgba(255,59,92,.15)" }} onClick={e => e.stopPropagation()}>
+              <div style={{ fontSize: 24, fontWeight: 800, fontFamily: "'Syne',sans-serif", color: "#fff", marginBottom: 8 }}>{t.upgradeTitle}</div>
+              <div style={{ fontSize: 13, color: "#666", marginBottom: 28 }}>{t.upgradeSub}</div>
 
               {/* Founding member highlight */}
-              <div style={{ background:"linear-gradient(135deg,rgba(255,59,92,.12),rgba(255,107,53,.08))",border:"1.5px solid rgba(255,59,92,.4)",borderRadius:14,padding:"18px 20px",marginBottom:14,position:"relative" }}>
-                <div style={{ position:"absolute",top:-10,right:16,background:"#FF3B5C",color:"#fff",fontSize:9,fontWeight:800,letterSpacing:".1em",padding:"3px 8px",borderRadius:4 }}>BEST VALUE</div>
-                <div style={{ fontSize:15,fontWeight:700,color:"#fff",marginBottom:4 }}>{t.foundingPlan}</div>
-                <div style={{ fontSize:12,color:"#999" }}>{t.foundingFeatures}</div>
-                <button onClick={() => handleUpgrade('founding')} style={{ marginTop:14,width:"100%",padding:"11px",borderRadius:9,background:"linear-gradient(135deg,#FF3B5C,#FF6B35)",color:"#fff",fontSize:13,fontWeight:700,border:"none",fontFamily:"'Syne',sans-serif",letterSpacing:".04em" }}>
+              <div style={{ background: "linear-gradient(135deg,rgba(255,59,92,.12),rgba(255,107,53,.08))", border: "1.5px solid rgba(255,59,92,.4)", borderRadius: 14, padding: "18px 20px", marginBottom: 14, position: "relative" }}>
+                <div style={{ position: "absolute", top: -10, right: 16, background: "#FF3B5C", color: "#fff", fontSize: 9, fontWeight: 800, letterSpacing: ".1em", padding: "3px 8px", borderRadius: 4 }}>BEST VALUE</div>
+                <div style={{ fontSize: 15, fontWeight: 700, color: "#fff", marginBottom: 4 }}>{t.foundingPlan}</div>
+                <div style={{ fontSize: 12, color: "#999" }}>{t.foundingFeatures}</div>
+                <button onClick={() => handleUpgrade('founding')} style={{ marginTop: 14, width: "100%", padding: "11px", borderRadius: 9, background: "linear-gradient(135deg,#FF3B5C,#FF6B35)", color: "#fff", fontSize: 13, fontWeight: 700, border: "none", fontFamily: "'Syne',sans-serif", letterSpacing: ".04em" }}>
                   {t.foundingCta}
                 </button>
               </div>
 
               {/* Light plan */}
-              <div className="plan-card" onClick={() => handleUpgrade('light')} style={{ background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.07)",borderRadius:12,padding:"16px 18px",marginBottom:10,transition:"all .2s",cursor:"pointer" }}>
-                <div style={{ fontSize:14,fontWeight:600,color:"#CCC",marginBottom:3 }}>{t.lightPlan}</div>
-                <div style={{ fontSize:11,color:"#555" }}>{t.lightFeatures}</div>
+              <div className="plan-card" onClick={() => handleUpgrade('light')} style={{ background: "rgba(255,255,255,.03)", border: "1px solid rgba(255,255,255,.07)", borderRadius: 12, padding: "16px 18px", marginBottom: 10, transition: "all .2s", cursor: "pointer" }}>
+                <div style={{ fontSize: 14, fontWeight: 600, color: "#CCC", marginBottom: 3 }}>{t.lightPlan}</div>
+                <div style={{ fontSize: 11, color: "#555" }}>{t.lightFeatures}</div>
               </div>
 
               {/* Pro plan */}
-              <div className="plan-card" onClick={() => handleUpgrade('pro')} style={{ background:"rgba(255,255,255,.03)",border:"1px solid rgba(255,255,255,.07)",borderRadius:12,padding:"16px 18px",marginBottom:20,transition:"all .2s",cursor:"pointer" }}>
-                <div style={{ fontSize:14,fontWeight:600,color:"#CCC",marginBottom:3 }}>{t.proPlan}</div>
-                <div style={{ fontSize:11,color:"#555" }}>{t.proFeatures}</div>
+              <div className="plan-card" onClick={() => handleUpgrade('pro')} style={{ background: "rgba(255,255,255,.03)", border: "1px solid rgba(255,255,255,.07)", borderRadius: 12, padding: "16px 18px", marginBottom: 20, transition: "all .2s", cursor: "pointer" }}>
+                <div style={{ fontSize: 14, fontWeight: 600, color: "#CCC", marginBottom: 3 }}>{t.proPlan}</div>
+                <div style={{ fontSize: 11, color: "#555" }}>{t.proFeatures}</div>
               </div>
 
-              <button onClick={() => setShowUpgrade(false)} style={{ width:"100%",padding:"10px",borderRadius:9,background:"transparent",border:"1px solid rgba(255,255,255,.07)",color:"#555",fontSize:12,fontFamily:"'DM Sans',sans-serif",cursor:"pointer" }}>
+              <button onClick={() => setShowUpgrade(false)} style={{ width: "100%", padding: "10px", borderRadius: 9, background: "transparent", border: "1px solid rgba(255,255,255,.07)", color: "#555", fontSize: 12, fontFamily: "'DM Sans',sans-serif", cursor: "pointer" }}>
                 Maybe later — I'll stay on free
               </button>
             </div>
@@ -1483,20 +1484,20 @@ function IsItReel() {
 
         {/* ── HERO ── */}
         {(status === STATUS.idle || status === STATUS.error) && (
-          <div style={{ textAlign:"center",marginBottom:44,animation:"fadeUp .5s ease" }}>
+          <div style={{ textAlign: "center", marginBottom: 44, animation: "fadeUp .5s ease" }}>
             {/* Accuracy badge */}
-            <div style={{ display:"inline-flex",alignItems:"center",gap:8,background:"rgba(0,255,148,.07)",border:"1px solid rgba(0,255,148,.2)",borderRadius:20,padding:"5px 14px",marginBottom:18 }}>
-              <span style={{ fontSize:10,color:"#00FF94",fontWeight:700,letterSpacing:".1em" }}>🔍 {t.accuracy}</span>
-              <span style={{ fontSize:9,color:"#444" }}>·</span>
-              <span style={{ fontSize:10,color:"#555" }}>{t.accuracySub}</span>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(0,255,148,.07)", border: "1px solid rgba(0,255,148,.2)", borderRadius: 20, padding: "5px 14px", marginBottom: 18 }}>
+              <span style={{ fontSize: 10, color: "#00FF94", fontWeight: 700, letterSpacing: ".1em" }}>🔍 {t.accuracy}</span>
+              <span style={{ fontSize: 9, color: "#444" }}>·</span>
+              <span style={{ fontSize: 10, color: "#555" }}>{t.accuracySub}</span>
             </div>
 
-            <div style={{ fontSize:11,color:"#888",letterSpacing:".1em",marginBottom:12,textTransform:"uppercase" }}>{t.eyebrow}</div>
-            <h1 className="hero-title" style={{ fontSize:clamp(36,54),fontWeight:800,fontFamily:"'Syne',sans-serif",lineHeight:1.1,letterSpacing:"-1.5px",marginBottom:14,color:"#fff" }}>
+            <div style={{ fontSize: 11, color: "#888", letterSpacing: ".1em", marginBottom: 12, textTransform: "uppercase" }}>{t.eyebrow}</div>
+            <h1 className="hero-title" style={{ fontSize: clamp(36, 54), fontWeight: 800, fontFamily: "'Syne',sans-serif", lineHeight: 1.1, letterSpacing: "-1.5px", marginBottom: 14, color: "#fff" }}>
               {t.heroTitle1}<br />
-              <span style={{ background:"linear-gradient(90deg,#FF3B5C,#FF6B35)",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent" }}>{t.heroTitle2}</span>
+              <span style={{ background: "linear-gradient(90deg,#FF3B5C,#FF6B35)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{t.heroTitle2}</span>
             </h1>
-            <p style={{ fontSize:14,color:"#666",lineHeight:1.65,maxWidth:460,margin:"0 auto" }}>{t.heroSub}</p>
+            <p style={{ fontSize: 14, color: "#666", lineHeight: 1.65, maxWidth: 460, margin: "0 auto" }}>{t.heroSub}</p>
           </div>
         )}
 
@@ -1504,17 +1505,17 @@ function IsItReel() {
         {(status === STATUS.idle || status === STATUS.error) && (
           <>
             {/* Founding offer banner */}
-            <div className="founding-banner" style={{ background:"linear-gradient(135deg,rgba(255,59,92,.08),rgba(255,107,53,.05))",border:"1px solid rgba(255,59,92,.2)",borderRadius:12,padding:"12px 16px",marginBottom:16,display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,flexWrap:"wrap" }}>
-              <span style={{ fontSize:12,color:"#CCC" }}>{t.foundingOffer}</span>
-              <button onClick={() => handleUpgrade('founding')} style={{ fontSize:11,fontWeight:700,color:"#FF3B5C",background:"rgba(255,59,92,.1)",border:"1px solid rgba(255,59,92,.3)",borderRadius:6,padding:"4px 10px",fontFamily:"'DM Sans',sans-serif",whiteSpace:"nowrap" }}>{t.foundingCta}</button>
+            <div className="founding-banner" style={{ background: "linear-gradient(135deg,rgba(255,59,92,.08),rgba(255,107,53,.05))", border: "1px solid rgba(255,59,92,.2)", borderRadius: 12, padding: "12px 16px", marginBottom: 16, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+              <span style={{ fontSize: 12, color: "#CCC" }}>{t.foundingOffer}</span>
+              <button onClick={() => handleUpgrade('founding')} style={{ fontSize: 11, fontWeight: 700, color: "#FF3B5C", background: "rgba(255,59,92,.1)", border: "1px solid rgba(255,59,92,.3)", borderRadius: 6, padding: "4px 10px", fontFamily: "'DM Sans',sans-serif", whiteSpace: "nowrap" }}>{t.foundingCta}</button>
             </div>
 
             {/* Extension helper removed - URL scanning handles downloads automatically */}
 
             {/* Tabs */}
-            <div style={{ display:"flex",gap:0,marginBottom:16,background:"rgba(255,255,255,.035)",borderRadius:11,padding:3,border:"1px solid rgba(255,255,255,.05)" }}>
+            <div style={{ display: "flex", gap: 0, marginBottom: 16, background: "rgba(255,255,255,.035)", borderRadius: 11, padding: 3, border: "1px solid rgba(255,255,255,.05)" }}>
               {["url"].map(mode => (
-                <button key={mode} className="tab-btn" onClick={() => { setInputMode(mode); setError(null); }} style={{ flex:1,padding:"9px 14px",borderRadius:8,fontSize:13,fontWeight:600,background:inputMode===mode?"rgba(255,59,92,.14)":"transparent",color:inputMode===mode?"#FF3B5C":"#555",border:inputMode===mode?"1px solid rgba(255,59,92,.28)":"1px solid transparent",fontFamily:"'DM Sans',sans-serif" }}>
+                <button key={mode} className="tab-btn" onClick={() => { setInputMode(mode); setError(null); }} style={{ flex: 1, padding: "9px 14px", borderRadius: 8, fontSize: 13, fontWeight: 600, background: inputMode === mode ? "rgba(255,59,92,.14)" : "transparent", color: inputMode === mode ? "#FF3B5C" : "#555", border: inputMode === mode ? "1px solid rgba(255,59,92,.28)" : "1px solid transparent", fontFamily: "'DM Sans',sans-serif" }}>
                   {mode === "file" ? `📁 ${t.tabFile}` : `🔗 ${t.tabUrl}`}
                 </button>
               ))}
@@ -1524,18 +1525,18 @@ function IsItReel() {
             {inputMode === "file" && (
               <>                {/* Free scan indicator */}
                 {!isPro && (
-                  <div style={{ display:"flex",alignItems:"center",gap:8,marginBottom:12 }}>
-                    {[0,1,2].map(i => (
-                      <div key={i} style={{ flex:1,height:3,borderRadius:99,background:i < freeScansUsed?"rgba(255,59,92,.5)":"rgba(255,255,255,.08)" }} />
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+                    {[0, 1, 2].map(i => (
+                      <div key={i} style={{ flex: 1, height: 3, borderRadius: 99, background: i < freeScansUsed ? "rgba(255,59,92,.5)" : "rgba(255,255,255,.08)" }} />
                     ))}
-                    <span style={{ fontSize:10,color:"#444",whiteSpace:"nowrap" }}>{FREE_SCAN_LIMIT - freeScansUsed} free left</span>
+                    <span style={{ fontSize: 10, color: "#444", whiteSpace: "nowrap" }}>{FREE_SCAN_LIMIT - freeScansUsed} free left</span>
                   </div>
                 )}
 
-                {error && <div style={{ background:"rgba(255,59,92,.06)",border:"1px solid rgba(255,59,92,.18)",borderRadius:11,padding:"14px 16px",textAlign:"center",marginBottom:14,fontSize:13,color:"#FF7090" }}>⚠️ {error}</div>}
+                {error && <div style={{ background: "rgba(255,59,92,.06)", border: "1px solid rgba(255,59,92,.18)", borderRadius: 11, padding: "14px 16px", textAlign: "center", marginBottom: 14, fontSize: 13, color: "#FF7090" }}>⚠️ {error}</div>}
 
                 <button onClick={runFileScan} disabled={!file || isAnalyzing}
-                  style={{ width:"100%",padding:"16px",borderRadius:13,background:file?"linear-gradient(135deg,#FF3B5C,#FF6B35)":"rgba(255,255,255,.04)",color:file?"#fff":"#2A2A2A",fontSize:14,fontWeight:700,fontFamily:"'Syne',sans-serif",letterSpacing:".05em",border:"none",boxShadow:file?"0 4px 22px rgba(255,59,92,.32)":"none",cursor:file?"pointer":"not-allowed" }}>
+                  style={{ width: "100%", padding: "16px", borderRadius: 13, background: file ? "linear-gradient(135deg,#FF3B5C,#FF6B35)" : "rgba(255,255,255,.04)", color: file ? "#fff" : "#2A2A2A", fontSize: 14, fontWeight: 700, fontFamily: "'Syne',sans-serif", letterSpacing: ".05em", border: "none", boxShadow: file ? "0 4px 22px rgba(255,59,92,.32)" : "none", cursor: file ? "pointer" : "not-allowed" }}>
                   {file ? t.scanBtn : t.selectFirst}
                 </button>
               </>
@@ -1545,80 +1546,80 @@ function IsItReel() {
             {inputMode === "url" && (
               <>
                 <input type="url" value={urlInput} onChange={e => setUrlInput(e.target.value)}
-                  onKeyDown={e => e.key==="Enter" && urlInput.trim() && runUrlScan()}
+                  onKeyDown={e => e.key === "Enter" && urlInput.trim() && runUrlScan()}
                   placeholder={t.urlPlaceholder}
-                  style={{ width:"100%",padding:"15px 18px",borderRadius:13,background:"rgba(255,255,255,.035)",border:"1.5px solid rgba(255,255,255,.08)",color:"#E0E0E0",fontSize:13,fontFamily:"'DM Sans',sans-serif",marginBottom:8 }} />
-                {error && <div style={{ background:"rgba(255,59,92,.06)",border:"1px solid rgba(255,59,92,.18)",borderRadius:11,padding:"14px 16px",textAlign:"center",marginBottom:14,fontSize:13,color:"#FF7090" }}>⚠️ {error}</div>}
+                  style={{ width: "100%", padding: "15px 18px", borderRadius: 13, background: "rgba(255,255,255,.035)", border: "1.5px solid rgba(255,255,255,.08)", color: "#E0E0E0", fontSize: 13, fontFamily: "'DM Sans',sans-serif", marginBottom: 8 }} />
+                {error && <div style={{ background: "rgba(255,59,92,.06)", border: "1px solid rgba(255,59,92,.18)", borderRadius: 11, padding: "14px 16px", textAlign: "center", marginBottom: 14, fontSize: 13, color: "#FF7090" }}>⚠️ {error}</div>}
                 <button onClick={runUrlScan} disabled={!urlInput.trim() || isAnalyzing}
-                  style={{ width:"100%",padding:"16px",borderRadius:13,background:urlInput.trim()?"linear-gradient(135deg,#FF3B5C,#FF6B35)":"rgba(255,255,255,.04)",color:urlInput.trim()?"#fff":"#2A2A2A",fontSize:14,fontWeight:700,fontFamily:"'Syne',sans-serif",letterSpacing:".05em",border:"none",boxShadow:urlInput.trim()?"0 4px 22px rgba(255,59,92,.32)":"none",cursor:urlInput.trim()?"pointer":"not-allowed" }}>
+                  style={{ width: "100%", padding: "16px", borderRadius: 13, background: urlInput.trim() ? "linear-gradient(135deg,#FF3B5C,#FF6B35)" : "rgba(255,255,255,.04)", color: urlInput.trim() ? "#fff" : "#2A2A2A", fontSize: 14, fontWeight: 700, fontFamily: "'Syne',sans-serif", letterSpacing: ".05em", border: "none", boxShadow: urlInput.trim() ? "0 4px 22px rgba(255,59,92,.32)" : "none", cursor: urlInput.trim() ? "pointer" : "not-allowed" }}>
                   {t.urlAnalyze}
                 </button>
               </>
             )}
 
             {/* ── STATS SECTION ── */}
-            <div style={{ marginTop:48,paddingTop:44,borderTop:"1px solid rgba(255,255,255,.05)" }}>
-              <div style={{ textAlign:"center",marginBottom:28 }}>
-                <div style={{ fontSize:10,fontWeight:700,letterSpacing:".14em",color:"#FF3B5C",textTransform:"uppercase",marginBottom:10 }}>The deepfake crisis is real</div>
-                <div style={{ fontSize:22,fontWeight:800,fontFamily:"'Syne',sans-serif",color:"#fff",marginBottom:8 }}>You probably can't tell. Neither can most people.</div>
-                <div style={{ fontSize:13,color:"#555",maxWidth:480,margin:"0 auto" }}>The numbers explain why IsItReel exists.</div>
+            <div style={{ marginTop: 48, paddingTop: 44, borderTop: "1px solid rgba(255,255,255,.05)" }}>
+              <div style={{ textAlign: "center", marginBottom: 28 }}>
+                <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".14em", color: "#FF3B5C", textTransform: "uppercase", marginBottom: 10 }}>The deepfake crisis is real</div>
+                <div style={{ fontSize: 22, fontWeight: 800, fontFamily: "'Syne',sans-serif", color: "#fff", marginBottom: 8 }}>You probably can't tell. Neither can most people.</div>
+                <div style={{ fontSize: 13, color: "#555", maxWidth: 480, margin: "0 auto" }}>The numbers explain why IsItReel exists.</div>
               </div>
-              <div className="stats-grid" style={{ display:"grid",gridTemplateColumns:"repeat(2,1fr)",gap:12,marginBottom:12 }}>
+              <div className="stats-grid" style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 12, marginBottom: 12 }}>
                 {[
-                  { stat:"24.5%", label:"Human accuracy detecting deepfake video", sub:"You're essentially guessing", color:"#FF3B5C" },
-                  { stat:"8M+", label:"Deepfake videos circulating in 2025", sub:"Up from 500K in 2023 — 16x growth", color:"#FFB800" },
-                  { stat:"60%", label:"Of people have encountered a deepfake", sub:"Most didn't know it", color:"#FFB800" },
-                  { stat:"$25B", label:"Lost to deepfake fraud in 2025", sub:"Growing 32% annually", color:"#FF3B5C" },
-                ].map((item,i) => (
-                  <div key={i} style={{ background:"rgba(255,255,255,.025)",border:"1px solid rgba(255,255,255,.06)",borderRadius:14,padding:"20px 18px" }}>
-                    <div style={{ fontSize:32,fontWeight:900,fontFamily:"'Syne',sans-serif",color:item.color,marginBottom:6,letterSpacing:"-1px" }}>{item.stat}</div>
-                    <div style={{ fontSize:12,color:"#CCC",fontWeight:600,marginBottom:4,lineHeight:1.4 }}>{item.label}</div>
-                    <div style={{ fontSize:11,color:"#444",fontStyle:"italic" }}>{item.sub}</div>
+                  { stat: "24.5%", label: "Human accuracy detecting deepfake video", sub: "You're essentially guessing", color: "#FF3B5C" },
+                  { stat: "8M+", label: "Deepfake videos circulating in 2025", sub: "Up from 500K in 2023 — 16x growth", color: "#FFB800" },
+                  { stat: "60%", label: "Of people have encountered a deepfake", sub: "Most didn't know it", color: "#FFB800" },
+                  { stat: "$25B", label: "Lost to deepfake fraud in 2025", sub: "Growing 32% annually", color: "#FF3B5C" },
+                ].map((item, i) => (
+                  <div key={i} style={{ background: "rgba(255,255,255,.025)", border: "1px solid rgba(255,255,255,.06)", borderRadius: 14, padding: "20px 18px" }}>
+                    <div style={{ fontSize: 32, fontWeight: 900, fontFamily: "'Syne',sans-serif", color: item.color, marginBottom: 6, letterSpacing: "-1px" }}>{item.stat}</div>
+                    <div style={{ fontSize: 12, color: "#CCC", fontWeight: 600, marginBottom: 4, lineHeight: 1.4 }}>{item.label}</div>
+                    <div style={{ fontSize: 11, color: "#444", fontStyle: "italic" }}>{item.sub}</div>
                   </div>
                 ))}
               </div>
-              <div style={{ background:"rgba(0,255,148,.04)",border:"1px solid rgba(0,255,148,.12)",borderRadius:12,padding:"14px 18px",textAlign:"center" }}>
-                <span style={{ fontSize:12,color:"#00FF94",fontWeight:600 }}>0.1% of people </span>
-                <span style={{ fontSize:12,color:"#555" }}>can correctly identify all fake and real media — IsItReel gives everyone AI-level accuracy instantly.</span>
+              <div style={{ background: "rgba(0,255,148,.04)", border: "1px solid rgba(0,255,148,.12)", borderRadius: 12, padding: "14px 18px", textAlign: "center" }}>
+                <span style={{ fontSize: 12, color: "#00FF94", fontWeight: 600 }}>0.1% of people </span>
+                <span style={{ fontSize: 12, color: "#555" }}>can correctly identify all fake and real media — IsItReel gives everyone AI-level accuracy instantly.</span>
               </div>
             </div>
 
             {/* ── HOW IT WORKS ── */}
-            <div style={{ marginTop:56,paddingTop:48,borderTop:"1px solid rgba(255,255,255,.05)" }}>
-              <div style={{ textAlign:"center",marginBottom:32 }}>
-                <div style={{ fontSize:10,fontWeight:700,letterSpacing:".14em",color:"#FF3B5C",textTransform:"uppercase",marginBottom:10 }}>Simple & transparent</div>
-                <div style={{ fontSize:24,fontWeight:800,fontFamily:"'Syne',sans-serif",color:"#fff" }}>{t.howTitle}</div>
+            <div style={{ marginTop: 56, paddingTop: 48, borderTop: "1px solid rgba(255,255,255,.05)" }}>
+              <div style={{ textAlign: "center", marginBottom: 32 }}>
+                <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".14em", color: "#FF3B5C", textTransform: "uppercase", marginBottom: 10 }}>Simple & transparent</div>
+                <div style={{ fontSize: 24, fontWeight: 800, fontFamily: "'Syne',sans-serif", color: "#fff" }}>{t.howTitle}</div>
               </div>
-              <div className="how-grid" style={{ display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:14 }}>
+              <div className="how-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 14 }}>
                 {[
-                  { num:"01", title:t.how1Title, desc:t.how1Desc, icon:"📁" },
-                  { num:"02", title:t.how2Title, desc:t.how2Desc, icon:"🔬" },
-                  { num:"03", title:t.how3Title, desc:t.how3Desc, icon:"✅" },
-                ].map((card,i) => (
-                  <div key={i} className="how-card" style={{ background:"rgba(255,255,255,.025)",border:"1px solid rgba(255,255,255,.06)",borderRadius:14,padding:"22px 18px",transition:"all .2s",cursor:"default" }}>
-                    <div style={{ fontSize:9,fontWeight:700,letterSpacing:".16em",color:"#FF3B5C",marginBottom:10 }}>{card.num}</div>
-                    <div style={{ fontSize:20,marginBottom:10 }}>{card.icon}</div>
-                    <div style={{ fontSize:13,fontWeight:700,color:"#DDD",marginBottom:7 }}>{card.title}</div>
-                    <div style={{ fontSize:11,color:"#4A4A4A",lineHeight:1.6 }}>{card.desc}</div>
+                  { num: "01", title: t.how1Title, desc: t.how1Desc, icon: "📁" },
+                  { num: "02", title: t.how2Title, desc: t.how2Desc, icon: "🔬" },
+                  { num: "03", title: t.how3Title, desc: t.how3Desc, icon: "✅" },
+                ].map((card, i) => (
+                  <div key={i} className="how-card" style={{ background: "rgba(255,255,255,.025)", border: "1px solid rgba(255,255,255,.06)", borderRadius: 14, padding: "22px 18px", transition: "all .2s", cursor: "default" }}>
+                    <div style={{ fontSize: 9, fontWeight: 700, letterSpacing: ".16em", color: "#FF3B5C", marginBottom: 10 }}>{card.num}</div>
+                    <div style={{ fontSize: 20, marginBottom: 10 }}>{card.icon}</div>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: "#DDD", marginBottom: 7 }}>{card.title}</div>
+                    <div style={{ fontSize: 11, color: "#4A4A4A", lineHeight: 1.6 }}>{card.desc}</div>
                   </div>
                 ))}
               </div>
 
               {/* Accuracy trust signal */}
-              <div className="trust-signal" style={{ display:"flex",flexWrap:"wrap",alignItems:"center",justifyContent:"center",gap:12,marginTop:32,padding:"20px",background:"rgba(0,255,148,.04)",border:"1px solid rgba(0,255,148,.1)",borderRadius:12 }}>
-                <div style={{ textAlign:"center" }}>
-                  <div style={{ fontSize:16,fontWeight:900,fontFamily:"'Syne',sans-serif",color:"#00FF94",lineHeight:1.2 }}>{t.accuracy}</div>
-                  <div style={{ fontSize:10,color:"#444",marginTop:4,lineHeight:1.4 }}>{t.accuracySub}</div>
+              <div className="trust-signal" style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: 12, marginTop: 32, padding: "20px", background: "rgba(0,255,148,.04)", border: "1px solid rgba(0,255,148,.1)", borderRadius: 12 }}>
+                <div style={{ textAlign: "center" }}>
+                  <div style={{ fontSize: 16, fontWeight: 900, fontFamily: "'Syne',sans-serif", color: "#00FF94", lineHeight: 1.2 }}>{t.accuracy}</div>
+                  <div style={{ fontSize: 10, color: "#444", marginTop: 4, lineHeight: 1.4 }}>{t.accuracySub}</div>
                 </div>
-                <div style={{ width:1,height:40,background:"rgba(255,255,255,.06)" }} />
-                <div style={{ textAlign:"center" }}>
-                  <div style={{ fontSize:28,fontWeight:900,fontFamily:"'Syne',sans-serif",color:"#00FF94",animation:"countUp .3s ease" }}>{scanCount.toLocaleString()}</div>
-                  <div style={{ fontSize:10,color:"#444",marginTop:2 }}>{t.scansLabel}</div>
+                <div style={{ width: 1, height: 40, background: "rgba(255,255,255,.06)" }} />
+                <div style={{ textAlign: "center" }}>
+                  <div style={{ fontSize: 28, fontWeight: 900, fontFamily: "'Syne',sans-serif", color: "#00FF94", animation: "countUp .3s ease" }}>{scanCount.toLocaleString()}</div>
+                  <div style={{ fontSize: 10, color: "#444", marginTop: 2 }}>{t.scansLabel}</div>
                 </div>
-                <div style={{ width:1,height:40,background:"rgba(255,255,255,.06)" }} />
-                <div style={{ textAlign:"center" }}>
-                  <div style={{ fontSize:28,fontWeight:900,fontFamily:"'Syne',sans-serif",color:"#00FF94" }}>8</div>
-                  <div style={{ fontSize:10,color:"#444",marginTop:2 }}>signal categories</div>
+                <div style={{ width: 1, height: 40, background: "rgba(255,255,255,.06)" }} />
+                <div style={{ textAlign: "center" }}>
+                  <div style={{ fontSize: 28, fontWeight: 900, fontFamily: "'Syne',sans-serif", color: "#00FF94" }}>8</div>
+                  <div style={{ fontSize: 10, color: "#444", marginTop: 2 }}>signal categories</div>
                 </div>
               </div>
             </div>
@@ -1627,20 +1628,20 @@ function IsItReel() {
 
         {/* ── ANALYZING ── */}
         {isAnalyzing && (
-          <div style={{ textAlign:"center",padding:"60px 24px",animation:"fadeUp .4s ease" }}>
-            <div style={{ position:"relative",width:56,height:56,margin:"0 auto 26px" }}>
-              <div style={{ width:56,height:56,border:"2.5px solid rgba(255,59,92,.15)",borderTopColor:"#FF3B5C",borderRadius:"50%",animation:"spin .85s linear infinite" }} />
-              <div style={{ position:"absolute",inset:8,border:"2px solid rgba(255,107,53,.08)",borderTopColor:"rgba(255,107,53,.55)",borderRadius:"50%",animation:"spin 1.5s linear infinite reverse" }} />
+          <div style={{ textAlign: "center", padding: "60px 24px", animation: "fadeUp .4s ease" }}>
+            <div style={{ position: "relative", width: 56, height: 56, margin: "0 auto 26px" }}>
+              <div style={{ width: 56, height: 56, border: "2.5px solid rgba(255,59,92,.15)", borderTopColor: "#FF3B5C", borderRadius: "50%", animation: "spin .85s linear infinite" }} />
+              <div style={{ position: "absolute", inset: 8, border: "2px solid rgba(255,107,53,.08)", borderTopColor: "rgba(255,107,53,.55)", borderRadius: "50%", animation: "spin 1.5s linear infinite reverse" }} />
             </div>
-            <div style={{ fontSize:12,color:"#555",marginBottom:8,letterSpacing:".06em" }}>
-              {status===STATUS.extracting ? t.extracting : t.analyzing}
+            <div style={{ fontSize: 12, color: "#555", marginBottom: 8, letterSpacing: ".06em" }}>
+              {status === STATUS.extracting ? t.extracting : t.analyzing}
             </div>
-            <div style={{ fontSize:19,fontWeight:700,fontFamily:"'Syne',sans-serif",color:"#fff" }}>
-              {status===STATUS.extracting ? t.extractingSub : t.analyzingSub}
+            <div style={{ fontSize: 19, fontWeight: 700, fontFamily: "'Syne',sans-serif", color: "#fff" }}>
+              {status === STATUS.extracting ? t.extractingSub : t.analyzingSub}
             </div>
-            <div style={{ display:"flex",justifyContent:"center",gap:5,marginTop:28 }}>
-              {[0,1,2,3,4,5,6,7].map(i => (
-                <div key={i} style={{ width:5,height:5,borderRadius:"50%",background:"rgba(255,59,92,.4)",animation:`pulse 1.2s ease ${i*.15}s infinite` }} />
+            <div style={{ display: "flex", justifyContent: "center", gap: 5, marginTop: 28 }}>
+              {[0, 1, 2, 3, 4, 5, 6, 7].map(i => (
+                <div key={i} style={{ width: 5, height: 5, borderRadius: "50%", background: "rgba(255,59,92,.4)", animation: `pulse 1.2s ease ${i * .15}s infinite` }} />
               ))}
             </div>
           </div>
@@ -1648,45 +1649,45 @@ function IsItReel() {
 
         {/* ── RESULTS ── */}
         {status === STATUS.done && result && vc && (
-          <div style={{ animation:"popIn .45s ease" }}>
+          <div style={{ animation: "popIn .45s ease" }}>
 
             {/* Verdict card */}
-            <div style={{ borderRadius:20,background:vc.bg,border:`1.5px solid ${vc.border}`,boxShadow:`0 0 48px ${vc.glow}`,padding:"34px 28px 26px",textAlign:"center",marginBottom:16 }}>
-              <div style={{ fontSize:48,marginBottom:9 }}>{verdictEmoji}</div>
-              <div style={{ fontSize:"clamp(18px,6vw,38px)",textAlign:"center",width:"100%",fontWeight:900,fontFamily:"'Syne',sans-serif",letterSpacing:".06em",color:vc.color,marginBottom:7 }}>{verdictLabel}</div>
-              <div style={{ display:"inline-flex",alignItems:"center",gap:7,background:"rgba(255,255,255,.05)",borderRadius:20,padding:"4px 14px",marginBottom:16 }}>
-                <div style={{ width:5,height:5,borderRadius:"50%",background:vc.color }} />
-                <span style={{ fontSize:11,color:"rgba(255,255,255,.45)" }}>{t.confidence}: {result.confidence}%</span>
+            <div style={{ borderRadius: 20, background: vc.bg, border: `1.5px solid ${vc.border}`, boxShadow: `0 0 48px ${vc.glow}`, padding: "34px 28px 26px", textAlign: "center", marginBottom: 16 }}>
+              <div style={{ fontSize: 48, marginBottom: 9 }}>{verdictEmoji}</div>
+              <div style={{ fontSize: "clamp(18px,6vw,38px)", textAlign: "center", width: "100%", fontWeight: 900, fontFamily: "'Syne',sans-serif", letterSpacing: ".06em", color: vc.color, marginBottom: 7 }}>{verdictLabel}</div>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 7, background: "rgba(255,255,255,.05)", borderRadius: 20, padding: "4px 14px", marginBottom: 16 }}>
+                <div style={{ width: 5, height: 5, borderRadius: "50%", background: vc.color }} />
+                <span style={{ fontSize: 11, color: "rgba(255,255,255,.45)" }}>{t.confidence}: {result.confidence}%</span>
               </div>
-              <p style={{ fontSize:14,lineHeight:1.68,color:"rgba(255,255,255,.68)",maxWidth:480,margin:"0 auto" }}>{result.summary}</p>
+              <p style={{ fontSize: 14, lineHeight: 1.68, color: "rgba(255,255,255,.68)", maxWidth: 480, margin: "0 auto" }}>{result.summary}</p>
             </div>
 
             {/* Why section */}
             {result.whyFake && (
-              <div style={{ background:"rgba(255,255,255,.022)",border:"1px solid rgba(255,255,255,.055)",borderRadius:14,padding:"20px 22px",marginBottom:14 }}>
-                <div style={{ display:"flex",alignItems:"center",gap:8,marginBottom:12 }}>
-                  <div style={{ width:3,height:16,background:vc.color,borderRadius:2,flexShrink:0 }} />
-                  <div style={{ fontSize:10,fontWeight:700,letterSpacing:".14em",color:"#484848",textTransform:"uppercase" }}>{t.whyTitle}</div>
+              <div style={{ background: "rgba(255,255,255,.022)", border: "1px solid rgba(255,255,255,.055)", borderRadius: 14, padding: "20px 22px", marginBottom: 14 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+                  <div style={{ width: 3, height: 16, background: vc.color, borderRadius: 2, flexShrink: 0 }} />
+                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".14em", color: "#484848", textTransform: "uppercase" }}>{t.whyTitle}</div>
                 </div>
-                <p style={{ fontSize:13,lineHeight:1.75,color:"#999",fontStyle:"italic" }}>{result.whyFake}</p>
+                <p style={{ fontSize: 13, lineHeight: 1.75, color: "#999", fontStyle: "italic" }}>{result.whyFake}</p>
               </div>
             )}
 
             {/* Signal breakdown */}
             {result.signals?.length > 0 && (
-              <div style={{ background:"rgba(255,255,255,.022)",border:"1px solid rgba(255,255,255,.055)",borderRadius:14,padding:"20px 22px",marginBottom:14 }}>
-                <div style={{ fontSize:10,fontWeight:700,letterSpacing:".14em",color:"#484848",textTransform:"uppercase",marginBottom:16 }}>{t.signals}</div>
-                {result.signals.map((sig,i) => {
-                  const bc = sig.score>6?"#FF3B5C":sig.score>3?"#FFB800":"#00FF94";
-                  const pct = `${(sig.score/10)*100}%`;
+              <div style={{ background: "rgba(255,255,255,.022)", border: "1px solid rgba(255,255,255,.055)", borderRadius: 14, padding: "20px 22px", marginBottom: 14 }}>
+                <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".14em", color: "#484848", textTransform: "uppercase", marginBottom: 16 }}>{t.signals}</div>
+                {result.signals.map((sig, i) => {
+                  const bc = sig.score > 6 ? "#FF3B5C" : sig.score > 3 ? "#FFB800" : "#00FF94";
+                  const pct = `${(sig.score / 10) * 100}%`;
                   return (
-                    <div key={i} className="signal-row" style={{ display:"flex",alignItems:"center",gap:8,marginBottom:i<result.signals.length-1?12:0 }}>
-                      <div style={{ fontSize:11,color:"#777",width:190,flexShrink:0,lineHeight:1.3 }}>{sig.label}</div>
-                      <div style={{ flex:1,height:4,background:"rgba(255,255,255,.05)",borderRadius:99,overflow:"hidden" }}>
-                        <div style={{ "--w":pct,height:"100%",width:pct,background:bc,borderRadius:99,animation:"barIn .9s ease forwards" }} />
+                    <div key={i} className="signal-row" style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: i < result.signals.length - 1 ? 12 : 0 }}>
+                      <div style={{ fontSize: 11, color: "#777", width: 190, flexShrink: 0, lineHeight: 1.3 }}>{sig.label}</div>
+                      <div style={{ flex: 1, height: 4, background: "rgba(255,255,255,.05)", borderRadius: 99, overflow: "hidden" }}>
+                        <div style={{ "--w": pct, height: "100%", width: pct, background: bc, borderRadius: 99, animation: "barIn .9s ease forwards" }} />
                       </div>
-                      <div style={{ fontSize:10,color:"#3A3A3A",width:26,textAlign:"right",flexShrink:0 }}>{sig.score}/10</div>
-                      <div className="signal-note" style={{ fontSize:10,color:"#404040",width:100,textAlign:"right",flexShrink:0,lineHeight:1.3 }}>{sig.note}</div>
+                      <div style={{ fontSize: 10, color: "#3A3A3A", width: 26, textAlign: "right", flexShrink: 0 }}>{sig.score}/10</div>
+                      <div className="signal-note" style={{ fontSize: 10, color: "#404040", width: 100, textAlign: "right", flexShrink: 0, lineHeight: 1.3 }}>{sig.note}</div>
                     </div>
                   );
                 })}
@@ -1695,48 +1696,48 @@ function IsItReel() {
 
             {/* Visual share card */}
             {shareCardUrl && (
-              <div style={{ background:"rgba(255,255,255,.022)",border:"1px solid rgba(255,255,255,.055)",borderRadius:14,padding:"20px 22px",marginBottom:14 }}>
-                <div style={{ fontSize:10,fontWeight:700,letterSpacing:".14em",color:"#484848",textTransform:"uppercase",marginBottom:14 }}>{t.shareVerdict}</div>
-                <img src={shareCardUrl} alt="Share card" style={{ width:"100%",borderRadius:10,marginBottom:14,boxShadow:"0 4px 24px rgba(0,0,0,.4)" }} />
+              <div style={{ background: "rgba(255,255,255,.022)", border: "1px solid rgba(255,255,255,.055)", borderRadius: 14, padding: "20px 22px", marginBottom: 14 }}>
+                <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: ".14em", color: "#484848", textTransform: "uppercase", marginBottom: 14 }}>{t.shareVerdict}</div>
+                <img src={shareCardUrl} alt="Share card" style={{ width: "100%", borderRadius: 10, marginBottom: 14, boxShadow: "0 4px 24px rgba(0,0,0,.4)" }} />
                 {!isPro && (
-                  <div style={{ fontSize:11,color:"#3A3A3A",marginBottom:12,textAlign:"center" }}>
-                    🔒 Remove watermark with <button onClick={() => setShowUpgrade(true)} style={{ background:"none",border:"none",color:"#FF3B5C",fontSize:11,cursor:"pointer",padding:0,fontFamily:"'DM Sans',sans-serif" }}>Pro or Light ↗</button>
+                  <div style={{ fontSize: 11, color: "#3A3A3A", marginBottom: 12, textAlign: "center" }}>
+                    🔒 Remove watermark with <button onClick={() => setShowUpgrade(true)} style={{ background: "none", border: "none", color: "#FF3B5C", fontSize: 11, cursor: "pointer", padding: 0, fontFamily: "'DM Sans',sans-serif" }}>Pro or Light ↗</button>
                   </div>
                 )}
-                <div className="share-btns" style={{ display:"flex",gap:8,flexWrap:"wrap" }}>
-                  <button onClick={downloadCard} style={{ flex:1,padding:"10px 12px",borderRadius:9,background:"rgba(255,255,255,.04)",color:"#BBB",fontSize:12,fontWeight:600,border:"1px solid rgba(255,255,255,.06)",fontFamily:"'DM Sans',sans-serif",minWidth:120 }}>
+                <div className="share-btns" style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                  <button onClick={downloadCard} style={{ flex: 1, padding: "10px 12px", borderRadius: 9, background: "rgba(255,255,255,.04)", color: "#BBB", fontSize: 12, fontWeight: 600, border: "1px solid rgba(255,255,255,.06)", fontFamily: "'DM Sans',sans-serif", minWidth: 120 }}>
                     ⬇ Download Card
                   </button>
-                  <button onClick={copyShare} style={{ flex:1,padding:"10px 12px",borderRadius:9,background:"rgba(255,255,255,.04)",color:"#BBB",fontSize:12,fontWeight:600,border:"1px solid rgba(255,255,255,.06)",fontFamily:"'DM Sans',sans-serif",minWidth:120 }}>
+                  <button onClick={copyShare} style={{ flex: 1, padding: "10px 12px", borderRadius: 9, background: "rgba(255,255,255,.04)", color: "#BBB", fontSize: 12, fontWeight: 600, border: "1px solid rgba(255,255,255,.06)", fontFamily: "'DM Sans',sans-serif", minWidth: 120 }}>
                     {copied ? `✅ ${t.copied}` : `📋 ${t.copyClip}`}
                   </button>
-                  <button onClick={shareX} style={{ flex:1,padding:"10px 12px",borderRadius:9,background:"rgba(255,255,255,.04)",color:"#BBB",fontSize:12,fontWeight:600,border:"1px solid rgba(255,255,255,.06)",fontFamily:"'DM Sans',sans-serif",minWidth:120 }}>
+                  <button onClick={shareX} style={{ flex: 1, padding: "10px 12px", borderRadius: 9, background: "rgba(255,255,255,.04)", color: "#BBB", fontSize: 12, fontWeight: 600, border: "1px solid rgba(255,255,255,.06)", fontFamily: "'DM Sans',sans-serif", minWidth: 120 }}>
                     𝕏 {t.shareX}
                   </button>
                 </div>
               </div>
             )}
 
-            <button onClick={reset} style={{ width:"100%",padding:"12px",borderRadius:11,background:"transparent",border:"1px solid rgba(255,255,255,.07)",color:"#484848",fontSize:12,fontFamily:"'DM Sans',sans-serif",marginTop:4 }}>
+            <button onClick={reset} style={{ width: "100%", padding: "12px", borderRadius: 11, background: "transparent", border: "1px solid rgba(255,255,255,.07)", color: "#484848", fontSize: 12, fontFamily: "'DM Sans',sans-serif", marginTop: 4 }}>
               {t.scanAnother}
             </button>
           </div>
         )}
 
         {/* ── FOOTER ── */}
-        <div style={{ textAlign:"center",marginTop:72,paddingTop:28,borderTop:"1px solid rgba(255,255,255,.08)",fontSize:11,color:"#555" }}>
-          <div style={{ marginBottom:10 }}>
-            <span style={{ color:"#FF3B5C",fontWeight:700 }}>IsItReel</span>
-            <span style={{ color:"#444" }}> · isitreelapp.com · AI deepfake detection for the social media era</span>
+        <div style={{ textAlign: "center", marginTop: 72, paddingTop: 28, borderTop: "1px solid rgba(255,255,255,.08)", fontSize: 11, color: "#555" }}>
+          <div style={{ marginBottom: 10 }}>
+            <span style={{ color: "#FF3B5C", fontWeight: 700 }}>IsItReel</span>
+            <span style={{ color: "#444" }}> · isitreelapp.com · AI deepfake detection for the social media era</span>
           </div>
-          <a href="mailto:hello@isitreelapp.com" style={{ fontSize:11,color:"#666",display:"block",marginBottom:10 }}>{t.orgLink} → hello@isitreelapp.com</a>
-          <div style={{ fontSize:11,color:"#555",marginBottom:8,display:"flex",alignItems:"center",justifyContent:"center",gap:12 }}>
-            <a href="/privacy" style={{ color:"#666",textDecoration:"none" }} onMouseOver={e=>e.target.style.color="#FF3B5C"} onMouseOut={e=>e.target.style.color="#666"}>Privacy Policy</a>
-            <span style={{ color:"#333" }}>·</span>
-            <a href="/terms" style={{ color:"#666",textDecoration:"none" }} onMouseOver={e=>e.target.style.color="#FF3B5C"} onMouseOut={e=>e.target.style.color="#666"}>Terms of Service</a>
+          <a href="mailto:hello@isitreelapp.com" style={{ fontSize: 11, color: "#666", display: "block", marginBottom: 10 }}>{t.orgLink} → hello@isitreelapp.com</a>
+          <div style={{ fontSize: 11, color: "#555", marginBottom: 8, display: "flex", alignItems: "center", justifyContent: "center", gap: 12 }}>
+            <a href="/privacy" style={{ color: "#666", textDecoration: "none" }} onMouseOver={e => e.target.style.color = "#FF3B5C"} onMouseOut={e => e.target.style.color = "#666"}>Privacy Policy</a>
+            <span style={{ color: "#333" }}>·</span>
+            <a href="/terms" style={{ color: "#666", textDecoration: "none" }} onMouseOver={e => e.target.style.color = "#FF3B5C"} onMouseOut={e => e.target.style.color = "#666"}>Terms of Service</a>
           </div>
-          <div style={{ fontSize:10,color:"#444",marginTop:4 }}>4 languages · Free to start · Detection updated for Veo 3</div>
-<div style={{ fontSize:10,color:"#333",marginTop:6,maxWidth:460,margin:"6px auto 0",lineHeight:1.5 }}>AI detection is an evolving field. Our model is continuously updated — use results as a strong indicator, not a final verdict.</div>
+          <div style={{ fontSize: 10, color: "#444", marginTop: 4 }}>4 languages · Free to start · Detection updated for Veo 3</div>
+          <div style={{ fontSize: 10, color: "#333", marginTop: 6, maxWidth: 460, margin: "6px auto 0", lineHeight: 1.5 }}>AI detection is an evolving field. Our model is continuously updated — use results as a strong indicator, not a final verdict.</div>
         </div>
       </div>
     </div>
