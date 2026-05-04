@@ -310,8 +310,7 @@ const VERDICT_EMOJI = { AUTHENTIC: "✅", SUSPICIOUS: "⚠️", FAKE: "🚫" };
 const FREE_SCAN_LIMIT = 3;
 const ADMIN_BYPASS = true; // Set to false before public launch
 const LIGHT_SCAN_LIMIT = 8;
-const SEED_COUNT = 1162;
-const PASSIVE_INCREMENT_MS = 210000; // ~3.5 minutes
+const SEED_COUNT = 1247;
 
 function detectLang() {
   const nav = navigator.language?.slice(0, 2).toLowerCase();
@@ -1168,14 +1167,7 @@ function IsItReel() {
     }
   };
 
-  // Passive scan counter increment
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const jitter = Math.random() > 0.5 ? 1 : 0;
-      setScanCount(c => c + jitter + 1);
-    }, PASSIVE_INCREMENT_MS + Math.random() * 60000);
-    return () => clearInterval(interval);
-  }, []);
+
 
 
 
