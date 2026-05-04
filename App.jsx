@@ -21,7 +21,7 @@ const T = {
     eyebrow: "Paste. Scan. Share the truth.",
     heroTitle1: "Is this video",
     heroTitle2: "real or fake?",
-    heroSub: "Paste a Facebook Reels URL for an instant AI deepfake verdict — no download needed. Have a video from another platform? Download it and upload it directly.",
+    heroSub: "Paste a Facebook Reels URL for an instant AI deepfake verdict — no download needed.",
     howTitle: "How it works",
     how1Title: "Upload your video",
     how1Desc: "Drag and drop any video file up to 250MB. MP4, MOV, WebM, AVI all supported.",
@@ -37,7 +37,6 @@ const T = {
     dropTitle: "Drop your video here",
     dropSub: "or click to browse files",
     dropFormats: "MP4 · MOV · WebM · AVI · up to 250MB",
-    dropTip: "Have a video from another platform? Download it and drop it here.",
     urlPlaceholder: "Paste a Facebook Reels URL...",
     urlAnalyze: "SCAN THIS URL →",
     scanBtn: "SCAN THIS VIDEO →",
@@ -89,7 +88,7 @@ const T = {
     eyebrow: "Pega. Escanea. Comparte la verdad.",
     heroTitle1: "¿Este video es",
     heroTitle2: "real o falso?",
-    heroSub: "Pega una URL de Facebook Reels para un veredicto instantáneo — sin descargas. ¿Tienes un video de otra plataforma? De ser así, pega la URL aquí.",
+    heroSub: "Pega una URL de Facebook Reels para un veredicto instantáneo — sin descargas.",
     howTitle: "Cómo funciona",
     how1Title: "Sube tu video",
     how1Desc: "Arrastra y suelta cualquier archivo de video hasta 250MB. MP4, MOV, WebM, AVI compatibles.",
@@ -105,7 +104,6 @@ const T = {
     dropTitle: "Arrastra tu video aquí",
     dropSub: "o haz clic para buscar archivos",
     dropFormats: "MP4 · MOV · WebM · AVI · hasta 250MB",
-    dropTip: "¿Tienes un video de otra plataforma? Descárgalo y suéltalo aquí.",
     urlPlaceholder: "Pega una URL de Facebook Reels...",
     urlAnalyze: "ESCANEAR ESTA URL →",
     scanBtn: "ESCANEAR ESTE VIDEO →",
@@ -157,7 +155,7 @@ const T = {
     eyebrow: "Cole. Escaneie. Compartilhe a verdade.",
     heroTitle1: "Este vídeo é",
     heroTitle2: "real ou falso?",
-    heroSub: "Cole uma URL do Facebook Reels para um veredicto instantâneo — sem downloads. Tem um vídeo de outra plataforma? Baixe-o e envie diretamente.",
+    heroSub: "Cole uma URL do Facebook Reels para um veredicto instantâneo — sem downloads.",
     howTitle: "Como funciona",
     how1Title: "Envie seu vídeo",
     how1Desc: "Arraste e solte qualquer arquivo de vídeo até 250MB. MP4, MOV, WebM, AVI suportados.",
@@ -173,7 +171,6 @@ const T = {
     dropTitle: "Arraste seu vídeo aqui",
     dropSub: "ou clique para procurar arquivos",
     dropFormats: "MP4 · MOV · WebM · AVI · até 250MB",
-    dropTip: "Tem um vídeo de outra plataforma? Baixe-o e solte aqui.",
     urlPlaceholder: "Cole uma URL do Facebook Reels...",
     urlAnalyze: "ESCANEAR ESTA URL →",
     scanBtn: "ESCANEAR ESTE VÍDEO →",
@@ -225,7 +222,7 @@ const T = {
     eyebrow: "Collez. Scannez. Partagez la vérité.",
     heroTitle1: "Cette vidéo est-elle",
     heroTitle2: "réelle ou fausse?",
-    heroSub: "Collez une URL Facebook Reels pour un verdict instantané — sans téléchargement. Vous avez une vidéo d'une autre plateforme? Téléchargez-la et uploadez-la directement.",
+    heroSub: "Collez une URL Facebook Reels pour un verdict instantané — sans téléchargement.",
     howTitle: "Comment ça fonctionne",
     how1Title: "Téléchargez votre vidéo",
     how1Desc: "Glissez-déposez n'importe quel fichier vidéo jusqu'à 250MB. MP4, MOV, WebM, AVI supportés.",
@@ -241,7 +238,6 @@ const T = {
     dropTitle: "Déposez votre vidéo ici",
     dropSub: "ou cliquez pour parcourir les fichiers",
     dropFormats: "MP4 · MOV · WebM · AVI · jusqu'à 250MB",
-    dropTip: "Vous avez une vidéo d'une autre plateforme? Téléchargez-la et déposez-la ici.",
     urlPlaceholder: "Collez une URL Facebook Reels...",
     urlAnalyze: "SCANNER CETTE URL →",
     scanBtn: "SCANNER CETTE VIDÉO →",
@@ -1225,7 +1221,7 @@ function IsItReel() {
       setShareCardUrl(card);
       saveToHistory({ verdict: res.verdict, confidence: res.confidence, name: file.name, time: Date.now(), summary: res.summary });
     } catch (err) {
-      setError(err.message || t.analysisError);
+      setError('Something went wrong. Please try again.');
       setStatus(STATUS.error);
     }
   };
@@ -1235,8 +1231,7 @@ function IsItReel() {
     const trimmedUrl = urlInput.trim();
     const isBrowserOnly = trimmedUrl.includes('youtube.com') || trimmedUrl.includes('x.com') || trimmedUrl.includes('twitter.com');
     if (isBrowserOnly) {
-      setError('YouTube and X videos cannot be scanned by URL. Download the video and upload it using the Upload File tab instead.');
-      setInputMode('file');
+      setError('This platform isn\'t supported for URL scanning.');
       return;
     }
     setStatus(STATUS.analyzing); setError(null); setResult(null); setShareCardUrl(null);
@@ -1253,20 +1248,8 @@ function IsItReel() {
       setShareCardUrl(card);
       saveToHistory({ verdict: res.verdict, confidence: res.confidence, name: urlInput.slice(0, 50), time: Date.now(), summary: res.summary });
     } catch (err) {
-      // Clean platform-specific error messages
-      let errMsg = err.message || t.analysisError;
-      if (errMsg.includes('login required') || errMsg.includes('cookies')) {
-        errMsg = '⚠️ This platform requires login to download. Please screen record the video and upload it using the Upload File tab instead.';
-      } else if (errMsg.includes('timeout') || errMsg.includes('Download timeout')) {
-        errMsg = '⚠️ Video took too long to download. Try uploading the file directly using the Upload File tab.';
-      } else if (errMsg.includes('Unsupported platform')) {
-        errMsg = "⚠️ This platform isn't supported yet. Try downloading the video and uploading it using the Upload File tab.";
-      } else if (errMsg.includes('No frames')) {
-        errMsg = '⚠️ Could not extract frames from this video. Try downloading and uploading it directly.';
-      }
-      setError(errMsg);
+      setError('Something went wrong. Please try again.');
       setStatus(STATUS.error);
-      setInputMode('file'); // Switch to file tab as fallback
     }
   };
 
