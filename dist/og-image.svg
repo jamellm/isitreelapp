@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#06060A"/>
+      <stop offset="100%" style="stop-color:#0F0F1A"/>
+    </linearGradient>
+    <linearGradient id="red" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF3B5C"/>
+      <stop offset="100%" style="stop-color:#FF6B35"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="30%" cy="30%" r="60%">
+      <stop offset="0%" style="stop-color:#FF3B5C;stop-opacity:0.15"/>
+      <stop offset="100%" style="stop-color:#FF3B5C;stop-opacity:0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- Top accent line -->
+  <rect width="1200" height="4" fill="url(#red)"/>
+
+  <!-- Logo box -->
+  <rect x="80" y="80" width="72" height="72" rx="16" fill="url(#red)"/>
+  <text x="116" y="130" font-family="Arial Black, Arial" font-size="28" font-weight="900" fill="white" text-anchor="middle">IR</text>
+
+  <!-- IsItReel wordmark -->
+  <text x="172" y="108" font-family="Arial Black, Arial" font-size="32" font-weight="900" fill="white">IsItReel</text>
+  <text x="172" y="135" font-family="Arial, sans-serif" font-size="16" fill="#555">AI Deepfake Video Scanner</text>
+
+  <!-- Main headline -->
+  <text x="80" y="260" font-family="Arial Black, Arial" font-size="72" font-weight="900" fill="white">Is this video</text>
+  <text x="80" y="350" font-family="Arial Black, Arial" font-size="72" font-weight="900" fill="url(#red)">real or fake?</text>
+
+  <!-- Subtext -->
+  <text x="80" y="420" font-family="Arial, sans-serif" font-size="24" fill="#666">Paste any URL or upload a file. AI verdict in seconds.</text>
+
+  <!-- Stats row -->
+  <rect x="80" y="480" width="220" height="80" rx="12" fill="rgba(255,59,92,0.08)" stroke="rgba(255,59,92,0.2)" stroke-width="1"/>
+  <text x="190" y="512" font-family="Arial Black" font-size="28" font-weight="900" fill="#FF3B5C" text-anchor="middle">24.5%</text>
+  <text x="190" y="535" font-family="Arial" font-size="12" fill="#555" text-anchor="middle">Human detection rate</text>
+
+  <rect x="320" y="480" width="220" height="80" rx="12" fill="rgba(255,184,0,0.08)" stroke="rgba(255,184,0,0.2)" stroke-width="1"/>
+  <text x="430" y="512" font-family="Arial Black" font-size="28" font-weight="900" fill="#FFB800" text-anchor="middle">8M+</text>
+  <text x="430" y="535" font-family="Arial" font-size="12" fill="#555" text-anchor="middle">Deepfakes in 2025</text>
+
+  <rect x="560" y="480" width="220" height="80" rx="12" fill="rgba(0,255,148,0.06)" stroke="rgba(0,255,148,0.2)" stroke-width="1"/>
+  <text x="670" y="512" font-family="Arial Black" font-size="28" font-weight="900" fill="#00FF94" text-anchor="middle">Free</text>
+  <text x="670" y="535" font-family="Arial" font-size="12" fill="#555" text-anchor="middle">to start scanning</text>
+
+  <!-- Right side visual -->
+  <rect x="850" y="160" width="280" height="320" rx="20" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <text x="990" y="240" font-family="Arial" font-size="48" text-anchor="middle">🚫</text>
+  <text x="990" y="300" font-family="Arial Black" font-size="36" font-weight="900" fill="#FF3B5C" text-anchor="middle">FAKE</text>
+  <text x="990" y="330" font-family="Arial" font-size="14" fill="#666" text-anchor="middle">Confidence: 95%</text>
+  <rect x="890" y="360" width="200" height="6" rx="3" fill="rgba(255,255,255,0.05)"/>
+  <rect x="890" y="360" width="180" height="6" rx="3" fill="#FF3B5C"/>
+  <text x="890" y="395" font-family="Arial" font-size="11" fill="#444">Facial artifacts detected</text>
+  <rect x="890" y="405" width="200" height="6" rx="3" fill="rgba(255,255,255,0.05)"/>
+  <rect x="890" y="405" width="160" height="6" rx="3" fill="#FF3B5C"/>
+  <text x="890" y="440" font-family="Arial" font-size="11" fill="#444">Unnatural eye patterns</text>
+
+  <!-- URL -->
+  <text x="80" y="598" font-family="Arial" font-size="18" fill="#333">isitreelapp.com</text>
+</svg>

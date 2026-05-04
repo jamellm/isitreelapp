@@ -1517,7 +1517,7 @@ function IsItReel() {
 
             {/* Tabs */}
             <div style={{ display:"flex",gap:0,marginBottom:16,background:"rgba(255,255,255,.035)",borderRadius:11,padding:3,border:"1px solid rgba(255,255,255,.05)" }}>
-              {["file","url"].map(mode => (
+              {["url"].map(mode => (
                 <button key={mode} className="tab-btn" onClick={() => { setInputMode(mode); setError(null); }} style={{ flex:1,padding:"9px 14px",borderRadius:8,fontSize:13,fontWeight:600,background:inputMode===mode?"rgba(255,59,92,.14)":"transparent",color:inputMode===mode?"#FF3B5C":"#555",border:inputMode===mode?"1px solid rgba(255,59,92,.28)":"1px solid transparent",fontFamily:"'DM Sans',sans-serif" }}>
                   {mode === "file" ? `📁 ${t.tabFile}` : `🔗 ${t.tabUrl}`}
                 </button>
@@ -1526,38 +1526,7 @@ function IsItReel() {
 
             {/* File tab */}
             {inputMode === "file" && (
-              <>
-                {/* WhatsApp tip card */}
-                {!whatsappDismissed && (
-                  <div style={{ display:"flex",alignItems:"flex-start",gap:11,background:"rgba(37,211,102,.06)",border:"1px solid rgba(37,211,102,.2)",borderRadius:12,padding:"13px 15px",marginBottom:14,animation:"fadeUp .4s ease" }}>
-                    <span style={{ fontSize:18,flexShrink:0,marginTop:1 }}>💬</span>
-                    <div style={{ flex:1 }}>
-                      <div style={{ fontSize:12,fontWeight:600,color:"#25D366",marginBottom:3 }}>{t.whatsappTip}</div>
-                      <div style={{ fontSize:11,color:"#555",lineHeight:1.55 }}>{t.whatsappSub}</div>
-                    </div>
-                    <button onClick={() => setWhatsappDismissed(true)} style={{ background:"none",border:"none",color:"#3A3A3A",fontSize:18,padding:0,flexShrink:0,cursor:"pointer",lineHeight:1 }}>×</button>
-                  </div>
-                )}
-                {!file ? (
-                  <div onDrop={onDrop} onDragOver={e => { e.preventDefault(); setDragging(true); }} onDragLeave={() => setDragging(false)} onClick={() => fileRef.current?.click()}
-                    style={{ border:`1.5px dashed ${dragging?"rgba(255,59,92,.6)":"rgba(255,255,255,.08)"}`,borderRadius:18,padding:"50px 28px",textAlign:"center",cursor:"pointer",background:dragging?"rgba(255,59,92,.04)":"rgba(255,255,255,.012)",marginBottom:14,transition:"all .2s" }}>
-                    <input ref={fileRef} type="file" accept="video/*" style={{ display:"none" }} onChange={e => handleFile(e.target.files[0])} />
-                    <div style={{ fontSize:34,marginBottom:12 }}>🎬</div>
-                    <div style={{ fontSize:16,fontWeight:600,color:"#DDD",marginBottom:7 }}>{t.dropTitle}</div>
-                    <div style={{ fontSize:13,color:"#444",marginBottom:8 }}>{t.dropSub}</div>
-                    <div style={{ fontSize:11,color:"#2E2E2E",marginBottom:8 }}>{t.dropFormats}</div>
-                    <div style={{ fontSize:11,color:"#3A3A3A",fontStyle:"italic" }}>💡 {t.dropTip}</div>
-                  </div>
-                ) : (
-                  <div style={{ display:"flex",alignItems:"center",gap:10,background:"rgba(255,255,255,.04)",borderRadius:12,padding:"13px 16px",marginBottom:14,border:"1px solid rgba(255,255,255,.06)" }}>
-                    <span style={{ fontSize:18 }}>🎥</span>
-                    <span style={{ flex:1,fontSize:13,color:"#CCC",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap" }}>{file.name}</span>
-                    <span style={{ fontSize:11,color:"#3A3A3A" }}>{(file.size/1024/1024).toFixed(1)} MB</span>
-                    <button onClick={() => { setFile(null); setError(null); }} style={{ background:"none",border:"none",color:"#3A3A3A",fontSize:18,padding:0 }}>×</button>
-                  </div>
-                )}
-
-                {/* Free scan indicator */}
+              <>                {/* Free scan indicator */}
                 {!isPro && (
                   <div style={{ display:"flex",alignItems:"center",gap:8,marginBottom:12 }}>
                     {[0,1,2].map(i => (
