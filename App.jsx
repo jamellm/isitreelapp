@@ -435,7 +435,7 @@ Respond ONLY with valid JSON (no markdown):
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      model: "claude-haiku-4-5-20251001",
+      model: "claude-sonnet-4-6",
       max_tokens: 1200,
       messages: [{ role: "user", content: [...imageContent, { type: "text", text: prompt }] }],
     }),
@@ -633,7 +633,7 @@ function CommandCenter() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
+        model: 'claude-sonnet-4-6',
         max_tokens: maxTokens,
         messages: [{ role: 'user', content: prompt }],
       }),
