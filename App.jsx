@@ -1203,12 +1203,14 @@ function IsItReel() {
       const res = await analyzeFrames(frames, file.name, lang);
       setResult(res);
       setStatus(STATUS.done);
-      const newCount = freeScansUsed + 1;
-      setFreeScansUsed(newCount);
-      setScanCount(c => c + 1);
-      // Persist scan count
-      const today = new Date().toDateString();
-      localStorage.setItem('isitreeel_scans', JSON.stringify({ date: today, count: newCount }));
+      if (res && res.verdict) {
+        const newCount = freeScansUsed + 1;
+        setFreeScansUsed(newCount);
+        setScanCount(c => c + 1);
+        // Persist scan count
+        const today = new Date().toDateString();
+        localStorage.setItem('isitreeel_scans', JSON.stringify({ date: today, count: newCount }));
+      }
       const card = generateShareCard(res.verdict, res.confidence, res.shareText, isPro);
       setShareCardUrl(card);
       saveToHistory({ verdict: res.verdict, confidence: res.confidence, name: file.name, time: Date.now(), summary: res.summary });
@@ -1231,11 +1233,13 @@ function IsItReel() {
       const res = await analyzeUrl(urlInput.trim(), lang);
       setResult(res);
       setStatus(STATUS.done);
-      const newCount2 = freeScansUsed + 1;
-      setFreeScansUsed(newCount2);
-      setScanCount(c => c + 1);
-      const today2 = new Date().toDateString();
-      localStorage.setItem('isitreeel_scans', JSON.stringify({ date: today2, count: newCount2 }));
+      if (res && res.verdict) {
+        const newCount2 = freeScansUsed + 1;
+        setFreeScansUsed(newCount2);
+        setScanCount(c => c + 1);
+        const today2 = new Date().toDateString();
+        localStorage.setItem('isitreeel_scans', JSON.stringify({ date: today2, count: newCount2 }));
+      }
       const card = generateShareCard(res.verdict, res.confidence, res.shareText, isPro);
       setShareCardUrl(card);
       saveToHistory({ verdict: res.verdict, confidence: res.confidence, name: urlInput.slice(0, 50), time: Date.now(), summary: res.summary });
