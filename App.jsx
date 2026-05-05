@@ -399,6 +399,8 @@ AUTOMATIC FAKE INDICATORS — if you see ANY of these, verdict must be FAKE or S
 - Any watermarks, generation artifacts, or text overlays in corners
 - Lip movements that don't perfectly match speech patterns
 - Clothing or fabric that moves unnaturally
+- Video description or caption containing AI disclosure keywords such as "AI", "generated", "artificial intelligence", "AI-generated", "made with AI", "created by AI"
+- Visible text overlays or captions in the URL context containing these same signals
 
 Examine each frame for ALL of these signals:
 ${SIGNALS.map((s, i) => `${i + 1}. ${s}`).join("\n")}
